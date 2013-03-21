@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="iTestDataModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="iTestDataModelStoreContainer">
+    <EntitySet Name="Candidates" EntityType="iTestDataModel.Store.Candidates" store:Type="Tables" />
+  </EntityContainer>
+  <EntityType Name="Candidates">
+    <Key>
+      <PropertyRef Name="CandidateID" />
+    </Key>
+    <Property Name="CandidateID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RegistrationDate" Type="datetime" />
+    <Property Name="IdentityNumber" Type="nvarchar" MaxLength="9" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+    <Property Name="DateOfBirth" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="Events" Type="nvarchar" />
+    <Property Name="ResumePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="Experience" Type="smallint" />
+    <Property Name="Areas" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Roles" Type="nvarchar" MaxLength="200" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="100" />
+    <Property Name="Mobile" Type="nvarchar" MaxLength="100" />
+    <Property Name="EMailAddress" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Status" Type="nvarchar" MaxLength="100" />
+    <Property Name="SentToCompanies" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Former8200" Type="bit" />
+    <Property Name="CandidateNumber" Type="int" />
+    <Property Name="MailEntryID" Type="nvarchar" MaxLength="500" />
+    <Property Name="Reference" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+</Schema>

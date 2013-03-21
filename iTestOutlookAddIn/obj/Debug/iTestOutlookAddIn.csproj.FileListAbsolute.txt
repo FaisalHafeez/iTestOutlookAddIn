@@ -1,0 +1,17 @@
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\iTestOutlookAddIn.dll
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\iTestOutlookAddIn.pdb
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\iTestOutlookAddIn.dll.manifest
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\iTestOutlookAddIn.vsto
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\Microsoft.Office.Tools.Outlook.v4.0.Utilities.dll
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.xml
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\Microsoft.Office.Tools.Outlook.v4.0.Utilities.xml
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\ResolveAssemblyReference.cache
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.Properties.Resources.resources
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\GenerateResource.read.1.tlog
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\GenerateResource.write.1.tlog
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.dll
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.pdb
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\iTestOutlookAddIn.dll.config
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.CandidateEditForm.resources
+c:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.MainRegion.resources
