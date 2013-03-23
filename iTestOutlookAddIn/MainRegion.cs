@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using System.ComponentModel;
 using iTest.Common;
+using System.Net.Http;
 
 namespace iTestOutlookAddIn
 {
@@ -40,7 +41,7 @@ namespace iTestOutlookAddIn
                         e.Cancel = true;
                     }
                 }
-                else
+                else if (CandidatesServiceHelper.CanceledLogin)
                 {
                     e.Cancel = true;
                 }
@@ -269,7 +270,25 @@ namespace iTestOutlookAddIn
         {
             if (reload)
             {
-                m_candidates = CandidatesServiceHelper.GetCandidates();
+                try
+                {
+                    m_candidates = CandidatesServiceHelper.GetCandidates();
+                }
+                catch (HttpRequestException)
+                {
+                    LoginForm form = new LoginForm();
+                    form.ShowDialog(this);
+
+                    if (CandidatesServiceHelper.IsLoggedIn)
+                    {
+                        m_candidates = CandidatesServiceHelper.GetCandidates();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
             }
 
             var loc = (from l in m_candidates select l);
@@ -502,6 +521,11 @@ namespace iTestOutlookAddIn
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            DoSearch(-1, true);
         }
 
     }

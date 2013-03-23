@@ -233,10 +233,13 @@ namespace iTestOutlookAddIn
                     }
                 }
 
-                this.m_region.DataGrid.DataSource = null;
+                m_region.Candidates.Add(m_Candidate);
+                this.m_region.DataGrid.DataSource = m_region.Candidates ;
+
+                // set filter
                 this.m_region.ClearFilter();
                 this.m_region.CandidateNumber = m_Candidate.CandidateNumber.Value;
-                this.m_region.DoSearch(-1, true);
+                this.m_region.DoSearch(-1);
             }
             else
             {

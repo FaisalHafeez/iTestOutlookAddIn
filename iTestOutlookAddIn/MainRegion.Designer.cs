@@ -34,6 +34,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -53,6 +54,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tbNumber = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -270,6 +272,12 @@
             this.label4.TabIndex = 48;
             this.label4.Text = "#";
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 600000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // MainRegion
             // 
             this.AllowDrop = true;
@@ -330,6 +338,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbStatus;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Timer timer1;
 
         public partial class MainRegionFactory : Microsoft.Office.Tools.Outlook.IFormRegionFactory
         {

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace iTestOutlookAddIn
 {
@@ -48,6 +49,11 @@ namespace iTestOutlookAddIn
         {
             tbUsername.Text = Properties.Settings.Default.Username;
             tbPassword.Text = Properties.Settings.Default.Password;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["iTest.Site.ForgotPasswordUrl"]);
         }
     }
 }

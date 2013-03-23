@@ -87,7 +87,7 @@ namespace iTestOutlookAddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = "localhost";
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
@@ -128,7 +128,7 @@ namespace iTestOutlookAddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = "localhost";
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -171,7 +171,7 @@ namespace iTestOutlookAddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = "localhost";
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
@@ -213,7 +213,7 @@ namespace iTestOutlookAddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = "localhost";
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
