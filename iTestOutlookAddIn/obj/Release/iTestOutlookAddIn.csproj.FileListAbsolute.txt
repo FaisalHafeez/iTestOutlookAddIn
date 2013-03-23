@@ -15,3 +15,14 @@ C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\GenerateResource.rea
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\GenerateResource.write.1.tlog
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.dll
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.pdb
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\iTest.Common.dll
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\Newtonsoft.Json.dll
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.dll
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.Formatting.dll
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.WebRequest.dll
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\iTest.Common.pdb
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\Newtonsoft.Json.xml
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.xml
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.Formatting.xml
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.WebRequest.xml
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.LoginForm.resources

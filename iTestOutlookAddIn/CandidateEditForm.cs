@@ -10,17 +10,19 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Office.Interop.Outlook;
+using iTest.Common;
+using System.Net.Http;
 
 namespace iTestOutlookAddIn
 {
     public partial class CandidateEditForm : Form
     {
         private Candidate m_Candidate;
-        private iTestDataEntities m_context;
         private MainRegion m_region;
+        private bool m_isNew;
         private Microsoft.Office.Interop.Outlook.MailItem m_mailItem;
 
-        public CandidateEditForm(iTestDataEntities context, MainRegion region, Candidate entity)
+        public CandidateEditForm(MainRegion region, Candidate entity)
         {
             InitializeComponent();
 
@@ -29,16 +31,16 @@ namespace iTestOutlookAddIn
             cbStatus.Items.AddRange(Settings.Statuses);
             cbRole.Items.AddRange(Settings.Roles);
 
-            m_context = context;
             m_Candidate = entity;
             m_region = region;
-            
+            m_isNew = false;
+
             SetValues();
             SetTitle();
         }
 
 
-        public CandidateEditForm(iTestDataEntities context, MainRegion region, Candidate entity, Microsoft.Office.Interop.Outlook.MailItem mailItem)
+        public CandidateEditForm(bool isNew, MainRegion region, Candidate entity, Microsoft.Office.Interop.Outlook.MailItem mailItem)
         {
             InitializeComponent();
 
@@ -47,12 +49,12 @@ namespace iTestOutlookAddIn
             cbStatus.Items.AddRange(Settings.Statuses);
             cbRole.Items.AddRange(Settings.Roles);
 
-            m_context = context;
             m_Candidate = entity;
             m_region = region;
             m_mailItem = mailItem;
+            m_isNew = isNew;
 
-            SetValues(); 
+            SetValues();
             SetTitle();
 
         }
@@ -137,7 +139,7 @@ namespace iTestOutlookAddIn
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach(TreeNode node in nodes)
+            foreach (TreeNode node in nodes)
             {
                 if (value != null)
                 {
@@ -193,38 +195,77 @@ namespace iTestOutlookAddIn
                 {
                     string newFilePath = Settings.AppPath + m_Candidate.FirstName + "_" + m_Candidate.LastName + "_" + m_Candidate.CandidateNumber + file.Extension;
 
-                    if ( !this.m_Candidate.ResumePath.Equals(newFilePath))
+                    if (!this.m_Candidate.ResumePath.Equals(newFilePath))
                     {
-                        File.Copy(this.m_Candidate.ResumePath, newFilePath);
+                        FileInfo newFile = new FileInfo(newFilePath);
 
-                        File.Delete(this.m_Candidate.ResumePath);
+                        if (!newFile.Exists)
+                        {
+                            File.Copy(this.m_Candidate.ResumePath, newFilePath);
 
-                        this.m_Candidate.ResumePath = newFilePath;
+                            File.Delete(this.m_Candidate.ResumePath);
+
+                            this.m_Candidate.ResumePath = newFilePath;
+                        }
                     }
                 }
             }
 
-            if (m_Candidate.IsNew)
-            {
-                m_Candidate.IsNew = false;
-                m_context.AddToCandidates(m_Candidate);
-                m_context.SaveChanges();
 
-                m_context = new iTestDataEntities();
+            if (m_isNew)
+            {
+                try
+                {
+                    CandidatesServiceHelper.Add(m_Candidate);
+                }
+                catch (HttpRequestException)
+                {
+                    LoginForm form = new LoginForm();
+                    form.ShowDialog(this);
+
+                    if (CandidatesServiceHelper.IsLoggedIn)
+                    {
+                        CandidatesServiceHelper.Add(m_Candidate);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 this.m_region.DataGrid.DataSource = null;
                 this.m_region.ClearFilter();
                 this.m_region.CandidateNumber = m_Candidate.CandidateNumber.Value;
-                this.m_region.DoSearch(-1);
+                this.m_region.DoSearch(-1, true);
             }
             else
             {
-                m_context.SaveChanges();
+                try
+                {
+                    CandidatesServiceHelper.Update(m_Candidate);
+                }
+                catch (HttpRequestException)
+                {
+                    LoginForm form = new LoginForm();
+                    form.ShowDialog(this);
+
+                    if (CandidatesServiceHelper.IsLoggedIn)
+                    {
+                        CandidatesServiceHelper.Update(m_Candidate);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
 
             }
 
+
+
             if (m_mailItem != null)
             {
-                m_mailItem.Categories =string.Concat ( !string.IsNullOrEmpty(m_mailItem.Categories) ? m_mailItem.Categories : string.Empty,  "< < < <  iTest Candidate Number : " + m_Candidate.CandidateNumber.Value + " Import Date : " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "   > > > > ");
+                m_mailItem.Categories = string.Concat(!string.IsNullOrEmpty(m_mailItem.Categories) ? m_mailItem.Categories : string.Empty, "< < < <  iTest Candidate Number : " + m_Candidate.CandidateNumber.Value + " Import Date : " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "   > > > > ");
                 m_mailItem.Save();
             }
 
@@ -233,7 +274,7 @@ namespace iTestOutlookAddIn
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.m_Candidate.IsNew)
+            if (m_isNew)
             {
                 File.Delete(m_Candidate.ResumePath);
             }
@@ -255,7 +296,7 @@ namespace iTestOutlookAddIn
 
         private void CandidateEditForm_Load(object sender, EventArgs e)
         {
-            button5.Enabled = !m_Candidate.IsNew;
+            button5.Enabled = !m_isNew;
         }
 
         private void AddNode(XmlNode inXmlNode, TreeNode inTreeNode)
@@ -289,7 +330,7 @@ namespace iTestOutlookAddIn
                     }
                 }
             }
-        } 
+        }
 
         private void tbFirstName_KeyUp(object sender, KeyEventArgs e)
         {
@@ -358,7 +399,7 @@ namespace iTestOutlookAddIn
 
         private void button4_Click(object sender, EventArgs e)
         {
-            MailItem mail = (MailItem) m_region.Application.CreateItem(OlItemType.olMailItem);
+            MailItem mail = (MailItem)m_region.Application.CreateItem(OlItemType.olMailItem);
             mail.BodyFormat = OlBodyFormat.olFormatHTML;
             mail.Subject = "Candidate " + m_Candidate.FirstName + " " + m_Candidate.LastName;
             mail.Body = "";
@@ -375,10 +416,31 @@ namespace iTestOutlookAddIn
         {
             if (MessageBox.Show("Are You sure to remove this candidate from Your database ?", "iTest", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
             {
-                m_context.DeleteObject(m_Candidate);
-                m_context.SaveChanges();
+                try
+                {
+                    //remove from service
+                    CandidatesServiceHelper.Delete(m_Candidate);
+                }
+                catch (HttpRequestException)
+                {
+                    LoginForm form = new LoginForm();
+                    form.ShowDialog(this);
+
+                    if (CandidatesServiceHelper.IsLoggedIn)
+                    {
+                        CandidatesServiceHelper.Delete(m_Candidate);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                //remove from list
+                m_region.Candidates.Remove(m_Candidate);
+                m_region.DataGrid.DataSource = m_region.Candidates;
+
                 this.Close();
-                //FileInfo fi = new FileInfo(m_Candidate.ResumePath)
             }
         }
     }

@@ -1,0 +1,14 @@
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\TesterConsole.exe.config
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\TesterConsole.exe
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\TesterConsole.pdb
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\Newtonsoft.Json.dll
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\System.Net.Http.dll
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\System.Net.Http.Formatting.dll
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\System.Net.Http.WebRequest.dll
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\Newtonsoft.Json.xml
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\System.Net.Http.xml
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\System.Net.Http.Formatting.xml
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Release\System.Net.Http.WebRequest.xml
+C:\Projects\iTestOutlookAddIn\TesterConsole\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Projects\iTestOutlookAddIn\TesterConsole\obj\x86\Release\TesterConsole.exe
+C:\Projects\iTestOutlookAddIn\TesterConsole\obj\x86\Release\TesterConsole.pdb

@@ -9,6 +9,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml.Linq;
 using System.ComponentModel;
+using iTest.Common;
 
 namespace iTestOutlookAddIn
 {
@@ -25,6 +26,24 @@ namespace iTestOutlookAddIn
             // Use e.OutlookItem to get a reference to the current Outlook item.
             private void MainRegionFactory_FormRegionInitializing(object sender, Microsoft.Office.Tools.Outlook.FormRegionInitializingEventArgs e)
             {
+                if (!CandidatesServiceHelper.IsLoggedIn && !CandidatesServiceHelper.CanceledLogin)
+                {
+                    LoginForm form = new LoginForm();
+                    form.ShowDialog();
+
+                    if (CandidatesServiceHelper.IsLoggedIn)
+                    {
+                        m_candidates = CandidatesServiceHelper.GetCandidates();
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
             }
         }
 
@@ -42,9 +61,9 @@ namespace iTestOutlookAddIn
 
             Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
 
-            if (mailItem != null)
+            if (mailItem != null && m_candidates != null)
             {
-                var row = m_context.Candidates.Where(p => p.MailEntryID == mailItem.EntryID).FirstOrDefault();
+                var row = m_candidates.Where(p => p.MailEntryID == mailItem.EntryID).FirstOrDefault();
 
                 if (row != null)
                 {
@@ -65,13 +84,25 @@ namespace iTestOutlookAddIn
 
         public DataGridView DataGrid
         {
+            set
+            {
+                dataGridView1 = value;
+            }
             get
             {
                 return dataGridView1;
             }
         }
 
-        private iTestDataEntities m_context = new iTestDataEntities();
+        public List<iTest.Common.Candidate> Candidates
+        {
+            get
+            {
+                return m_candidates;
+            }
+        }
+
+        private static List<iTest.Common.Candidate> m_candidates;
         private bool m_ignoreCheckedEvent = false;
 
         // Occurs when the form region is closed.
@@ -103,9 +134,9 @@ namespace iTestOutlookAddIn
 
             Guid guid = Guid.NewGuid();
 
-            if (m_context.Candidates.Count() > 0)
+            if (m_candidates.Count() > 0)
             {
-                var max = (from p in m_context.Candidates
+                var max = (from p in m_candidates
                            where p.CandidateNumber != null
                            select (p.CandidateNumber)).Max();
 
@@ -195,13 +226,12 @@ namespace iTestOutlookAddIn
                         newCandidate.RegistrationDate = mailItem.SentOn;
                         newCandidate.MailEntryID = mailItem.EntryID;
                         newCandidate.CandidateID = guid;
-                        newCandidate.IsNew = true;
                         newCandidate.ResumePath = tempFile.FullName;
                         newCandidate.EMailAddress = mailItem.SenderEmailAddress;
                         newCandidate.FirstName = mailItem.SenderName;
                         newCandidate.Status = "Classification";
 
-                        CandidateEditForm form = new CandidateEditForm(m_context, this, newCandidate, mailItem);
+                        CandidateEditForm form = new CandidateEditForm(true, this, newCandidate, mailItem);
                         form.Show(this);
                     }
                     else
@@ -222,7 +252,7 @@ namespace iTestOutlookAddIn
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 Candidate item = dataGridView1.SelectedRows[0].DataBoundItem as Candidate;
-                CandidateEditForm form = new CandidateEditForm(m_context, this, item);
+                CandidateEditForm form = new CandidateEditForm( this, item);
                 form.Show(this);
             }
         }
@@ -232,7 +262,17 @@ namespace iTestOutlookAddIn
 
         public void DoSearch(int columnIndex)
         {
-            var loc = (from l in m_context.Candidates select l);
+            DoSearch(columnIndex, false);
+        }
+
+        public void DoSearch(int columnIndex, bool reload)
+        {
+            if (reload)
+            {
+                m_candidates = CandidatesServiceHelper.GetCandidates();
+            }
+
+            var loc = (from l in m_candidates select l);
 
             if (!string.IsNullOrEmpty(tbName.Text))
             {
@@ -344,8 +384,7 @@ namespace iTestOutlookAddIn
             }
 
 
-            this.dataGridView1.DataSource = loc;
-
+            this.dataGridView1.DataSource = new List<Candidate>( loc);
             if (loc.Count() > 0)
             {
                 this.dataGridView1.Columns[0].Visible = false;
