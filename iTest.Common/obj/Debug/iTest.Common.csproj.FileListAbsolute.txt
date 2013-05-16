@@ -1,0 +1,5 @@
+C:\Projects\iTestOutlookAddIn\iTest.Common\bin\Debug\iTest.Common.dll
+C:\Projects\iTestOutlookAddIn\iTest.Common\bin\Debug\iTest.Common.pdb
+C:\Projects\iTestOutlookAddIn\iTest.Common\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\iTestOutlookAddIn\iTest.Common\obj\Debug\iTest.Common.dll
+C:\Projects\iTestOutlookAddIn\iTest.Common\obj\Debug\iTest.Common.pdb

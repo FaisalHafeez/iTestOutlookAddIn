@@ -21,41 +21,6 @@ namespace iTestOutlookAddIn
     {
         public static string AppPath = @"C:\iTest Resumes\";
 
-        public static TreeNode[] Companies
-        {
-            get
-            {
-                var doc = XDocument.Load(Settings.AppPath + "XML\\companies.xml");
-                var elements = doc.Root.Elements();
-                List<TreeNode> x = new List<TreeNode>();
-
-                foreach (XElement root in elements)
-                {
-                    x.AddRange(GetNodes(new TreeNode((string)root.Attribute("title")), root));
-                }
-
-                return x.ToArray();
-            }
-        }
-
-        public static TreeNode[] Areas
-        {
-            get
-            {
-                var doc = XDocument.Load(Settings.AppPath + "XML\\areas.xml");
-                var elements = doc.Root.Elements();
-                List<TreeNode> x = new List<TreeNode>();
-
-                foreach (XElement root in elements)
-                {
-                    x.AddRange(GetNodes(new TreeNode((string)root.Attribute("title")), root));
-                }
-
-                return x.ToArray();
-            }
-        }
-
-
         private static IEnumerable<TreeNode> GetNodes(TreeNode node, XElement element)
         {
             return element.HasElements ?
@@ -71,24 +36,6 @@ namespace iTestOutlookAddIn
                 new[] { node };
         }
 
-
-        public static string[] Statuses
-        {
-            get
-            {
-                var doc = XDocument.Load(Settings.AppPath + "XML\\statuses.xml");
-                return doc.Root.Elements().Select(p => (string)p.Attribute("title")).ToArray();
-            }
-        }
-
-        public static string[] Roles
-        {
-            get
-            {
-                var doc = XDocument.Load(Settings.AppPath + "XML\\roles.xml");
-                return doc.Root.Elements().Select(p => (string)p.Attribute("title")).ToArray();
-            }
-        }
     }
     
 }

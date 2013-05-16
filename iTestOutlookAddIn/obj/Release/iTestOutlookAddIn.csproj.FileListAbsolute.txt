@@ -26,3 +26,10 @@ C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.xml
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.Formatting.xml
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\System.Net.Http.WebRequest.xml
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.LoginForm.resources
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.ReadingResumeForm.resources
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.CVRepoRibbon.resources
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.ManageAreasForm.resources
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.ManageCompaniesForm.resources
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.ManageRolesForm.resources
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Release\itextsharp.dll
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Release\iTestOutlookAddIn.ManageStatusesForm.resources

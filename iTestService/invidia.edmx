@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="invidiadbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="invidiadbModelStoreContainer">
+          <EntitySet Name="Areas" EntityType="invidiadbModel.Store.Areas" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CandidateRoles" EntityType="invidiadbModel.Store.CandidateRoles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Candidates" EntityType="invidiadbModel.Store.Candidates" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Companies" EntityType="invidiadbModel.Store.Companies" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ResumeContents" EntityType="invidiadbModel.Store.ResumeContents" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Resumes" EntityType="invidiadbModel.Store.Resumes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Statuses" EntityType="invidiadbModel.Store.Statuses" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_ResumeContents_Resumes" Association="invidiadbModel.Store.FK_ResumeContents_Resumes">
+            <End Role="Resumes" EntitySet="Resumes" />
+            <End Role="ResumeContents" EntitySet="ResumeContents" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Areas">
+          <Key>
+            <PropertyRef Name="AreasId" />
+          </Key>
+          <Property Name="AreasId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Xml" Type="nvarchar" Nullable="false" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="CandidateRoles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Xml" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="Candidates">
+          <Key>
+            <PropertyRef Name="CandidateID" />
+          </Key>
+          <Property Name="CandidateID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="RegistrationDate" Type="datetime" />
+          <Property Name="MailEntryID" Type="nvarchar" MaxLength="500" />
+          <Property Name="CandidateNumber" Type="int" />
+          <Property Name="IdentityNumber" Type="nvarchar" MaxLength="9" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="Events" Type="nvarchar" />
+          <Property Name="ResumePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="Experience" Type="smallint" />
+          <Property Name="Areas" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Roles" Type="nvarchar" MaxLength="200" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="100" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMailAddress" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Status" Type="nvarchar" MaxLength="100" />
+          <Property Name="SentToCompanies" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Former8200" Type="bit" />
+          <Property Name="Reference" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="CompaniesID" />
+          </Key>
+          <Property Name="CompaniesID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Xml" Type="nvarchar" Nullable="false" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="ResumeContents">
+          <Key>
+            <PropertyRef Name="ResumeID" />
+          </Key>
+          <Property Name="ResumeID" Type="int" Nullable="false" />
+          <Property Name="FileContent" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resumes">
+          <Key>
+            <PropertyRef Name="ResumeID" />
+          </Key>
+          <Property Name="ResumeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CandidateID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="FileName" Type="nvarchar" Nullable="false" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Statuses">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Xml" Type="nvarchar" Nullable="false" MaxLength="2000" />
+        </EntityType>
+        <Association Name="FK_ResumeContents_Resumes">
+          <End Role="Resumes" Type="invidiadbModel.Store.Resumes" Multiplicity="1" />
+          <End Role="ResumeContents" Type="invidiadbModel.Store.ResumeContents" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Resumes">
+              <PropertyRef Name="ResumeID" />
+            </Principal>
+            <Dependent Role="ResumeContents">
+              <PropertyRef Name="ResumeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="invidiadbModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="invidiadbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Candidates" EntityType="invidiadbModel.Candidate" />
+          <EntitySet Name="Areas" EntityType="invidiadbModel.Area" />
+          <EntitySet Name="Companies" EntityType="invidiadbModel.Company" />
+          <EntitySet Name="CandidateRoles" EntityType="invidiadbModel.CandidateRole" />
+          <EntitySet Name="Statuses" EntityType="invidiadbModel.Status" />
+          <EntitySet Name="ResumeContents" EntityType="invidiadbModel.ResumeContent" />
+          <EntitySet Name="Resumes" EntityType="invidiadbModel.Resume" />
+          <AssociationSet Name="FK_ResumeContents_Resumes" Association="invidiadbModel.FK_ResumeContents_Resumes">
+            <End Role="Resume" EntitySet="Resumes" />
+            <End Role="ResumeContent" EntitySet="ResumeContents" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Candidate">
+          <Key>
+            <PropertyRef Name="CandidateID" />
+          </Key>
+          <Property Name="CandidateID" Type="Guid" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="RegistrationDate" Type="DateTime" />
+          <Property Name="MailEntryID" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="CandidateNumber" Type="Int32" />
+          <Property Name="IdentityNumber" Type="String" MaxLength="9" Unicode="true" FixedLength="false" />
+          <Property Name="FirstName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="DateOfBirth" Type="DateTime" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Events" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" />
+          <Property Name="ResumePath" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Experience" Type="Int16" />
+          <Property Name="Areas" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="Roles" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Phone" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Mobile" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="EMailAddress" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="Status" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="SentToCompanies" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="Former8200" Type="Boolean" />
+          <Property Name="Reference" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="AreasId" />
+          </Key>
+          <Property Type="Int32" Name="AreasId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Xml" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompaniesID" />
+          </Key>
+          <Property Type="Int32" Name="CompaniesID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Xml" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CandidateRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Int32" Name="RoleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Username" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Xml" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Type="Int32" Name="StatusId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Xml" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ResumeContent">
+          <Key>
+            <PropertyRef Name="ResumeID" />
+          </Key>
+          <Property Type="Int32" Name="ResumeID" Nullable="false" />
+          <Property Type="Binary" Name="FileContent" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Resume" Relationship="invidiadbModel.FK_ResumeContents_Resumes" FromRole="ResumeContent" ToRole="Resume" />
+        </EntityType>
+        <EntityType Name="Resume">
+          <Key>
+            <PropertyRef Name="ResumeID" />
+          </Key>
+          <Property Type="Int32" Name="ResumeID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="CandidateID" Nullable="false" />
+          <Property Type="String" Name="Description" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FileName" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ResumeContent" Relationship="invidiadbModel.FK_ResumeContents_Resumes" FromRole="Resume" ToRole="ResumeContent" />
+        </EntityType>
+        <Association Name="FK_ResumeContents_Resumes">
+          <End Type="invidiadbModel.Resume" Role="Resume" Multiplicity="1" />
+          <End Type="invidiadbModel.ResumeContent" Role="ResumeContent" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Resume">
+              <PropertyRef Name="ResumeID" />
+            </Principal>
+            <Dependent Role="ResumeContent">
+              <PropertyRef Name="ResumeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="invidiadbModelStoreContainer" CdmEntityContainer="invidiadbEntities">
+          <EntitySetMapping Name="Candidates"><EntityTypeMapping TypeName="invidiadbModel.Candidate"><MappingFragment StoreEntitySet="Candidates">
+            <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+            <ScalarProperty Name="Username" ColumnName="Username" />
+            <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+            <ScalarProperty Name="MailEntryID" ColumnName="MailEntryID" />
+            <ScalarProperty Name="CandidateNumber" ColumnName="CandidateNumber" />
+            <ScalarProperty Name="IdentityNumber" ColumnName="IdentityNumber" />
+            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+            <ScalarProperty Name="LastName" ColumnName="LastName" />
+            <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+            <ScalarProperty Name="Events" ColumnName="Events" />
+            <ScalarProperty Name="ResumePath" ColumnName="ResumePath" />
+            <ScalarProperty Name="Experience" ColumnName="Experience" />
+            <ScalarProperty Name="Areas" ColumnName="Areas" />
+            <ScalarProperty Name="Roles" ColumnName="Roles" />
+            <ScalarProperty Name="Phone" ColumnName="Phone" />
+            <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+            <ScalarProperty Name="EMailAddress" ColumnName="EMailAddress" />
+            <ScalarProperty Name="Status" ColumnName="Status" />
+            <ScalarProperty Name="SentToCompanies" ColumnName="SentToCompanies" />
+            <ScalarProperty Name="Former8200" ColumnName="Former8200" />
+            <ScalarProperty Name="Reference" ColumnName="Reference" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Areas">
+            <EntityTypeMapping TypeName="invidiadbModel.Area">
+              <MappingFragment StoreEntitySet="Areas">
+                <ScalarProperty Name="Xml" ColumnName="Xml" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="AreasId" ColumnName="AreasId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="invidiadbModel.Company">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="Xml" ColumnName="Xml" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="CompaniesID" ColumnName="CompaniesID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CandidateRoles">
+            <EntityTypeMapping TypeName="invidiadbModel.CandidateRole">
+              <MappingFragment StoreEntitySet="CandidateRoles">
+                <ScalarProperty Name="Xml" ColumnName="Xml" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Statuses">
+            <EntityTypeMapping TypeName="invidiadbModel.Status">
+              <MappingFragment StoreEntitySet="Statuses">
+                <ScalarProperty Name="Xml" ColumnName="Xml" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResumeContents">
+            <EntityTypeMapping TypeName="invidiadbModel.ResumeContent">
+              <MappingFragment StoreEntitySet="ResumeContents">
+                <ScalarProperty Name="FileContent" ColumnName="FileContent" />
+                <ScalarProperty Name="ResumeID" ColumnName="ResumeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resumes">
+            <EntityTypeMapping TypeName="invidiadbModel.Resume">
+              <MappingFragment StoreEntitySet="Resumes">
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+                <ScalarProperty Name="ResumeID" ColumnName="ResumeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="invidia" ZoomLevel="91">
+        <EntityTypeShape EntityType="invidiadbModel.Candidate" Width="1.5" PointX="0.75" PointY="0.75" Height="5.2494108072916656" IsExpanded="true" />
+        <EntityTypeShape EntityType="invidiadbModel.Area" Width="1.5" PointX="2.5" PointY="1.625" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="invidiadbModel.Company" Width="1.5" PointX="2.5" PointY="3.5" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="invidiadbModel.CandidateRole" Width="1.5" PointX="4.375" PointY="1.75" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="invidiadbModel.Status" Width="1.5" PointX="4.375" PointY="3.625" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="invidiadbModel.ResumeContent" Width="1.5" PointX="8.625" PointY="1.125" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="invidiadbModel.Resume" Width="1.5" PointX="6.375" PointY="0.875" Height="1.9802864583333317" />
+        <AssociationConnector Association="invidiadbModel.FK_ResumeContents_Resumes" >
+          <ConnectorPoint PointX="7.875" PointY="1.9228417968749998" />
+          <ConnectorPoint PointX="8.625" PointY="1.9228417968749998" />
+        </AssociationConnector>
+        </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

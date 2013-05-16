@@ -18,7 +18,7 @@ namespace iTestService.Controllers
         /// <returns></returns>
         public bool Post(LogOnModel model)
         {
-            if (model.Username == "itest" && model.Password == "ilana")
+            if (Membership.ValidateUser(model.Username, model.Password))
             {
                 FormsAuthentication.SetAuthCookie(model.Username, false);
                 return true;

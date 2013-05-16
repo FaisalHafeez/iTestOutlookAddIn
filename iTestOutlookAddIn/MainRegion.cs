@@ -11,6 +11,8 @@ using System.Xml.Linq;
 using System.ComponentModel;
 using iTest.Common;
 using System.Net.Http;
+using iTestOutlookAddIn.ExtensionMethods;
+using System.Threading;
 
 namespace iTestOutlookAddIn
 {
@@ -27,49 +29,71 @@ namespace iTestOutlookAddIn
             // Use e.OutlookItem to get a reference to the current Outlook item.
             private void MainRegionFactory_FormRegionInitializing(object sender, Microsoft.Office.Tools.Outlook.FormRegionInitializingEventArgs e)
             {
-                if (!CandidatesServiceHelper.IsLoggedIn && !CandidatesServiceHelper.CanceledLogin)
+                if (!ServiceHelper.IsLoggedIn && !ServiceHelper.CanceledLogin)
                 {
                     LoginForm form = new LoginForm();
                     form.ShowDialog();
 
-                    if (CandidatesServiceHelper.IsLoggedIn)
-                    {
-                        m_candidates = CandidatesServiceHelper.GetCandidates();
-                    }
-                    else
+                    if (!ServiceHelper.IsLoggedIn)
                     {
                         e.Cancel = true;
                     }
                 }
-                else if (CandidatesServiceHelper.CanceledLogin)
+                else if (ServiceHelper.CanceledLogin)
                 {
                     e.Cancel = true;
                 }
             }
+
         }
 
         #endregion
+
+        public void RefreshRoles()
+        {
+            cbRole.Items.Clear();//.Nodes.Clear();
+            cbRole.Items.AddRange(m_roles);
+        }
+
+        public void RefreshStatuses()
+        {
+            cbStatus.Items.Clear();//.Nodes.Clear();
+            cbStatus.Items.AddRange(m_statuses);
+        }
+
+        public void RefreshAreas()
+        {
+            tvAreas.Nodes.Clear();
+            tvAreas.Nodes.AddRange(m_areas.CloneNodes());
+        }
 
         // Occurs before the form region is displayed.
         // Use this.OutlookItem to get a reference to the current Outlook item.
         // Use this.OutlookFormRegion to get a reference to the form region.
         private void MainRegion_FormRegionShowing(object sender, System.EventArgs e)
         {
-            //DoSearch(-1);
-            tvAreas.Nodes.AddRange(Settings.Areas);
-            cbStatus.Items.AddRange(Settings.Statuses);
-            cbRole.Items.AddRange(Settings.Roles);
-
-            Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
-
-            if (mailItem != null && m_candidates != null)
+            if (m_areas == null)
             {
-                var row = m_candidates.Where(p => p.MailEntryID == mailItem.EntryID).FirstOrDefault();
+                panelWait.Visible = true;
+                retrieveWorker.RunWorkerAsync();
+            }
+            else
+            {
+                RefreshAreas();
+                RefreshRoles();
+                RefreshStatuses();
 
-                if (row != null)
+                Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
+
+                if (mailItem != null && m_candidates != null)
                 {
-                    tbNumber.Text = row.CandidateNumber.Value.ToString();
-                    DoSearch(-1);
+                    var row = m_candidates.Where(p => p.MailEntryID == mailItem.EntryID).FirstOrDefault();
+
+                    if (row != null)
+                    {
+                        tbNumber.Text = row.CandidateNumber.Value.ToString();
+                        DoSearch(-1);
+                    }
                 }
             }
 
@@ -103,7 +127,62 @@ namespace iTestOutlookAddIn
             }
         }
 
+        public TreeNode[] Areas
+        {
+            get
+            {
+                return m_areas;
+            }
+            set
+            {
+                m_areas = value;
+            }
+        }
+
+        public string[] Roles
+        {
+            get
+            {
+                return m_roles;
+            }
+            set
+            {
+                m_roles = value;
+            }
+        }
+
+        public string[] Statuses
+        {
+            get
+            {
+                return m_statuses;
+            }
+            set
+            {
+                m_statuses = value;
+            }
+        }
+
+        public TreeNode[] Companies
+        {
+            get
+            {
+                return m_companies;
+            }
+            set
+            {
+                m_companies = value;
+            }
+        }
+
+        //private static UserData m_userData;
+        //private static bool m_initalLoad = false;
         private static List<iTest.Common.Candidate> m_candidates;
+        private static TreeNode[] m_areas;
+        private static string[] m_roles;
+        private static string[] m_statuses;
+        private static TreeNode[] m_companies;
+
         private bool m_ignoreCheckedEvent = false;
 
         // Occurs when the form region is closed.
@@ -229,7 +308,19 @@ namespace iTestOutlookAddIn
                         newCandidate.CandidateID = guid;
                         newCandidate.ResumePath = tempFile.FullName;
                         newCandidate.EMailAddress = mailItem.SenderEmailAddress;
-                        newCandidate.FirstName = mailItem.SenderName;
+
+                        string[] senderarr = mailItem.SenderName.Split(' ');
+
+                        if (senderarr.Length > 1)
+                        {
+                            newCandidate.FirstName = senderarr[0];
+                            newCandidate.LastName = senderarr.Skip(1).Aggregate((i, j) => i + " " + j);
+                        }
+                        else
+                        {
+                            newCandidate.FirstName = senderarr[0];
+                        }
+
                         newCandidate.Status = "Classification";
 
                         CandidateEditForm form = new CandidateEditForm(true, this, newCandidate, mailItem);
@@ -266,31 +357,125 @@ namespace iTestOutlookAddIn
             DoSearch(columnIndex, false);
         }
 
+        // This event handler is where the time-consuming work is done. 
+        private void retrieveWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            e.Result = ServiceHelper.GetUserData();
+        }
+
+        // This event handler deals with the results of the background operation. 
+        private void retrieveWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //panelWait.Visible = false;
+
+            if (e.Cancelled == true)
+            {
+
+            }
+            else if (e.Error != null)
+            {
+                MessageBox.Show("Login failed, please try again\n\nError:" + e.Error.Message, "iTest");
+            }
+            else
+            {
+                m_candidates = new List<Candidate>(((UserData)e.Result).candidates);
+
+                //parse areas
+                var docAreas = XDocument.Parse(((UserData)e.Result).areas);
+                var elementsAreas = docAreas.Root.Elements();
+                List<TreeNode> xAreas = new List<TreeNode>();
+
+                foreach (XElement root in elementsAreas)
+                {
+                    xAreas.AddRange(GetNodes(new TreeNode((string)root.Attribute("title")), root));
+                }
+
+                m_areas = xAreas.ToArray();
+
+                //parse companies
+                var docCompanies = XDocument.Parse(((UserData)e.Result).companies);
+                var elementsCompanies = docCompanies.Root.Elements();
+                List<TreeNode> xCompany = new List<TreeNode>();
+
+                foreach (XElement root in elementsCompanies)
+                {
+                    xCompany.AddRange(GetNodes(new TreeNode((string)root.Attribute("title")), root));
+                }
+
+                m_companies = xCompany.ToArray();
+
+
+                //parse roles
+                var docRoles = XDocument.Parse(((UserData)e.Result).roles);
+                var elementsRoles = docRoles.Root.Elements();
+                List<string> xRole = new List<string>();
+
+                foreach (XElement root in elementsRoles)
+                {
+                    xRole.Add((string)root.Attribute("title"));
+                }
+
+                m_roles = xRole.ToArray();
+
+
+                //parse statuses
+                var docStatuses = XDocument.Parse(((UserData)e.Result).statuses);
+                var elementsStatuses = docStatuses.Root.Elements();
+                List<string> xStatus = new List<string>();
+
+                foreach (XElement root in elementsStatuses)
+                {
+                    xStatus.Add((string)root.Attribute("title"));
+                }
+
+                m_statuses = xStatus.ToArray();
+
+                RefreshAreas();
+                RefreshRoles();
+                RefreshStatuses();
+
+                panelWait.BeginInvoke((MethodInvoker)delegate
+                    {
+
+                        panelWait.Visible = false;
+                    });
+            }
+        }
+
+
+        private static IEnumerable<TreeNode> GetNodes(TreeNode node, XElement element)
+        {
+            return element.HasElements ?
+                node.AddRange(
+                                from item in element.Elements()
+                                let tree = new TreeNode((string)item.Attribute("title"))
+                                from newNode
+                                in GetNodes(tree, item)
+                                where item.HasAttributes
+                                select newNode
+                              )
+                              :
+                new[] { node };
+        }
+
+
         public void DoSearch(int columnIndex, bool reload)
         {
             if (reload)
             {
-                try
+                if (retrieveWorker.IsBusy != true)
                 {
-                    m_candidates = CandidatesServiceHelper.GetCandidates();
+                    panelWait.Visible = true;
+                    retrieveWorker.RunWorkerAsync();
                 }
-                catch (HttpRequestException)
-                {
-                    LoginForm form = new LoginForm();
-                    form.ShowDialog(this);
-
-                    if (CandidatesServiceHelper.IsLoggedIn)
-                    {
-                        m_candidates = CandidatesServiceHelper.GetCandidates();
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-
+                return;
             }
 
+            FilterCandidates(columnIndex);
+        }
+
+        private void FilterCandidates(int columnIndex)
+        {
             var loc = (from l in m_candidates select l);
 
             if (!string.IsNullOrEmpty(tbName.Text))
@@ -414,6 +599,8 @@ namespace iTestOutlookAddIn
                 this.dataGridView1.Columns[8].Visible = false;
                 this.dataGridView1.Columns[12].Visible = false;
             }
+
+            panelWait.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)

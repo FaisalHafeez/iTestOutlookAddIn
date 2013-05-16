@@ -4,9 +4,13 @@ using System.Linq;
 
 namespace iTest.Common
 {
-    public class CandidateCollection
+    public class UserData
     {
-        public IEnumerable<iTest.Common.Candidate> data { get; set; }
+        public IEnumerable<iTest.Common.Candidate> candidates { get; set; }
+        public string areas { get; set; }
+        public string companies { get; set; }
+        public string roles { get; set; }
+        public string statuses { get; set; }
     }
 
     public class Candidate
@@ -15,6 +19,8 @@ namespace iTest.Common
         /// No Metadata Documentation available.
         /// </summary>
         public Guid CandidateID { get; set; }
+        public Nullable<Int32> CandidateNumber { get; set; }
+        public string Username { get; set; }
         public Nullable<DateTime> RegistrationDate { get; set; }
         public String IdentityNumber { get; set; }
         public String FirstName { get; set; }
@@ -32,7 +38,6 @@ namespace iTest.Common
         public String Status { get; set; }
         public String SentToCompanies { get; set; }
         public Nullable<Boolean> Former8200 { get; set; }
-        public Nullable<Int32> CandidateNumber { get; set; }
         public String MailEntryID { get; set; }
         public String Reference { get; set; }
     }

@@ -35,6 +35,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainRegion));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -55,6 +56,10 @@
             this.tbNumber = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.panelWait = new System.Windows.Forms.Panel();
+            this.label26 = new System.Windows.Forms.Label();
+            this.ajaxLoading = new System.Windows.Forms.PictureBox();
+            this.retrieveWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -62,6 +67,8 @@
             this.splitContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panelWait.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -220,6 +227,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.panelWait);
             this.panel1.Controls.Add(this.cbStatus);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.tbNumber);
@@ -278,6 +286,41 @@
             this.timer1.Interval = 600000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // panelWait
+            // 
+            this.panelWait.Controls.Add(this.label26);
+            this.panelWait.Controls.Add(this.ajaxLoading);
+            this.panelWait.Location = new System.Drawing.Point(541, 29);
+            this.panelWait.Name = "panelWait";
+            this.panelWait.Size = new System.Drawing.Size(134, 24);
+            this.panelWait.TabIndex = 52;
+            this.panelWait.Visible = false;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(27, 6);
+            this.label26.Margin = new System.Windows.Forms.Padding(5, 7, 3, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(69, 13);
+            this.label26.TabIndex = 23;
+            this.label26.Text = "please wait...";
+            // 
+            // ajaxLoading
+            // 
+            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
+            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
+            this.ajaxLoading.Name = "ajaxLoading";
+            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
+            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.ajaxLoading.TabIndex = 22;
+            this.ajaxLoading.TabStop = false;
+            // 
+            // retrieveWorker
+            // 
+            this.retrieveWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.retrieveWorker_DoWork);
+            this.retrieveWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.retrieveWorker_RunWorkerCompleted);
+            // 
             // MainRegion
             // 
             this.AllowDrop = true;
@@ -296,6 +339,9 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panelWait.ResumeLayout(false);
+            this.panelWait.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -339,6 +385,10 @@
         private System.Windows.Forms.ComboBox cbStatus;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Panel panelWait;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.PictureBox ajaxLoading;
+        private System.ComponentModel.BackgroundWorker retrieveWorker;
 
         public partial class MainRegionFactory : Microsoft.Office.Tools.Outlook.IFormRegionFactory
         {

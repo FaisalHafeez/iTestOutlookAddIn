@@ -148,6 +148,12 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="itextsharp">
+      <HintPath>..\..\..\Users\Administrator\Desktop\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -214,17 +220,43 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="CandidateEditForm.cs">
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Forms\CandidateEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CandidateEditForm.Designer.cs">
+    <Compile Include="Forms\CandidateEditForm.Designer.cs">
       <DependentUpon>CandidateEditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CandidatesServiceHelper.cs" />
-    <Compile Include="LoginForm.cs">
+    <Compile Include="Forms\ManageStatusesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForm.Designer.cs">
+    <Compile Include="Forms\ManageStatusesForm.Designer.cs">
+      <DependentUpon>ManageStatusesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ManageRolesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManageRolesForm.Designer.cs">
+      <DependentUpon>ManageRolesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ManageCompaniesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManageCompaniesForm.Designer.cs">
+      <DependentUpon>ManageCompaniesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\PDFParser.cs" />
+    <Compile Include="ServiceHelper.cs" />
+    <Compile Include="CVRepoRibbon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CVRepoRibbon.Designer.cs">
+      <DependentUpon>CVRepoRibbon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainRegion.cs">
@@ -233,14 +265,35 @@
     <Compile Include="MainRegion.Designer.cs">
       <DependentUpon>MainRegion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ManageAreasForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManageAreasForm.Designer.cs">
+      <DependentUpon>ManageAreasForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="CandidateEditForm.resx">
+    <EmbeddedResource Include="Forms\CandidateEditForm.resx">
       <DependentUpon>CandidateEditForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoginForm.resx">
+    <EmbeddedResource Include="CVRepoRibbon.resx">
+      <DependentUpon>CVRepoRibbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManageStatusesForm.resx">
+      <DependentUpon>ManageStatusesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManageRolesForm.resx">
+      <DependentUpon>ManageRolesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManageCompaniesForm.resx">
+      <DependentUpon>ManageCompaniesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManageAreasForm.resx">
+      <DependentUpon>ManageAreasForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainRegion.resx">
       <DependentUpon>MainRegion.cs</DependentUpon>
@@ -254,6 +307,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\ReadingResumeForm.resx">
+      <DependentUpon>ReadingResumeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.Config" />
     <None Include="iTestOutlookAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
@@ -265,6 +321,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Forms\ReadingResumeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReadingResumeForm.Designer.cs">
+      <DependentUpon>ReadingResumeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="ThisAddIn.cs">

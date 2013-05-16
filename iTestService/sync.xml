@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sync format-version="2.1">
+  <section>
+    <start text-line="3" text-column="1"/>
+    <end text-line="5" text-column="22"/>
+    <paragraph>
+      <start text-line="3" text-column="1"/>
+      <end text-line="4" text-column="31"/>
+      <entries>
+        <entry audio-start-time="00:05:11,34" audio-duration="00:02:12,00">
+          <start text-line="3" text-column="1"/>
+          <end text-line="3" text-column="4"/>
+          <content>
+            <![CDATA[HELLO]]>
+          </content>
+        </entry>
+        <entry audio-start-time="00:09:11,34" audio-duration="00:03:00,00">
+          <start text-line="3" text-column="6"/>
+          <end text-line="3" text-column="10"/>
+          <content>
+            <![CDATA[WORLD]]>
+          </content>
+        </entry>
+      </entries>
+
+    </paragraph>
+  </section>
+</sync>

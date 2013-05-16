@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<areas>
+  <area title="Security"></area>
+  <area title="Management"></area>
+  <area title="Hardware"></area>
+  <area title="QA">
+    <area title="Automation"></area>
+    <area title="Manual"></area>
+    <area title="Mobile"></area>
+    <area title="Security"></area>
+    <area title="Finance"></area>
+  </area>
+  <area title="Developing"></area>
+  <area title="Algorithem"></area>
+  <area title="Embedded"></area>
+  <area title="Electricity Engeneering"></area>
+  <area title="Industrial Management"></area>
+  <area title="Support"></area>
+  <area title="Media"></area>
+</areas> 

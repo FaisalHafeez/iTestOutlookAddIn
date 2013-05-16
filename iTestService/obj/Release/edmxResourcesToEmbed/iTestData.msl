@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Candidates">
       <EntityTypeMapping TypeName="iTestDataModel.Candidate">
         <MappingFragment StoreEntitySet="Candidates">
+          <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
           <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
           <ScalarProperty Name="IdentityNumber" ColumnName="IdentityNumber" />
@@ -25,6 +26,16 @@
           <ScalarProperty Name="CandidateNumber" ColumnName="CandidateNumber" />
           <ScalarProperty Name="MailEntryID" ColumnName="MailEntryID" />
           <ScalarProperty Name="Reference" ColumnName="Reference" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Resumes">
+      <EntityTypeMapping TypeName="iTestDataModel.Resume">
+        <MappingFragment StoreEntitySet="Resume">
+          <ScalarProperty Name="FileContent" ColumnName="FileContent" />
+          <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="ResumeID" ColumnName="ResumeID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
