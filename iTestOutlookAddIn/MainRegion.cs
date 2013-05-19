@@ -9,7 +9,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml.Linq;
 using System.ComponentModel;
-using iTest.Common;
+using HunterCV.Common;
 using System.Net.Http;
 using iTestOutlookAddIn.ExtensionMethods;
 using System.Threading;
@@ -51,20 +51,30 @@ namespace iTestOutlookAddIn
 
         public void RefreshRoles()
         {
-            cbRole.Items.Clear();//.Nodes.Clear();
-            cbRole.Items.AddRange(m_roles);
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbRole, cb =>
+            {
+                cb.Items.Clear();
+                cb.Items.AddRange(m_roles);
+            });
         }
 
-        public void RefreshStatuses()
+        public void RefreshCandidatesStatuses()
         {
-            cbStatus.Items.Clear();//.Nodes.Clear();
-            cbStatus.Items.AddRange(m_statuses);
+
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbStatus, cb =>
+            {
+                cb.Items.Clear();
+                cb.Items.AddRange(m_candidatesStatuses);
+            });
         }
 
         public void RefreshAreas()
         {
-            tvAreas.Nodes.Clear();
-            tvAreas.Nodes.AddRange(m_areas.CloneNodes());
+            CrossThreadUtility.InvokeControlAction<TreeView>(tvAreas, tv =>
+            {
+                tv.Nodes.Clear();
+                tv.Nodes.AddRange(m_areas.CloneNodes());
+            });
         }
 
         // Occurs before the form region is displayed.
@@ -72,31 +82,7 @@ namespace iTestOutlookAddIn
         // Use this.OutlookFormRegion to get a reference to the form region.
         private void MainRegion_FormRegionShowing(object sender, System.EventArgs e)
         {
-            if (m_areas == null)
-            {
-                panelWait.Visible = true;
-                retrieveWorker.RunWorkerAsync();
-            }
-            else
-            {
-                RefreshAreas();
-                RefreshRoles();
-                RefreshStatuses();
-
-                Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
-
-                if (mailItem != null && m_candidates != null)
-                {
-                    var row = m_candidates.Where(p => p.MailEntryID == mailItem.EntryID).FirstOrDefault();
-
-                    if (row != null)
-                    {
-                        tbNumber.Text = row.CandidateNumber.Value.ToString();
-                        DoSearch(-1);
-                    }
-                }
-            }
-
+            showFormTimer.Enabled = true;
         }
 
         public Outlook.Application Application
@@ -119,11 +105,19 @@ namespace iTestOutlookAddIn
             }
         }
 
-        public List<iTest.Common.Candidate> Candidates
+        public BindingList<HunterCV.Common.Candidate> Candidates
         {
             get
             {
                 return m_candidates;
+            }
+        }
+
+        public BindingList<HunterCV.Common.Position> Positions
+        {
+            get
+            {
+                return m_positions;
             }
         }
 
@@ -151,15 +145,59 @@ namespace iTestOutlookAddIn
             }
         }
 
-        public string[] Statuses
+        public string[] CandidatesStatuses
         {
             get
             {
-                return m_statuses;
+                return m_candidatesStatuses;
             }
             set
             {
-                m_statuses = value;
+                m_candidatesStatuses = value;
+            }
+        }
+
+        public string[] PositionsStatuses
+        {
+            get
+            {
+                return m_positionsStatuses;
+            }
+            set
+            {
+                m_positionsStatuses = value;
+            }
+        }
+
+        public List<KeyValuePair<string,string>> Settings
+        {
+            get
+            {
+                return m_Settings;
+            }
+            set
+            {
+                m_Settings = value;
+            }
+        }
+
+        public List<MailTemplate> MailTemplates
+        {
+            get
+            {
+                return m_templates;
+            }
+            set
+            {
+                m_templates = value;
+            }
+        }
+
+        public Guid RoleId
+        {
+            get
+            {
+                return m_roleId;
             }
         }
 
@@ -175,13 +213,31 @@ namespace iTestOutlookAddIn
             }
         }
 
+        public BindingSource MainGridBindingSource
+        {
+            get
+            {
+                return m_mainGridBindingSource;
+            }
+            set
+            {
+                m_mainGridBindingSource = value;
+            }
+        }
+
         //private static UserData m_userData;
         //private static bool m_initalLoad = false;
-        private static List<iTest.Common.Candidate> m_candidates;
+        private static BindingList<HunterCV.Common.Candidate> m_candidates;
+        private static BindingList<HunterCV.Common.Position> m_positions;
+        private static List<MailTemplate> m_templates;
         private static TreeNode[] m_areas;
         private static string[] m_roles;
-        private static string[] m_statuses;
+        private static string[] m_candidatesStatuses;
+        private static string[] m_positionsStatuses;
         private static TreeNode[] m_companies;
+        private static Guid m_roleId;
+        private static BindingSource m_mainGridBindingSource = null;
+        private List<KeyValuePair<string, string>> m_Settings = null; 
 
         private bool m_ignoreCheckedEvent = false;
 
@@ -190,7 +246,7 @@ namespace iTestOutlookAddIn
         // Use this.OutlookFormRegion to get a reference to the form region.
         private void MainRegion_FormRegionClosed(object sender, System.EventArgs e)
         {
-            
+
         }
 
         private void dataGridView1_DragEnter(object sender, DragEventArgs e)
@@ -257,17 +313,18 @@ namespace iTestOutlookAddIn
                     for (int i = 76; fileGroupDescriptor[i] != 0; i++)
                     { fileName.Append(Convert.ToChar(fileGroupDescriptor[i])); }
                     theStream.Close();
-                    string path = Settings.AppPath;
+
+                    string tempPath = System.IO.Path.GetTempPath();
 
                     // put the zip file into the temp directory
-                    string theFile = path + number.ToString() + "." + fileName.ToString().Split('.').Last();
+                    string theFile = Path.Combine( tempPath , number.ToString() + "." + fileName.ToString().Split('.').Last() );
 
                     FileInfo fi = new FileInfo(theFile);
 
                     while (fi.Exists)
                     {
                         number++;
-                        theFile = path + number.ToString() + "." + fileName.ToString().Split('.').Last();
+                        theFile = Path.Combine( tempPath , number.ToString() + "." + fileName.ToString().Split('.').Last());
                         fi = new FileInfo(theFile);
                     }
 
@@ -302,6 +359,7 @@ namespace iTestOutlookAddIn
                     (this.OutlookItem as Outlook.MailItem);
 
                         Candidate newCandidate = new Candidate();
+                        newCandidate.Username = ServiceHelper.LastLogin.Username;
                         newCandidate.CandidateNumber = number;
                         newCandidate.RegistrationDate = mailItem.SentOn;
                         newCandidate.MailEntryID = mailItem.EntryID;
@@ -344,7 +402,7 @@ namespace iTestOutlookAddIn
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 Candidate item = dataGridView1.SelectedRows[0].DataBoundItem as Candidate;
-                CandidateEditForm form = new CandidateEditForm( this, item);
+                CandidateEditForm form = new CandidateEditForm(this, item);
                 form.Show(this);
             }
         }
@@ -374,11 +432,14 @@ namespace iTestOutlookAddIn
             }
             else if (e.Error != null)
             {
-                MessageBox.Show("Login failed, please try again\n\nError:" + e.Error.Message, "iTest");
+                MessageBox.Show("Login failed, please try again\n\nError:" + e.Error.Message, "HunterCV");
             }
             else
             {
-                m_candidates = new List<Candidate>(((UserData)e.Result).candidates);
+                m_roleId = ((UserData)e.Result).roleId;
+
+                m_candidates = new BindingList<Candidate>(((UserData)e.Result).candidates.ToList());
+                m_positions = new BindingList<Position>(((UserData)e.Result).positions.ToList());
 
                 //parse areas
                 var docAreas = XDocument.Parse(((UserData)e.Result).areas);
@@ -404,7 +465,6 @@ namespace iTestOutlookAddIn
 
                 m_companies = xCompany.ToArray();
 
-
                 //parse roles
                 var docRoles = XDocument.Parse(((UserData)e.Result).roles);
                 var elementsRoles = docRoles.Root.Elements();
@@ -418,29 +478,57 @@ namespace iTestOutlookAddIn
                 m_roles = xRole.ToArray();
 
 
-                //parse statuses
-                var docStatuses = XDocument.Parse(((UserData)e.Result).statuses);
-                var elementsStatuses = docStatuses.Root.Elements();
-                List<string> xStatus = new List<string>();
+                //parse candidates statuses
+                var docCandidatesStatuses = XDocument.Parse(((UserData)e.Result).candidatesStatuses);
+                var elementsCandidatesStatuses = docCandidatesStatuses.Root.Elements();
+                List<string> xCandidatesStatus = new List<string>();
 
-                foreach (XElement root in elementsStatuses)
+                foreach (XElement root in elementsCandidatesStatuses)
                 {
-                    xStatus.Add((string)root.Attribute("title"));
+                    xCandidatesStatus.Add((string)root.Attribute("title"));
                 }
 
-                m_statuses = xStatus.ToArray();
+                m_candidatesStatuses = xCandidatesStatus.ToArray();
+
+                //parse positions statuses
+                var docPositionsStatuses = XDocument.Parse(((UserData)e.Result).positionsStatuses);
+                var elementsPositionsStatuses = docPositionsStatuses.Root.Elements();
+                List<string> xPositionsStatus = new List<string>();
+
+                foreach (XElement root in elementsPositionsStatuses)
+                {
+                    xPositionsStatus.Add((string)root.Attribute("title"));
+                }
+
+                m_positionsStatuses = xPositionsStatus.ToArray();
+
+                //parse settings
+                var docSettings = XDocument.Parse(((UserData)e.Result).settings);
+                var elementsSettings = docSettings.Root.Elements();
+                m_Settings = new List<KeyValuePair<string,string>>();
+
+                foreach (XElement root in elementsSettings)
+                {
+                    m_Settings.Add(new KeyValuePair<string,string>((string)root.Attribute("title"),(string)root.Attribute("value")));
+                }
+
+                //parse mail templates
+                m_templates = new List<MailTemplate>(((UserData)e.Result).templates);
 
                 RefreshAreas();
                 RefreshRoles();
-                RefreshStatuses();
+                RefreshCandidatesStatuses();
+                DoSearch(-1, false);
 
-                panelWait.BeginInvoke((MethodInvoker)delegate
-                    {
+                CrossThreadUtility.InvokeControlAction<Panel>(panelWait, panel =>
+                {
+                    panel.Visible = false;
+                });
 
-                        panelWait.Visible = false;
-                    });
             }
         }
+
+        
 
 
         private static IEnumerable<TreeNode> GetNodes(TreeNode node, XElement element)
@@ -476,6 +564,11 @@ namespace iTestOutlookAddIn
 
         private void FilterCandidates(int columnIndex)
         {
+            if (m_candidates == null)
+            {
+                return;
+            }
+
             var loc = (from l in m_candidates select l);
 
             if (!string.IsNullOrEmpty(tbName.Text))
@@ -491,29 +584,40 @@ namespace iTestOutlookAddIn
 
             List<String> areas = GetCheckedAreas(tvAreas.Nodes, false);
 
-            if(areas.Count() > 0 )
+            if (areas.Count() > 0)
             {
                 loc = loc.Where(p => areas.Contains(p.Areas));
             }
 
-            if (!string.IsNullOrEmpty(cbRole.Text))
-                loc = loc.Where(a => a.Roles == cbRole.Text);
 
-            if (!string.IsNullOrEmpty(cbStatus.Text))
-                loc = loc.Where(a => a.Status == cbStatus.Text);
-
-            if (!string.IsNullOrEmpty(tbNumber.Text))
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbRole, cb =>
             {
-                bool parse;
-                int result;
+                if (!string.IsNullOrEmpty(cb.Text))
+                    loc = loc.Where(a => a.Roles == cb.Text);
+            });
 
-                parse = int.TryParse(tbNumber.Text,out result);
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbStatus, cb =>
+            {
+                if (!string.IsNullOrEmpty(cb.Text))
+                    loc = loc.Where(a => a.Status == cb.Text);
+            });
 
-                if (parse)
+            CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, tb =>
+            {
+                if (!string.IsNullOrEmpty(tb.Text))
                 {
-                    loc = loc.Where(a => a.CandidateNumber.Value == result);
+                    bool parse;
+                    int result;
+
+                    parse = int.TryParse(tb.Text, out result);
+
+                    if (parse)
+                    {
+                        loc = loc.Where(a => a.CandidateNumber.Value == result);
+                    }
                 }
-            }
+
+            });
 
             if (checkBox1.Checked)
             {
@@ -523,7 +627,24 @@ namespace iTestOutlookAddIn
                 loc = loc.Where(a => a.RegistrationDate.Value >= start && a.RegistrationDate.Value <= end);
             }
 
-            if (columnIndex == 1)
+            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "CandidateNumber")
+            {
+                if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
+                {
+                    loc = loc.OrderByDescending(p => p.CandidateNumber);
+                    m_oldSortingAscending = false;
+                }
+                else
+                {
+                    loc = loc.OrderBy(p => p.CandidateNumber);
+                    m_oldSortingAscending = true;
+                }
+
+                m_oldSortingIndex = columnIndex;
+            }
+
+
+            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "RegistrationDate")
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
@@ -539,7 +660,8 @@ namespace iTestOutlookAddIn
                 m_oldSortingIndex = columnIndex;
             }
 
-            if (columnIndex == 3)
+
+            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "FirstName")
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
@@ -555,7 +677,7 @@ namespace iTestOutlookAddIn
                 m_oldSortingIndex = columnIndex;
             }
 
-            if (columnIndex == 4)
+            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "LastName")
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
@@ -571,7 +693,7 @@ namespace iTestOutlookAddIn
                 m_oldSortingIndex = columnIndex;
             }
 
-            if (columnIndex == 9)
+            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "Experience")
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
@@ -587,20 +709,29 @@ namespace iTestOutlookAddIn
                 m_oldSortingIndex = columnIndex;
             }
 
-
-            this.dataGridView1.DataSource = new List<Candidate>( loc);
-            if (loc.Count() > 0)
+            CrossThreadUtility.InvokeControlAction<DataGridView>(dataGridView1, dg =>
             {
-                this.dataGridView1.Columns[0].Visible = false;
-                this.dataGridView1.Columns[2].Visible = false;
-                this.dataGridView1.Columns[5].Visible = false;
-                this.dataGridView1.Columns[6].Visible = false;
-                this.dataGridView1.Columns[7].Visible = false;
-                this.dataGridView1.Columns[8].Visible = false;
-                this.dataGridView1.Columns[12].Visible = false;
-            }
+                m_mainGridBindingSource = new BindingSource();
+                m_mainGridBindingSource.DataSource = new List<Candidate>(loc);
 
-            panelWait.Visible = false;
+                dg.DataSource = m_mainGridBindingSource;
+                if (loc.Count() > 0)
+                {
+                    dg.Columns[0].Visible = false;
+                    dg.Columns[7].Visible = false;
+                    dg.Columns[8].Visible = false;
+                    dg.Columns[9].Visible = false;
+                    dg.Columns[10].Visible = false;
+                    dg.Columns[11].Visible = false;
+                    dg.Columns[12].Visible = false;
+                    dg.Columns[18].Visible = false;
+                    dg.Columns[19].Visible = false;
+                    dg.Columns[20].Visible = false;
+                    dg.Columns[21].Visible = false;
+                }
+            });
+
+            CrossThreadUtility.InvokeControlAction<Panel>(panelWait, panel => panel.Visible = false);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -662,21 +793,24 @@ namespace iTestOutlookAddIn
         {
             set
             {
-                tbNumber.Text = value.ToString();
+                CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, cb => cb.Text = value.ToString());
             }
         }
 
         public void ClearFilter()
         {
-            cbRole.Text = "";
-            tbName.Text = "";
-            checkBox1.Checked = false;
-            cbStatus.Text = "";
-            tbNumber.Text = "";
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbRole, cb => cb.Text = "");
+            CrossThreadUtility.InvokeControlAction<TextBox>(tbName, cb => cb.Text = "");
+            CrossThreadUtility.InvokeControlAction<CheckBox>(checkBox1, cb => cb.Checked = false);
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbStatus, cb => cb.Text = "");
+            CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, cb => {
+                cb.Text = "";
 
-            m_ignoreCheckedEvent = true;
-            GetCheckedAreas(tvAreas.Nodes, true);
-            m_ignoreCheckedEvent = false;
+                m_ignoreCheckedEvent = true;
+                GetCheckedAreas(tvAreas.Nodes, true);
+                m_ignoreCheckedEvent = false;
+            
+            });
 
         }
 
@@ -712,7 +846,40 @@ namespace iTestOutlookAddIn
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            DoSearch(-1, true);
+            if (ServiceHelper.IsLoggedIn)
+            {
+                bool result = ServiceHelper.Login(ServiceHelper.LastLogin.Username, ServiceHelper.LastLogin.Password);
+            }
+        }
+
+        private void showFormTimer_Tick(object sender, EventArgs e)
+        {
+            showFormTimer.Enabled = false;
+
+            if (m_areas == null)
+            {
+                panelWait.Visible = true;
+                retrieveWorker.RunWorkerAsync();
+            }
+            else
+            {
+                RefreshAreas();
+                RefreshRoles();
+                RefreshCandidatesStatuses();
+
+                Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
+
+                if (mailItem != null && m_candidates != null)
+                {
+                    var row = m_candidates.Where(p => p.MailEntryID == mailItem.EntryID).FirstOrDefault();
+
+                    if (row != null)
+                    {
+                        tbNumber.Text = row.CandidateNumber.Value.ToString();
+                        DoSearch(-1);
+                    }
+                }
+            }
         }
 
     }

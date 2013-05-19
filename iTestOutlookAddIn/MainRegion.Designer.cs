@@ -51,15 +51,17 @@
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panelWait = new System.Windows.Forms.Panel();
+            this.label26 = new System.Windows.Forms.Label();
+            this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tbNumber = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.panelWait = new System.Windows.Forms.Panel();
-            this.label26 = new System.Windows.Forms.Label();
-            this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.retrieveWorker = new System.ComponentModel.BackgroundWorker();
+            this.showFormTimer = new System.Windows.Forms.Timer(this.components);
+            this.logoPictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -69,6 +71,7 @@
             this.panel1.SuspendLayout();
             this.panelWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -76,6 +79,7 @@
             this.dataGridView1.AllowDrop = true;
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -227,6 +231,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.logoPictureBox);
             this.panel1.Controls.Add(this.panelWait);
             this.panel1.Controls.Add(this.cbStatus);
             this.panel1.Controls.Add(this.label5);
@@ -246,6 +251,36 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1105, 58);
             this.panel1.TabIndex = 49;
+            // 
+            // panelWait
+            // 
+            this.panelWait.Controls.Add(this.label26);
+            this.panelWait.Controls.Add(this.ajaxLoading);
+            this.panelWait.Location = new System.Drawing.Point(541, 29);
+            this.panelWait.Name = "panelWait";
+            this.panelWait.Size = new System.Drawing.Size(99, 24);
+            this.panelWait.TabIndex = 52;
+            this.panelWait.Visible = false;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(27, 6);
+            this.label26.Margin = new System.Windows.Forms.Padding(5, 7, 3, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(69, 13);
+            this.label26.TabIndex = 23;
+            this.label26.Text = "please wait...";
+            // 
+            // ajaxLoading
+            // 
+            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
+            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
+            this.ajaxLoading.Name = "ajaxLoading";
+            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
+            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.ajaxLoading.TabIndex = 22;
+            this.ajaxLoading.TabStop = false;
             // 
             // cbStatus
             // 
@@ -283,49 +318,35 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 600000;
+            this.timer1.Interval = 35000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // panelWait
-            // 
-            this.panelWait.Controls.Add(this.label26);
-            this.panelWait.Controls.Add(this.ajaxLoading);
-            this.panelWait.Location = new System.Drawing.Point(541, 29);
-            this.panelWait.Name = "panelWait";
-            this.panelWait.Size = new System.Drawing.Size(134, 24);
-            this.panelWait.TabIndex = 52;
-            this.panelWait.Visible = false;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(27, 6);
-            this.label26.Margin = new System.Windows.Forms.Padding(5, 7, 3, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(69, 13);
-            this.label26.TabIndex = 23;
-            this.label26.Text = "please wait...";
-            // 
-            // ajaxLoading
-            // 
-            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
-            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
-            this.ajaxLoading.Name = "ajaxLoading";
-            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
-            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ajaxLoading.TabIndex = 22;
-            this.ajaxLoading.TabStop = false;
             // 
             // retrieveWorker
             // 
             this.retrieveWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.retrieveWorker_DoWork);
             this.retrieveWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.retrieveWorker_RunWorkerCompleted);
             // 
+            // showFormTimer
+            // 
+            this.showFormTimer.Interval = 500;
+            this.showFormTimer.Tick += new System.EventHandler(this.showFormTimer_Tick);
+            // 
+            // logoPictureBox
+            // 
+            this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
+            this.logoPictureBox.Location = new System.Drawing.Point(646, 16);
+            this.logoPictureBox.Name = "logoPictureBox";
+            this.logoPictureBox.Size = new System.Drawing.Size(221, 42);
+            this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.logoPictureBox.TabIndex = 53;
+            this.logoPictureBox.TabStop = false;
+            // 
             // MainRegion
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "MainRegion";
             this.Size = new System.Drawing.Size(1111, 238);
@@ -342,6 +363,7 @@
             this.panelWait.ResumeLayout(false);
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -356,7 +378,7 @@
         /// </summary>
         private static void InitializeManifest(Microsoft.Office.Tools.Outlook.FormRegionManifest manifest, Microsoft.Office.Tools.Outlook.Factory factory)
         {
-            manifest.FormRegionName = "iTest";
+            manifest.FormRegionName = "HunterCV";
             manifest.FormRegionType = Microsoft.Office.Tools.Outlook.FormRegionType.Adjoining;
             manifest.ShowInspectorCompose = false;
             manifest.ShowInspectorRead = false;
@@ -389,6 +411,8 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.PictureBox ajaxLoading;
         private System.ComponentModel.BackgroundWorker retrieveWorker;
+        private System.Windows.Forms.Timer showFormTimer;
+        private System.Windows.Forms.PictureBox logoPictureBox;
 
         public partial class MainRegionFactory : Microsoft.Office.Tools.Outlook.IFormRegionFactory
         {

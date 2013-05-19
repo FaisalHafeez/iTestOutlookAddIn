@@ -1,0 +1,7 @@
+C:\Projects\iTestOutlookAddIn\HunterCV.Model\bin\Debug\HunterCV.Model.dll.config
+C:\Projects\iTestOutlookAddIn\HunterCV.Model\bin\Debug\HunterCV.Model.dll
+C:\Projects\iTestOutlookAddIn\HunterCV.Model\bin\Debug\HunterCV.Model.pdb
+C:\Projects\iTestOutlookAddIn\HunterCV.Model\bin\Debug\EntityFramework.dll
+C:\Projects\iTestOutlookAddIn\HunterCV.Model\bin\Debug\EntityFramework.xml
+C:\Projects\iTestOutlookAddIn\HunterCV.Model\obj\Debug\HunterCV.Model.dll
+C:\Projects\iTestOutlookAddIn\HunterCV.Model\obj\Debug\HunterCV.Model.pdb

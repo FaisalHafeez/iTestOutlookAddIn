@@ -9,8 +9,8 @@ C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Debug\Newtonsoft.Json.xml
 C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Debug\System.Net.Http.xml
 C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Debug\System.Net.Http.Formatting.xml
 C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Debug\System.Net.Http.WebRequest.xml
-C:\Projects\iTestOutlookAddIn\TesterConsole\obj\x86\Debug\ResolveAssemblyReference.cache
 C:\Projects\iTestOutlookAddIn\TesterConsole\obj\x86\Debug\TesterConsole.exe
 C:\Projects\iTestOutlookAddIn\TesterConsole\obj\x86\Debug\TesterConsole.pdb
-C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Debug\iTest.Common.dll
-C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Debug\iTest.Common.pdb
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Debug\HunterCV.Common.dll
+C:\Projects\iTestOutlookAddIn\TesterConsole\bin\Debug\HunterCV.Common.pdb
+C:\Projects\iTestOutlookAddIn\TesterConsole\obj\x86\Debug\TesterConsole.csprojResolveAssemblyReference.cache

@@ -6,11 +6,11 @@ using System.Security;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("iTestOutlookAddIn")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("HunterCV")]
+[assembly: AssemblyDescription("HunterCV is an Outlook AddIn for professional Head Hunters")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("iTest")]
-[assembly: AssemblyProduct("iTest Outlook AddIn")]
+[assembly: AssemblyCompany("HunterCV")]
+[assembly: AssemblyProduct("HunterCV Outlook AddIn")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

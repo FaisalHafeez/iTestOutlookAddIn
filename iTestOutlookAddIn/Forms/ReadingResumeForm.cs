@@ -40,21 +40,21 @@ namespace iTestOutlookAddIn
             {
                 switch (fi.Extension)
                 {
-                    case ".pdf":
-                        PDFParser parser = new PDFParser();
+                    //case ".pdf":
+                    //    PDFParser parser = new PDFParser();
 
-                        string pdfContent;
+                    //    string pdfContent;
 
-                        bool extracted = parser.ExtractText(m_filePath, out pdfContent);
+                    //    bool extracted = parser.ExtractText(m_filePath, out pdfContent);
 
-                        if (extracted && !string.IsNullOrEmpty( pdfContent.Trim()) )
-                        {
-                            this.ReadingResult.Add("Content", pdfContent);
-                            this.ReadingResult.Add("Mobile1", GetPDFRegularExpression(pdfContent.Replace(" ",""), @"0(5[012345678]|6[47]){1}(\s)?(\-)?(\s)?[^0\D]{1}\d{6}"));
-                            this.ReadingResult.Add("Phone1", GetPDFRegularExpression(pdfContent.Replace(" ", ""), @"0(5[012345678]|6[47]){1}(\s)?(\-)?(\s)?[^0\D]{1}\d{6}"));
-                        }
+                    //    if (extracted && !string.IsNullOrEmpty( pdfContent.Trim()) )
+                    //    {
+                    //        this.ReadingResult.Add("Content", pdfContent);
+                    //        this.ReadingResult.Add("Mobile1", GetPDFRegularExpression(pdfContent.Replace(" ",""), @"0(5[012345678]|6[47]){1}(\s)?(\-)?(\s)?[^0\D]{1}\d{6}"));
+                    //        this.ReadingResult.Add("Phone1", GetPDFRegularExpression(pdfContent.Replace(" ", ""), @"0(5[012345678]|6[47]){1}(\s)?(\-)?(\s)?[^0\D]{1}\d{6}"));
+                    //    }
 
-                        break;
+                    //    break;
                     case ".doc":
                     case ".docx":
                     case ".rtf":

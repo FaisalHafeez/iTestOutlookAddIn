@@ -17,25 +17,25 @@ namespace iTestOutlookAddIn
         }
     }
 
-    public static class Settings
-    {
-        public static string AppPath = @"C:\iTest Resumes\";
+    //public static class Settings
+    //{
+    //    public static string AppPath = @"C:\iTest Resumes\";
 
-        private static IEnumerable<TreeNode> GetNodes(TreeNode node, XElement element)
-        {
-            return element.HasElements ?
-                node.AddRange(
-                                from item in element.Elements()
-                                let tree = new TreeNode((string)item.Attribute("title"))
-                                from newNode
-                                in GetNodes(tree, item)
-                                where item.HasAttributes
-                                select newNode
-                              )
-                              :
-                new[] { node };
-        }
+    //    private static IEnumerable<TreeNode> GetNodes(TreeNode node, XElement element)
+    //    {
+    //        return element.HasElements ?
+    //            node.AddRange(
+    //                            from item in element.Elements()
+    //                            let tree = new TreeNode((string)item.Attribute("title"))
+    //                            from newNode
+    //                            in GetNodes(tree, item)
+    //                            where item.HasAttributes
+    //                            select newNode
+    //                          )
+    //                          :
+    //            new[] { node };
+    //    }
 
-    }
+    //}
     
 }

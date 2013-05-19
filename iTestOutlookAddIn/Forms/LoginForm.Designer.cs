@@ -80,6 +80,7 @@
             // tbUsername
             // 
             this.tbUsername.Location = new System.Drawing.Point(110, 18);
+            this.tbUsername.MaxLength = 50;
             this.tbUsername.Name = "tbUsername";
             this.tbUsername.Size = new System.Drawing.Size(164, 20);
             this.tbUsername.TabIndex = 0;
@@ -96,6 +97,7 @@
             // tbPassword
             // 
             this.tbPassword.Location = new System.Drawing.Point(110, 55);
+            this.tbPassword.MaxLength = 50;
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(164, 20);
@@ -114,7 +116,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(9, 162);
+            this.linkLabel1.Location = new System.Drawing.Point(4, 162);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(146, 13);
             this.linkLabel1.TabIndex = 7;
@@ -124,7 +126,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(12, 157);
+            this.groupBox1.Location = new System.Drawing.Point(7, 157);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(286, 2);
             this.groupBox1.TabIndex = 8;
@@ -134,7 +136,7 @@
             // 
             this.panelWait.Controls.Add(this.label26);
             this.panelWait.Controls.Add(this.ajaxLoading);
-            this.panelWait.Location = new System.Drawing.Point(174, 162);
+            this.panelWait.Location = new System.Drawing.Point(169, 162);
             this.panelWait.Name = "panelWait";
             this.panelWait.Size = new System.Drawing.Size(134, 24);
             this.panelWait.TabIndex = 24;
@@ -169,7 +171,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(305, 186);
+            this.ClientSize = new System.Drawing.Size(305, 193);
             this.Controls.Add(this.panelWait);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.linkLabel1);
@@ -186,7 +188,7 @@
             this.Name = "LoginForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "iTest";
+            this.Text = "HunterCV";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.LoginForm_Load);
             this.panelWait.ResumeLayout(false);

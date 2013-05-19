@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using iTextSharp.text.pdf;
 using System.Text;
 
 namespace iTestOutlookAddIn

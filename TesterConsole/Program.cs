@@ -36,7 +36,7 @@ namespace TesterConsole
             {
                 var response = httpClient.PostAsJsonAsync(
                     "http://localhost:3136/api/account",
-                    new { username = "itest", password = "yamit@02" },
+                    new { username = "ariel", password = "123456" },
                     CancellationToken.None
                 ).Result;
                 response.EnsureSuccessStatusCode();
@@ -49,13 +49,14 @@ namespace TesterConsole
                     using (var content = new MultipartFormDataContent())
                     {
                         //var fileContent = new ByteArrayContent(System.IO.File.ReadAllBytes(@"C:\Users\Administrator\Desktop\testresume.docx"));
-                        var filestream = new FileStream(@"C:\Users\Administrator\Desktop\testresume.docx", FileMode.Open);
+                        var filestream = new FileStream(@"C:\test.zip", FileMode.Open);
                         //fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
                         //{
                         //    FileName = "testresume.docx"
                         //};
                         //content.Add(fileContent);
                         content.Add(new StreamContent(filestream), "file", "testresume.docx");
+                        content.Add(new StringContent("asdasdasd")); //(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("description", "dfsdfsdf") }));
 
                         HttpResponseMessage responseUpload = httpClient.PostAsync("http://localhost:3136/api/resumes?CandidateId=E47FF5D8-B79F-4568-84DD-018AD1BD5E14", content).Result;
                         responseUpload.EnsureSuccessStatusCode();
@@ -91,7 +92,7 @@ namespace TesterConsole
 
                     //if ( ress.Documents != null )
                     //{
-                    //    foreach (iTest.Common.Resume resume in ress.Documents)
+                    //    foreach (HunterCV.Common.Resume resume in ress.Documents)
                     //    {
                     //        Console.WriteLine(resume.FileName);
                     //    }

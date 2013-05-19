@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="invidiadbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="invidiadbModelStoreContainer">
+    <EntitySet Name="Applications" EntityType="invidiadbModel.Store.Applications" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CandidatePositions" EntityType="invidiadbModel.Store.CandidatePositions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Candidates" EntityType="invidiadbModel.Store.Candidates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MailTemplates" EntityType="invidiadbModel.Store.MailTemplates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Positions" EntityType="invidiadbModel.Store.Positions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Profiles" EntityType="invidiadbModel.Store.Profiles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ResumeContents" EntityType="invidiadbModel.Store.ResumeContents" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Resumes" EntityType="invidiadbModel.Store.Resumes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="invidiadbModel.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="invidiadbModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UsersInRoles" EntityType="invidiadbModel.Store.UsersInRoles" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_CandidatePositions_Candidates" Association="invidiadbModel.Store.FK_CandidatePositions_Candidates">
+      <End Role="Candidates" EntitySet="Candidates" />
+      <End Role="CandidatePositions" EntitySet="CandidatePositions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CandidatePositions_Positions" Association="invidiadbModel.Store.FK_CandidatePositions_Positions">
+      <End Role="Positions" EntitySet="Positions" />
+      <End Role="CandidatePositions" EntitySet="CandidatePositions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Candidates_Users" Association="invidiadbModel.Store.FK_Candidates_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Candidates" EntitySet="Candidates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MailTemplates_Roles" Association="invidiadbModel.Store.FK_MailTemplates_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="MailTemplates" EntitySet="MailTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Positions_Users" Association="invidiadbModel.Store.FK_Positions_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Positions" EntitySet="Positions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ResumeContents_Resumes" Association="invidiadbModel.Store.FK_ResumeContents_Resumes">
+      <End Role="Resumes" EntitySet="Resumes" />
+      <End Role="ResumeContents" EntitySet="ResumeContents" />
+    </AssociationSet>
+    <AssociationSet Name="RoleApplication" Association="invidiadbModel.Store.RoleApplication">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="Roles" EntitySet="Roles" />
+    </AssociationSet>
+    <AssociationSet Name="UserApplication" Association="invidiadbModel.Store.UserApplication">
+      <End Role="Applications" EntitySet="Applications" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="UserProfile" Association="invidiadbModel.Store.UserProfile">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Profiles" EntitySet="Profiles" />
+    </AssociationSet>
+    <AssociationSet Name="UsersInRoleRole" Association="invidiadbModel.Store.UsersInRoleRole">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="UsersInRoles" EntitySet="UsersInRoles" />
+    </AssociationSet>
+    <AssociationSet Name="UsersInRoleUser" Association="invidiadbModel.Store.UsersInRoleUser">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UsersInRoles" EntitySet="UsersInRoles" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Applications">
+    <Key>
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="ApplicationName" Type="nvarchar" Nullable="false" MaxLength="235" />
+    <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="256" />
+  </EntityType>
+  <EntityType Name="CandidatePositions">
+    <Key>
+      <PropertyRef Name="PositionId" />
+      <PropertyRef Name="CandidateId" />
+    </Key>
+    <Property Name="PositionId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CandidateId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CandidatePositionStatus" Type="nvarchar" MaxLength="100" />
+    <Property Name="CandidatePositionDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Candidates">
+    <Key>
+      <PropertyRef Name="CandidateID" />
+    </Key>
+    <Property Name="CandidateID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserId" Type="uniqueidentifier" />
+    <Property Name="RegistrationDate" Type="datetime" />
+    <Property Name="MailEntryID" Type="nvarchar" MaxLength="500" />
+    <Property Name="CandidateNumber" Type="int" />
+    <Property Name="IdentityNumber" Type="nvarchar" MaxLength="9" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+    <Property Name="DateOfBirth" Type="datetime" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="Events" Type="nvarchar" />
+    <Property Name="ResumePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="Experience" Type="smallint" />
+    <Property Name="Areas" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Roles" Type="nvarchar" MaxLength="200" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="100" />
+    <Property Name="Mobile" Type="nvarchar" MaxLength="100" />
+    <Property Name="EMailAddress" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Status" Type="nvarchar" MaxLength="100" />
+    <Property Name="SentToCompanies" Type="nvarchar" MaxLength="1000" />
+    <Property Name="Former8200" Type="bit" />
+    <Property Name="Reference" Type="nvarchar" MaxLength="500" />
+    <Property Name="SigningDate" Type="datetime" />
+    <Property Name="WorkStartDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="MailTemplates">
+    <Key>
+      <PropertyRef Name="RoleId" />
+      <PropertyRef Name="TemplateIndex" />
+    </Key>
+    <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TemplateIndex" Type="smallint" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="100" />
+    <Property Name="Subject" Type="nvarchar" MaxLength="150" />
+    <Property Name="RtfBody" Type="nvarchar" MaxLength="2000" />
+    <Property Name="IncludeAttachments" Type="bit" />
+  </EntityType>
+  <EntityType Name="Positions">
+    <Key>
+      <PropertyRef Name="PositionId" />
+    </Key>
+    <Property Name="PositionId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="PositionNumber" Type="int" Nullable="false" />
+    <Property Name="PositionTitle" Type="nvarchar" MaxLength="100" />
+    <Property Name="PositionDescription" Type="nvarchar" MaxLength="1000" />
+    <Property Name="PositionAreas" Type="nvarchar" MaxLength="500" />
+    <Property Name="PositionRole" Type="nvarchar" MaxLength="100" />
+    <Property Name="Company" Type="nvarchar" MaxLength="100" />
+    <Property Name="PublishedAt" Type="datetime" />
+    <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Events" Type="nvarchar" MaxLength="2000" />
+  </EntityType>
+  <EntityType Name="Profiles">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="PropertyNames" Type="nvarchar" Nullable="false" />
+    <Property Name="PropertyValueStrings" Type="nvarchar" Nullable="false" />
+    <Property Name="PropertyValueBinary" Type="image" Nullable="false" />
+    <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ResumeContents">
+    <Key>
+      <PropertyRef Name="ResumeID" />
+    </Key>
+    <Property Name="ResumeID" Type="int" Nullable="false" />
+    <Property Name="FileContent" Type="varbinary(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Resumes">
+    <Key>
+      <PropertyRef Name="ResumeID" />
+    </Key>
+    <Property Name="ResumeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CandidateID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+    <Property Name="FileName" Type="nvarchar" Nullable="false" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+    <Property Name="Description" Type="nvarchar" MaxLength="256" />
+    <Property Name="CandidatesAreas" Type="nvarchar" MaxLength="2000" />
+    <Property Name="CandidatesCompanies" Type="nvarchar" MaxLength="2000" />
+    <Property Name="CandidatesStatuses" Type="nvarchar" MaxLength="2000" />
+    <Property Name="CandidatesRoles" Type="nvarchar" MaxLength="2000" />
+    <Property Name="PositionsStatuses" Type="nvarchar" MaxLength="2000" />
+    <Property Name="Settings" Type="nvarchar" MaxLength="2000" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="IsAnonymous" Type="bit" Nullable="false" />
+    <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersInRoles">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_CandidatePositions_Candidates">
+    <End Role="Candidates" Type="invidiadbModel.Store.Candidates" Multiplicity="1" />
+    <End Role="CandidatePositions" Type="invidiadbModel.Store.CandidatePositions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Candidates">
+        <PropertyRef Name="CandidateID" />
+      </Principal>
+      <Dependent Role="CandidatePositions">
+        <PropertyRef Name="CandidateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CandidatePositions_Positions">
+    <End Role="Positions" Type="invidiadbModel.Store.Positions" Multiplicity="1" />
+    <End Role="CandidatePositions" Type="invidiadbModel.Store.CandidatePositions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Positions">
+        <PropertyRef Name="PositionId" />
+      </Principal>
+      <Dependent Role="CandidatePositions">
+        <PropertyRef Name="PositionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Candidates_Users">
+    <End Role="Users" Type="invidiadbModel.Store.Users" Multiplicity="0..1" />
+    <End Role="Candidates" Type="invidiadbModel.Store.Candidates" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Candidates">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MailTemplates_Roles">
+    <End Role="Roles" Type="invidiadbModel.Store.Roles" Multiplicity="1" />
+    <End Role="MailTemplates" Type="invidiadbModel.Store.MailTemplates" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="MailTemplates">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Positions_Users">
+    <End Role="Users" Type="invidiadbModel.Store.Users" Multiplicity="1" />
+    <End Role="Positions" Type="invidiadbModel.Store.Positions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Positions">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ResumeContents_Resumes">
+    <End Role="Resumes" Type="invidiadbModel.Store.Resumes" Multiplicity="1" />
+    <End Role="ResumeContents" Type="invidiadbModel.Store.ResumeContents" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Resumes">
+        <PropertyRef Name="ResumeID" />
+      </Principal>
+      <Dependent Role="ResumeContents">
+        <PropertyRef Name="ResumeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoleApplication">
+    <End Role="Applications" Type="invidiadbModel.Store.Applications" Multiplicity="1" />
+    <End Role="Roles" Type="invidiadbModel.Store.Roles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="Roles">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserApplication">
+    <End Role="Applications" Type="invidiadbModel.Store.Applications" Multiplicity="1" />
+    <End Role="Users" Type="invidiadbModel.Store.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserProfile">
+    <End Role="Users" Type="invidiadbModel.Store.Users" Multiplicity="1" />
+    <End Role="Profiles" Type="invidiadbModel.Store.Profiles" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Profiles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsersInRoleRole">
+    <End Role="Roles" Type="invidiadbModel.Store.Roles" Multiplicity="1" />
+    <End Role="UsersInRoles" Type="invidiadbModel.Store.UsersInRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="UsersInRoles">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsersInRoleUser">
+    <End Role="Users" Type="invidiadbModel.Store.Users" Multiplicity="1" />
+    <End Role="UsersInRoles" Type="invidiadbModel.Store.UsersInRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UsersInRoles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

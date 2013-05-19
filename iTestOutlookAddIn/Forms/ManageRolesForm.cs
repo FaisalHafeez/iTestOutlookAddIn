@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using iTestOutlookAddIn.ExtensionMethods;
-using iTest.Common;
+using HunterCV.Common;
 
 namespace iTestOutlookAddIn
 {

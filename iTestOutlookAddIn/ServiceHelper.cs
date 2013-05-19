@@ -7,16 +7,29 @@ using System.Threading;
 using System.Configuration;
 using Newtonsoft.Json;
 using System.Net;
-using iTest.Common;
+using HunterCV.Common;
 using System.IO;
 
 namespace iTestOutlookAddIn
 {
+    public class LoginDetails
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+
     public static class ServiceHelper
     {
         private static bool m_isLoggedIn;
         private static string m_aspxauthCookie;
         private static bool m_canceledLogin;
+        private static LoginDetails m_lastLogin;
+
+        public static LoginDetails LastLogin
+        {
+            get { return ServiceHelper.m_lastLogin; }
+            set { ServiceHelper.m_lastLogin = value; }
+        }
 
         static ServiceHelper()
         {
@@ -50,20 +63,29 @@ namespace iTestOutlookAddIn
             }
         }
 
+        public static bool Login(string userName, string password)
+        {
+            return Login(new LoginDetails
+            {
+                Username = userName,
+                Password = password
+            });
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static bool Login(string userName, string password)
+        public static bool Login(LoginDetails login)
         {
 
             using (var httpClient = new HttpClient())
             {
                 var response = httpClient.PostAsJsonAsync(
                     ConfigurationManager.AppSettings["iTest.Service.AccountsUrl"],
-                    new { username = userName, password = password },
+                    new { username = login.Username, password = login.Password },
                     CancellationToken.None
                 ).Result;
 
@@ -73,6 +95,7 @@ namespace iTestOutlookAddIn
 
                 if (m_isLoggedIn)
                 {
+                    m_lastLogin = login;
                     m_aspxauthCookie = response.Headers.First(h => h.Key.ToLower() == "set-cookie").Value.First().Split('=')[1].Split(';')[0];
                 }
 
@@ -122,6 +145,51 @@ namespace iTestOutlookAddIn
             }
 
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="candidate"></param>
+        public static void Add(Position position)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+                cookie.Secure = false;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"]).Host;
+                cookieContainer.Add(cookie);
+
+                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                {
+                    var response = httpClient.PostAsJsonAsync(
+                        ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"],
+                        position,
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+
+        }
+
 
         /// <summary>
         /// 
@@ -212,7 +280,7 @@ namespace iTestOutlookAddIn
         /// 
         /// </summary>
         /// <param name="candidate"></param>
-        public static void Update(Status status)
+        public static void Update(CandidateStatus status)
         {
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
@@ -226,6 +294,91 @@ namespace iTestOutlookAddIn
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.StatusesUrl"],
+                        status,
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="candidate"></param>
+        public static void Update(Settings settings)
+        {
+            var cookieContainer = new CookieContainer();
+            Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+            cookie.Secure = false;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.SettingsUrl"]).Host;
+            cookieContainer.Add(cookie);
+
+            try
+            {
+                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                {
+                    var response = httpClient.PutAsJsonAsync(
+                        ConfigurationManager.AppSettings["iTest.Service.SettingsUrl"],
+                        settings,
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="candidate"></param>
+        public static void Update(PositionStatus status)
+        {
+            var cookieContainer = new CookieContainer();
+            Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+            cookie.Secure = false;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsStatusesUrl"]).Host;
+            cookieContainer.Add(cookie);
+
+            try
+            {
+                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                {
+                    var response = httpClient.PutAsJsonAsync(
+                        ConfigurationManager.AppSettings["iTest.Service.PositionsStatusesUrl"],
                         status,
                         CancellationToken.None
                     ).Result;
@@ -292,6 +445,178 @@ namespace iTestOutlookAddIn
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="candidate"></param>
+        public static void Update(Resume resume)
+        {
+            var cookieContainer = new CookieContainer();
+            Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+            cookie.Secure = false;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
+            cookieContainer.Add(cookie);
+
+            try
+            {
+                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                {
+                    var response = httpClient.PutAsJsonAsync(
+                        ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"],
+                        resume,
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="template"></param>
+        public static void Add(IEnumerable<MailTemplate> templates)
+        {
+            var cookieContainer = new CookieContainer();
+            Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+            cookie.Secure = false;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"]).Host;
+            cookieContainer.Add(cookie);
+
+            try
+            {
+                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                {
+                    var response = httpClient.PostAsJsonAsync(
+                        ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"],
+                        templates,
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="template"></param>
+        public static void UpdateMailTemplate(MailTemplate template)
+        {
+            var cookieContainer = new CookieContainer();
+            Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+            cookie.Secure = false;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"]).Host;
+            cookieContainer.Add(cookie);
+
+            try
+            {
+                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                {
+                    var response = httpClient.PutAsJsonAsync(
+                        ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"],
+                        template,
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        public static void Update(Position position)
+        {
+            var cookieContainer = new CookieContainer();
+            Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+            cookie.Secure = false;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"]).Host;
+            cookieContainer.Add(cookie);
+
+            try
+            {
+                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                {
+                    var response = httpClient.PutAsJsonAsync(
+                        ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"],
+                        position,
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+        }
+
+
 
         /// <summary>
         /// 
@@ -375,6 +700,50 @@ namespace iTestOutlookAddIn
             }
 
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="candidate"></param>
+        public static void DeleteResume(Resume resume)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+                cookie.Secure = false;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
+                cookieContainer.Add(cookie);
+
+                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                {
+                    var response = httpClient.DeleteAsync(
+                        new Uri(string.Concat(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "/?id=" + resume.ResumeID.ToString())),
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+
+        }
+
+
 
         public static byte[] GetResumeContent(int resumeId)
         {
@@ -469,6 +838,54 @@ namespace iTestOutlookAddIn
             }
         }
 
+        public static void Upload(Guid candidateId, IEnumerable<Resume> documents)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+                cookie.Secure = false;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
+                cookieContainer.Add(cookie);
+
+                IEnumerable<Resume> not_cloudy = documents.Where(d => !d.IsCloudy);
+
+                foreach (Resume doc in not_cloudy)
+                {
+                    FileInfo fi = new FileInfo(doc.FileName);
+
+                    if (fi.Exists)
+                    {
+                        using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                        {
+                            using (var content = new MultipartFormDataContent())
+                            {
+                                var filestream = new FileStream(fi.FullName, FileMode.Open);
+                                content.Add(new StreamContent(filestream), "file", fi.Name);
+                                content.Add(new StringContent(doc.Description ?? string.Empty));
+
+                                HttpResponseMessage responseUpload = httpClient.PostAsync(string.Concat(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "?CandidateID=", candidateId.ToString()), content).Result;
+                                responseUpload.EnsureSuccessStatusCode();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                throw ex;
+            }
+
+
+        }
 
         /// <summary>
         /// 
@@ -487,7 +904,7 @@ namespace iTestOutlookAddIn
                 using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
                 {
                     var response = httpClient.GetAsync(string.Concat(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "/documents/", candidateId.ToString())).Result;
-                    var documents = response.Content.ReadAsAsync<iTest.Common.DocumentCollection>().Result;
+                    var documents = response.Content.ReadAsAsync<HunterCV.Common.DocumentCollection>().Result;
 
                     response.EnsureSuccessStatusCode();
 

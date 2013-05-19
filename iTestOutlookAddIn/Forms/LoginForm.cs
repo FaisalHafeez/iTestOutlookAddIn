@@ -26,6 +26,8 @@ namespace iTestOutlookAddIn
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            btnOK.Enabled = false;
+
             if (loginWorker.IsBusy != true)
             {
                 panelWait.Visible = true;
@@ -37,14 +39,15 @@ namespace iTestOutlookAddIn
         private void loginWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             panelWait.Visible = false;
+            btnOK.Enabled = true;
 
             if (e.Cancelled == true)
             {
-
+                this.Close();
             }
             else if (e.Error != null)
             {
-                MessageBox.Show("Login failed, please try again\n\nError:" + e.Error.Message , "iTest");
+                MessageBox.Show("Login failed, please try again\n\nError:" + e.Error.Message , "HunterCV");
             }
             else
             {
@@ -52,6 +55,12 @@ namespace iTestOutlookAddIn
 
                 if (result)
                 {
+                    ServiceHelper.LastLogin = new LoginDetails
+                        {
+                            Username = tbUsername.Text,
+                            Password = tbPassword.Text
+                        };
+
                     if (cbRemember.Checked)
                     {
                         //save credentials if checkbox is on
@@ -64,7 +73,7 @@ namespace iTestOutlookAddIn
                 }
                 else
                 {
-                    MessageBox.Show("Login failed, please try again", "iTest");
+                    MessageBox.Show("Login failed, please try again", "HunterCV");
                 }
 
             }
@@ -72,6 +81,11 @@ namespace iTestOutlookAddIn
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            if (loginWorker.IsBusy)
+            {
+                loginWorker.CancelAsync();
+            }
+
             ServiceHelper.CanceledLogin = true;
             this.Close();
         }

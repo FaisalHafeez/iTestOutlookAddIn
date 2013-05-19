@@ -81,7 +81,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "CVRepo";
+            this.Text = "Hunter CV";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.ReadingResumeForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();

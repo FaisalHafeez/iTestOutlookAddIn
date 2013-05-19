@@ -1,0 +1,12 @@
+﻿<parameters>
+  <parameter name="IIS Web Application Name" defaultValue="Default Web Site/HunterCV.FrontSite_deploy" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\AWSDeploy\.eb5cdc57$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\AWSDeploy\.eb5cdc57$" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="data source=invidia2.cq4vyxk9ulpx.eu-west-1.rds.amazonaws.com,1433;initial catalog=invidiadb;user id=sa;password=031943889" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\AWSDeploy\.eb5cdc57\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="hunterCVEntities-Web.config Connection String" description="hunterCVEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/huntercv.csdl|res://*/huntercv.ssdl|res://*/huntercv.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=invidia2.cq4vyxk9ulpx.eu-west-1.rds.amazonaws.com,1433;initial catalog=invidiadb;persist security info=True;user id=sa;password=031943889;multipleactiveresultsets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\AWSDeploy\.eb5cdc57\\Web\.config$" match="/configuration/connectionStrings/add[@name='hunterCVEntities']/@connectionString" />
+  </parameter>
+</parameters>
