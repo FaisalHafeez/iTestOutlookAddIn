@@ -42,7 +42,7 @@ namespace iTestOutlookAddIn
 
             if (m_openMode == FormOpenMode.SearchAndSelect)
             {
-
+                cbStatus.Enabled = false;
             }
 
             DoSearch(-1);
@@ -57,6 +57,8 @@ namespace iTestOutlookAddIn
 
             var loc = (from l in m_region.Positions select l);
 
+
+
             List<String> areas = GetCheckedAreas(tvAreas.Nodes, false);
 
             if (areas.Count() > 0)
@@ -67,9 +69,16 @@ namespace iTestOutlookAddIn
                 }
             }
 
-            if (!string.IsNullOrEmpty(cbStatus.Text))
+            if (m_openMode == FormOpenMode.SearchAndSelect)
             {
-                loc = loc.Where(a => a.Status == cbStatus.Text);
+                loc = loc.Where(a => a.Status != "Manned");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(cbStatus.Text))
+                {
+                    loc = loc.Where(a => a.Status == cbStatus.Text);
+                }
             }
 
             if (!string.IsNullOrEmpty(cbCompany.Text))
@@ -234,6 +243,7 @@ namespace iTestOutlookAddIn
             m_mainGridBindingSource = new BindingSource();
             m_mainGridBindingSource.DataSource = new List<Position>(loc);
 
+            dg.Columns.Clear();
             dg.DataSource = m_mainGridBindingSource;
 
             if (loc.Count() > 0)
@@ -387,6 +397,38 @@ namespace iTestOutlookAddIn
 
             this.SelectedPositionsIds = selectedIds;
             this.Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            int number = 1000;
+
+            Guid guid = Guid.NewGuid();
+
+            if (m_region.Positions.Count() > 0)
+            {
+                var max = (from p in m_region.Positions
+                           select (p.PositionNumber)).Max();
+
+                if (max.HasValue)
+                {
+                    number = max.Value + 1;
+                }
+            }
+
+            var position = new Position
+            {
+                PositionNumber = number,
+                PositionID = guid,
+                Username = ServiceHelper.LastLogin.Username,
+                IsNew = true,
+                PublishedAt = DateTime.Today,
+                Status = "Open"
+            };
+
+            PositionEditForm frm = new PositionEditForm(m_region, position);
+            frm.Show();
+
         }
     }
 }

@@ -82,7 +82,45 @@ namespace iTestOutlookAddIn
         // Use this.OutlookFormRegion to get a reference to the form region.
         private void MainRegion_FormRegionShowing(object sender, System.EventArgs e)
         {
-            showFormTimer.Enabled = true;
+            //showFormTimer.Enabled = true;
+
+            var worker = new BackgroundWorker();
+
+            worker.RunWorkerCompleted += (senders, es) =>
+            {
+                //CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
+            };
+
+            worker.DoWork += (senders, es) =>
+            {
+                if (m_candidates == null)
+                {
+                    CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
+                    retrieveWorker.RunWorkerAsync();
+                }
+                else
+                {
+                    RefreshAreas();
+                    RefreshRoles();
+                    RefreshCandidatesStatuses();
+
+                    Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
+
+                    if (mailItem != null && m_candidates != null)
+                    {
+                        var row = m_candidates.Where(p => p.MailEntryID == mailItem.EntryID).FirstOrDefault();
+
+                        if (row != null)
+                        {
+                            CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, t => t.Text = row.CandidateNumber.Value.ToString());
+                            DoSearch(-1);
+                        }
+                    }
+                }
+
+            };
+
+            worker.RunWorkerAsync();
         }
 
         public Outlook.Application Application
@@ -236,8 +274,8 @@ namespace iTestOutlookAddIn
         private static string[] m_positionsStatuses;
         private static TreeNode[] m_companies;
         private static Guid m_roleId;
-        private static BindingSource m_mainGridBindingSource = null;
-        private List<KeyValuePair<string, string>> m_Settings = null; 
+        private static BindingSource m_mainGridBindingSource;
+        private static List<KeyValuePair<string, string>> m_Settings = null; 
 
         private bool m_ignoreCheckedEvent = false;
 
@@ -366,6 +404,7 @@ namespace iTestOutlookAddIn
                         newCandidate.CandidateID = guid;
                         newCandidate.ResumePath = tempFile.FullName;
                         newCandidate.EMailAddress = mailItem.SenderEmailAddress;
+                        newCandidate.CandidatePositions = new List<CandidatePosition>();
 
                         string[] senderarr = mailItem.SenderName.Split(' ');
 
@@ -715,7 +754,7 @@ namespace iTestOutlookAddIn
                 m_mainGridBindingSource.DataSource = new List<Candidate>(loc);
 
                 dg.DataSource = m_mainGridBindingSource;
-                if (loc.Count() > 0)
+                if (loc.Count() > 0 && dg.Columns.Count > 0)
                 {
                     dg.Columns[0].Visible = false;
                     dg.Columns[7].Visible = false;

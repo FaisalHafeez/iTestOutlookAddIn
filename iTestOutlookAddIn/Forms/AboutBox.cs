@@ -19,6 +19,12 @@ namespace iTestOutlookAddIn.Forms
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+
+            Facebook.FacebookClient client = new Facebook.FacebookClient();
+            client.AppId = "160688314109596";
+            client.AppSecret = "b1a3f772ad8934a3251151140dbd8d53";
+
+            
         }
 
         #region Assembly Attribute Accessors

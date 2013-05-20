@@ -130,7 +130,7 @@ namespace iTestOutlookAddIn
                 Username = ServiceHelper.LastLogin.Username,
                 IsNew = true,
                 PublishedAt = DateTime.Today,
-                Status = "Published"
+                Status = "Open"
             };
 
             PositionEditForm frm = new PositionEditForm(formRegions.MainRegion, position);

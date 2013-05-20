@@ -38,6 +38,7 @@
             this.cbIsActive = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.tbUsername = new System.Windows.Forms.TextBox();
@@ -69,6 +70,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbFirstName = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.tabPageDocuments = new System.Windows.Forms.TabPage();
@@ -84,25 +86,31 @@
             this.linkOpenCV = new System.Windows.Forms.LinkLabel();
             this.panelCVWait = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label24 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.dtpWorkStartDate = new System.Windows.Forms.DateTimePicker();
             this.label21 = new System.Windows.Forms.Label();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dtpSigningDate = new System.Windows.Forms.DateTimePicker();
             this.label20 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dtpPositionDate = new System.Windows.Forms.DateTimePicker();
             this.label11 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbPositionStatus = new System.Windows.Forms.ComboBox();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.dgvPositions = new System.Windows.Forms.DataGridView();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.panelWait = new System.Windows.Forms.Panel();
             this.lblWaitStatus = new System.Windows.Forms.Label();
+            this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.updateWorker = new System.ComponentModel.BackgroundWorker();
             this.insertWorker = new System.ComponentModel.BackgroundWorker();
             this.readingResumeTimer = new System.Windows.Forms.Timer(this.components);
@@ -113,30 +121,25 @@
             this.updateResumeWorker = new System.ComponentModel.BackgroundWorker();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            this.ajaxLoading = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.tabPageDocuments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCV)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.panelCVWait.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPositions)).BeginInit();
-            this.panelWait.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPositions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.panelWait.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -256,6 +259,16 @@
             this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::iTestOutlookAddIn.Properties.Resources.candidate;
+            this.pictureBox2.Location = new System.Drawing.Point(21, 9);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(32, 31);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 57;
+            this.pictureBox2.TabStop = false;
+            // 
             // label22
             // 
             this.label22.AutoSize = true;
@@ -365,6 +378,7 @@
             // 
             // cbStatus
             // 
+            this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbStatus.FormattingEnabled = true;
             this.cbStatus.Location = new System.Drawing.Point(98, 284);
@@ -564,6 +578,16 @@
             this.tabPage3.Text = "Events";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Image = global::iTestOutlookAddIn.Properties.Resources.position;
+            this.pictureBox5.Location = new System.Drawing.Point(13, 11);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(28, 32);
+            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox5.TabIndex = 65;
+            this.pictureBox5.TabStop = false;
+            // 
             // label25
             // 
             this.label25.AutoSize = true;
@@ -730,6 +754,26 @@
             this.label15.TabIndex = 23;
             this.label15.Text = "please wait...";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 22;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::iTestOutlookAddIn.Properties.Resources.cv;
+            this.pictureBox3.Location = new System.Drawing.Point(14, 10);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(37, 34);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox3.TabIndex = 61;
+            this.pictureBox3.TabStop = false;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.label24);
@@ -759,25 +803,50 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.dateTimePicker3);
+            this.groupBox4.Controls.Add(this.linkLabel1);
+            this.groupBox4.Controls.Add(this.pictureBox6);
+            this.groupBox4.Controls.Add(this.dtpWorkStartDate);
             this.groupBox4.Controls.Add(this.label21);
-            this.groupBox4.Controls.Add(this.dateTimePicker2);
+            this.groupBox4.Controls.Add(this.dtpSigningDate);
             this.groupBox4.Controls.Add(this.label20);
             this.groupBox4.Location = new System.Drawing.Point(14, 256);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(338, 100);
             this.groupBox4.TabIndex = 51;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Contract details";
+            this.groupBox4.Text = "Closed Position Information";
             // 
-            // dateTimePicker3
+            // linkLabel1
             // 
-            this.dateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker3.Location = new System.Drawing.Point(115, 61);
-            this.dateTimePicker3.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
-            this.dateTimePicker3.Name = "dateTimePicker3";
-            this.dateTimePicker3.Size = new System.Drawing.Size(108, 20);
-            this.dateTimePicker3.TabIndex = 54;
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Enabled = false;
+            this.linkLabel1.Location = new System.Drawing.Point(229, 64);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(81, 13);
+            this.linkLabel1.TabIndex = 65;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Create reminder";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked_1);
+            // 
+            // pictureBox6
+            // 
+            this.pictureBox6.Image = global::iTestOutlookAddIn.Properties.Resources.contract;
+            this.pictureBox6.Location = new System.Drawing.Point(263, 19);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(38, 32);
+            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox6.TabIndex = 64;
+            this.pictureBox6.TabStop = false;
+            // 
+            // dtpWorkStartDate
+            // 
+            this.dtpWorkStartDate.Enabled = false;
+            this.dtpWorkStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpWorkStartDate.Location = new System.Drawing.Point(115, 61);
+            this.dtpWorkStartDate.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
+            this.dtpWorkStartDate.Name = "dtpWorkStartDate";
+            this.dtpWorkStartDate.Size = new System.Drawing.Size(108, 20);
+            this.dtpWorkStartDate.TabIndex = 54;
             // 
             // label21
             // 
@@ -788,14 +857,15 @@
             this.label21.TabIndex = 53;
             this.label21.Text = "Work start date";
             // 
-            // dateTimePicker2
+            // dtpSigningDate
             // 
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker2.Location = new System.Drawing.Point(115, 24);
-            this.dateTimePicker2.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(108, 20);
-            this.dateTimePicker2.TabIndex = 52;
+            this.dtpSigningDate.Enabled = false;
+            this.dtpSigningDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpSigningDate.Location = new System.Drawing.Point(115, 24);
+            this.dtpSigningDate.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
+            this.dtpSigningDate.Name = "dtpSigningDate";
+            this.dtpSigningDate.Size = new System.Drawing.Size(108, 20);
+            this.dtpSigningDate.TabIndex = 52;
             // 
             // label20
             // 
@@ -808,10 +878,10 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.dateTimePicker1);
+            this.groupBox3.Controls.Add(this.dtpPositionDate);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label19);
-            this.groupBox3.Controls.Add(this.comboBox1);
+            this.groupBox3.Controls.Add(this.cbPositionStatus);
             this.groupBox3.Location = new System.Drawing.Point(358, 66);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(211, 132);
@@ -819,19 +889,21 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "More details about the position";
             // 
-            // dateTimePicker1
+            // dtpPositionDate
             // 
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(95, 72);
-            this.dateTimePicker1.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(108, 20);
-            this.dateTimePicker1.TabIndex = 46;
+            this.dtpPositionDate.Enabled = false;
+            this.dtpPositionDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpPositionDate.Location = new System.Drawing.Point(93, 71);
+            this.dtpPositionDate.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
+            this.dtpPositionDate.Name = "dtpPositionDate";
+            this.dtpPositionDate.Size = new System.Drawing.Size(108, 20);
+            this.dtpPositionDate.TabIndex = 46;
+            this.dtpPositionDate.ValueChanged += new System.EventHandler(this.dtpPositionDate_ValueChanged);
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 75);
+            this.label11.Location = new System.Drawing.Point(8, 74);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(68, 13);
             this.label11.TabIndex = 45;
@@ -840,21 +912,32 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(8, 41);
+            this.label19.Location = new System.Drawing.Point(8, 35);
             this.label19.Margin = new System.Windows.Forms.Padding(5, 7, 3, 0);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(37, 13);
             this.label19.TabIndex = 44;
             this.label19.Text = "Status";
             // 
-            // comboBox1
+            // cbPositionStatus
             // 
-            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(53, 38);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(150, 21);
-            this.comboBox1.TabIndex = 43;
+            this.cbPositionStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPositionStatus.Enabled = false;
+            this.cbPositionStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbPositionStatus.FormattingEnabled = true;
+            this.cbPositionStatus.Items.AddRange(new object[] {
+            "Phone Interview",
+            "Frontally Interview 1",
+            "Frontally Interview 2",
+            "Frontally Interview 3",
+            "Rejected",
+            "Signed"});
+            this.cbPositionStatus.Location = new System.Drawing.Point(51, 28);
+            this.cbPositionStatus.Name = "cbPositionStatus";
+            this.cbPositionStatus.Size = new System.Drawing.Size(150, 23);
+            this.cbPositionStatus.TabIndex = 43;
+            this.cbPositionStatus.SelectedIndexChanged += new System.EventHandler(this.cbPositionStatus_SelectedIndexChanged);
+            this.cbPositionStatus.TextChanged += new System.EventHandler(this.cbPositionStatus_TextChanged);
             // 
             // button7
             // 
@@ -887,7 +970,19 @@
             this.dgvPositions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPositions.Size = new System.Drawing.Size(338, 132);
             this.dgvPositions.TabIndex = 8;
+            this.dgvPositions.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPositions_CellFormatting);
+            this.dgvPositions.SelectionChanged += new System.EventHandler(this.dgvPositions_SelectionChanged);
             this.dgvPositions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dgvPositions_MouseDoubleClick);
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = global::iTestOutlookAddIn.Properties.Resources.positions;
+            this.pictureBox4.Location = new System.Drawing.Point(17, 15);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(35, 39);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox4.TabIndex = 63;
+            this.pictureBox4.TabStop = false;
             // 
             // button4
             // 
@@ -928,6 +1023,16 @@
             this.lblWaitStatus.Size = new System.Drawing.Size(69, 13);
             this.lblWaitStatus.TabIndex = 23;
             this.lblWaitStatus.Text = "please wait...";
+            // 
+            // ajaxLoading
+            // 
+            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
+            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
+            this.ajaxLoading.Name = "ajaxLoading";
+            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
+            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.ajaxLoading.TabIndex = 22;
+            this.ajaxLoading.TabStop = false;
             // 
             // updateWorker
             // 
@@ -986,66 +1091,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // ajaxLoading
-            // 
-            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
-            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
-            this.ajaxLoading.Name = "ajaxLoading";
-            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
-            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ajaxLoading.TabIndex = 22;
-            this.ajaxLoading.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::iTestOutlookAddIn.Properties.Resources.candidate;
-            this.pictureBox2.Location = new System.Drawing.Point(21, 9);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(32, 31);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 57;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.Image = global::iTestOutlookAddIn.Properties.Resources.position;
-            this.pictureBox5.Location = new System.Drawing.Point(13, 11);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(28, 32);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox5.TabIndex = 65;
-            this.pictureBox5.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 22;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::iTestOutlookAddIn.Properties.Resources.cv;
-            this.pictureBox3.Location = new System.Drawing.Point(14, 10);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(37, 34);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox3.TabIndex = 61;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Image = global::iTestOutlookAddIn.Properties.Resources.positions;
-            this.pictureBox4.Location = new System.Drawing.Point(17, 15);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(35, 39);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox4.TabIndex = 63;
-            this.pictureBox4.TabStop = false;
-            // 
             // CandidateEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1072,8 +1117,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.tabPageDocuments.ResumeLayout(false);
             this.tabPageDocuments.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCV)).EndInit();
@@ -1081,21 +1128,20 @@
             this.groupBox2.PerformLayout();
             this.panelCVWait.ResumeLayout(false);
             this.panelCVWait.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPositions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.panelWait.ResumeLayout(false);
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1176,13 +1222,13 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.ComboBox cbPositionStatus;
+        private System.Windows.Forms.DateTimePicker dtpPositionDate;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.DateTimePicker dtpWorkStartDate;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dtpSigningDate;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label23;
@@ -1192,5 +1238,7 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.PictureBox pictureBox6;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

@@ -20,6 +20,7 @@ namespace iTestOutlookAddIn
 {
     public partial class CandidateEditForm : Form
     {
+        private bool m_skipEvents = false;
         private BindingList<HunterCV.Common.Resume> m_bind_documents = null;
         private Candidate m_Candidate;
         private MainRegion m_region;
@@ -83,6 +84,16 @@ namespace iTestOutlookAddIn
             cbExperience.Text = m_Candidate.Experience.HasValue ? m_Candidate.Experience.Value.ToString() : "0";
             cbReference.Text = m_Candidate.Reference;
 
+            if (m_Candidate.Status.ToLower() == "signed")
+            {
+                dtpSigningDate.Enabled = true;
+                dtpWorkStartDate.Enabled = true;
+                linkLabel1.Enabled = true;
+
+                dtpSigningDate.Value = m_Candidate.SigningDate ?? DateTime.Today;
+                dtpWorkStartDate.Value = m_Candidate.WorkStartDate ?? DateTime.Today;
+            }
+
             if (!string.IsNullOrEmpty(m_Candidate.Areas))
             {
                 string[] areas = m_Candidate.Areas.Split(',');
@@ -126,6 +137,17 @@ namespace iTestOutlookAddIn
             this.m_Candidate.Former8200 = cbFormer8200.Checked;
             this.m_Candidate.Experience = string.IsNullOrEmpty(cbExperience.Text) ? (short)0 : short.Parse(cbExperience.Text);
             this.m_Candidate.Reference = cbReference.Text;
+
+            if (dtpSigningDate.Enabled)
+            {
+                this.m_Candidate.SigningDate = dtpSigningDate.Value;
+                this.m_Candidate.WorkStartDate = dtpWorkStartDate.Value;
+            }
+            else
+            {
+                this.m_Candidate.SigningDate = null;
+                this.m_Candidate.WorkStartDate = null;
+            }
         }
 
 
@@ -1077,6 +1099,147 @@ namespace iTestOutlookAddIn
             }
 
             BindPositionsGrid();
+        }
+
+        private void dgvPositions_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvPositions.SelectedRows.Count > 0)
+            {
+                Position position = dgvPositions.SelectedRows[0].DataBoundItem as Position;
+
+                if (position != null)
+                {
+                    dtpPositionDate.Enabled = true;
+                    cbPositionStatus.Enabled = true;
+
+                    CandidatePosition cPosition = m_Candidate.CandidatePositions.Where(p => p.PositionId == position.PositionID).Single();
+
+                    m_skipEvents = true;
+                    cbPositionStatus.Text = cPosition.CandidatePositionStatus;
+                    dtpPositionDate.Value = cPosition.CandidatePositionDate ?? DateTime.Today;
+                    m_skipEvents = false;
+                }
+            }
+        }
+
+        private void cbPositionStatus_TextChanged(object sender, EventArgs e)
+        {
+            if (m_skipEvents)
+                return;
+
+            Position position = dgvPositions.SelectedRows[0].DataBoundItem as Position;
+
+            if (position != null)
+            {
+                CandidatePosition cPosition = m_Candidate.CandidatePositions.Where(p => p.PositionId == position.PositionID).Single();
+
+                if (cbPositionStatus.Text.ToLower() == "signed")
+                {
+                    //clear previous
+                    var signed = m_Candidate.CandidatePositions.Where(p => p.CandidatePositionStatus == "Signed");
+
+                    foreach (CandidatePosition cp in signed)
+                    {
+                        cp.CandidatePositionStatus = "Rejected";
+                    }
+
+                    cPosition.CandidatePositionStatus = cbPositionStatus.Text;
+
+                    dtpSigningDate.Enabled = true;
+                    dtpWorkStartDate.Enabled = true;
+                    linkLabel1.Enabled = true;
+
+                    cbStatus.Text = "Signed";
+                    position.Status = "Manned";
+                }
+                else
+                {
+                    cPosition.CandidatePositionStatus = cbPositionStatus.Text;
+
+                }
+
+                m_positionsBindingSource.ResetBindings(true);
+            }
+
+        }
+
+        private void dtpPositionDate_ValueChanged(object sender, EventArgs e)
+        {
+            Position position = dgvPositions.SelectedRows[0].DataBoundItem as Position;
+
+            if (position != null)
+            {
+                CandidatePosition cPosition = m_Candidate.CandidatePositions.Where(p => p.PositionId == position.PositionID).Single();
+
+                cPosition.CandidatePositionDate = dtpPositionDate.Value;
+            }
+        }
+
+        private void dgvPositions_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            var dataGridView = sender as DataGridView;
+
+            var position = dataGridView.Rows[e.RowIndex].DataBoundItem as Position;
+
+            if (position != null)
+            {
+                var cpos = m_Candidate.CandidatePositions.Where(p => p.PositionId == position.PositionID).Single();
+
+                if (cpos.CandidatePositionStatus.ToLower() == "signed")
+                {
+                    e.CellStyle.Font = new Font(e.CellStyle.Font, FontStyle.Bold);
+                    // edit: to change the background color:
+                    e.CellStyle.BackColor = Color.Coral;
+                }
+            }
+        }
+
+        private void cbPositionStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            AppointmentItem oAppointment = (AppointmentItem) m_region.Application.CreateItem (OlItemType.olAppointmentItem);
+ 
+            oAppointment.Subject = string.Format("Candidate # {0} - {1} {2} is starting Work Today!", m_Candidate.CandidateNumber, m_Candidate.FirstName , m_Candidate.LastName);
+            //oAppointment.Body = "This is the body text for my appointment"; 
+            //oAppointment.Location = m_po
+            TimeSpan ts = new TimeSpan(8, 30, 0);
+            DateTime dtStart = dtpWorkStartDate.Value.Date + ts;
+
+            // Set the start date
+            oAppointment.Start = dtStart;
+            // End date 
+            oAppointment.End = dtStart.AddMinutes(15);
+            // Set the reminder 15 minutes before start
+            oAppointment.ReminderSet = true; 
+            oAppointment.ReminderMinutesBeforeStart = 15; 
+ 
+            //Setting the sound file for a reminder: 
+            oAppointment.ReminderPlaySound = true;
+ 
+            //Setting the importance: 
+            //use OlImportance enum to set the importance to low, medium or high
+
+            oAppointment.Importance = OlImportance.olImportanceLow; 
+ 
+            /* OlBusyStatus is enum with following values:
+            olBusy
+            olFree
+            olOutOfOffice
+            olTentative
+            */
+            oAppointment.BusyStatus = OlBusyStatus.olFree; 
+ 
+            //Finally, save the appointment: 
+ 
+            // Save the appointment
+            oAppointment.Save ();
+
+            MessageBox.Show("A New Reminder is set to candidate's work start date.", "HunterCV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
     }

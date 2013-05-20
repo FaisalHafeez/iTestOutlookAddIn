@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{466077
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterCV.FrontSite", "HunterCV.FrontSite\HunterCV.FrontSite.csproj", "{EB5CDC57-10D7-46EE-86A7-58CDDED8C723}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterCV.AddIn", "HunterCV.AddIn\HunterCV.AddIn.csproj", "{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,16 @@ Global
 		{EB5CDC57-10D7-46EE-86A7-58CDDED8C723}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EB5CDC57-10D7-46EE-86A7-58CDDED8C723}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EB5CDC57-10D7-46EE-86A7-58CDDED8C723}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CF3B994B-C47E-4FBE-AF53-9E3050F7FB9A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

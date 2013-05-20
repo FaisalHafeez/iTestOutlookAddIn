@@ -37,7 +37,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panelWait = new System.Windows.Forms.Panel();
             this.label26 = new System.Windows.Forms.Label();
-            this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -52,19 +51,20 @@
             this.tvAreas = new System.Windows.Forms.TreeView();
             this.dg = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnContinue = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.btnContinue = new System.Windows.Forms.Button();
+            this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelWait.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -125,7 +125,7 @@
             // cbCompany
             // 
             this.cbCompany.FormattingEnabled = true;
-            this.cbCompany.Location = new System.Drawing.Point(511, 3);
+            this.cbCompany.Location = new System.Drawing.Point(576, 4);
             this.cbCompany.Name = "cbCompany";
             this.cbCompany.Size = new System.Drawing.Size(152, 21);
             this.cbCompany.TabIndex = 53;
@@ -133,7 +133,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(453, 7);
+            this.label1.Location = new System.Drawing.Point(518, 8);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(51, 13);
             this.label1.TabIndex = 54;
@@ -159,28 +159,19 @@
             this.label26.TabIndex = 23;
             this.label26.Text = "please wait...";
             // 
-            // ajaxLoading
-            // 
-            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
-            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
-            this.ajaxLoading.Name = "ajaxLoading";
-            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
-            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ajaxLoading.TabIndex = 22;
-            this.ajaxLoading.TabStop = false;
-            // 
             // cbStatus
             // 
+            this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatus.FormattingEnabled = true;
-            this.cbStatus.Location = new System.Drawing.Point(161, 2);
+            this.cbStatus.Location = new System.Drawing.Point(153, 3);
             this.cbStatus.Name = "cbStatus";
-            this.cbStatus.Size = new System.Drawing.Size(108, 21);
+            this.cbStatus.Size = new System.Drawing.Size(162, 21);
             this.cbStatus.TabIndex = 51;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(118, 6);
+            this.label5.Location = new System.Drawing.Point(110, 6);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 13);
             this.label5.TabIndex = 50;
@@ -199,7 +190,7 @@
             // cbRole
             // 
             this.cbRole.FormattingEnabled = true;
-            this.cbRole.Location = new System.Drawing.Point(324, 2);
+            this.cbRole.Location = new System.Drawing.Point(389, 3);
             this.cbRole.Name = "cbRole";
             this.cbRole.Size = new System.Drawing.Size(108, 21);
             this.cbRole.TabIndex = 37;
@@ -216,7 +207,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(289, 5);
+            this.label2.Location = new System.Drawing.Point(354, 6);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
             this.label2.TabIndex = 38;
@@ -313,6 +304,17 @@
             this.panel2.Size = new System.Drawing.Size(748, 30);
             this.panel2.TabIndex = 50;
             // 
+            // btnContinue
+            // 
+            this.btnContinue.Enabled = false;
+            this.btnContinue.Location = new System.Drawing.Point(559, 3);
+            this.btnContinue.Name = "btnContinue";
+            this.btnContinue.Size = new System.Drawing.Size(105, 23);
+            this.btnContinue.TabIndex = 2;
+            this.btnContinue.Text = "Continue";
+            this.btnContinue.UseVisualStyleBackColor = true;
+            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
+            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(448, 3);
@@ -321,6 +323,7 @@
             this.button4.TabIndex = 1;
             this.button4.Text = "New Position";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
@@ -332,16 +335,15 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // btnContinue
+            // ajaxLoading
             // 
-            this.btnContinue.Enabled = false;
-            this.btnContinue.Location = new System.Drawing.Point(559, 3);
-            this.btnContinue.Name = "btnContinue";
-            this.btnContinue.Size = new System.Drawing.Size(105, 23);
-            this.btnContinue.TabIndex = 2;
-            this.btnContinue.Text = "Continue";
-            this.btnContinue.UseVisualStyleBackColor = true;
-            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
+            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
+            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
+            this.ajaxLoading.Name = "ajaxLoading";
+            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
+            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.ajaxLoading.TabIndex = 22;
+            this.ajaxLoading.TabStop = false;
             // 
             // PositionsForm
             // 
@@ -359,13 +361,13 @@
             this.panel1.PerformLayout();
             this.panelWait.ResumeLayout(false);
             this.panelWait.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dg)).EndInit();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
             this.ResumeLayout(false);
 
         }

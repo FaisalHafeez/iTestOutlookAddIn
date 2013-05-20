@@ -37,3 +37,5 @@ C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.Posi
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.ManagePositionStatusesForm.resources
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.ManageCandidateStatusesForm.resources
 C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\obj\Debug\iTestOutlookAddIn.Forms.SettingsForm.resources
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\Facebook.dll
+C:\Projects\iTestOutlookAddIn\iTestOutlookAddIn\bin\Debug\Facebook.xml
