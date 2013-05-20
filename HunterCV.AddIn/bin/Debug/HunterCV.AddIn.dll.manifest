@@ -72,14 +72,38 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HunterCV.AddIn.dll" size="12800">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Facebook.dll" size="105984">
+      <assemblyIdentity name="Facebook" version="6.0.10.0" publicKeyToken="58CB4F2111D1E6DE" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>T0xDUKV1L2egOHA/hbX7o2QzJ7o=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HunterCV.AddIn.dll" size="285696">
       <assemblyIdentity name="HunterCV.AddIn" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>onAfb8vLj+GbnIAgvaPa+la36So=</dsig:DigestValue>
+        <dsig:DigestValue>Vxb7NjJXbUucrxCAoVWx0e7gizY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HunterCV.Common.dll" size="17408">
+      <assemblyIdentity name="HunterCV.Common" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>Yx4LXrtUxG1mLlZbkyPGVid65AQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -107,6 +131,39 @@
       </hash>
     </dependentAssembly>
   </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Newtonsoft.Json.dll" size="424960">
+      <assemblyIdentity name="Newtonsoft.Json" version="4.5.0.0" publicKeyToken="30AD4FE6B2A6AEED" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>rnxZrJoot96RjhStzH7pBsrsbJY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Net.Http.Formatting.dll" size="168544">
+      <assemblyIdentity name="System.Net.Http.Formatting" version="4.0.0.0" publicKeyToken="31BF3856AD364E35" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>KT84YXCDXUnC9blRFCmO83Sn2bY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="HunterCV.AddIn.dll.config" size="3531">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>BQvJdW3VPwrM0/RBsJxT7jb6Xd0=</dsig:DigestValue>
+    </hash>
+  </file>
   <vstav3:addIn xmlns:vstav3="urn:schemas-microsoft-com:vsta.v3">
     <vstav3:entryPointsCollection>
       <vstav3:entryPoints>
@@ -124,10 +181,17 @@
           <vstov4:appAddIn application="Outlook" loadBehavior="3" keyName="HunterCV.AddIn">
             <vstov4:friendlyName>HunterCV.AddIn</vstov4:friendlyName>
             <vstov4:description>HunterCV.AddIn</vstov4:description>
-            <vstov4.1:ribbonTypes xmlns:vstov4.1="urn:schemas-microsoft-com:vsto.v4.1" />
+            <vstov4:formRegions>
+              <vstov4:formRegion name="HunterCV.AddIn.MainRegion" vstov4.1:class="HunterCV.AddIn.MainRegion+MainRegionFactory" xmlns:vstov4.1="urn:schemas-microsoft-com:vsto.v4.1">
+                <vstov4:messageClass name="IPM.Note" />
+              </vstov4:formRegion>
+            </vstov4:formRegions>
+            <vstov4.1:ribbonTypes xmlns:vstov4.1="urn:schemas-microsoft-com:vsto.v4.1">
+              <vstov4.1:ribbonType name="HunterCV.AddIn.HunterCVRibbon, HunterCV.AddIn, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            </vstov4.1:ribbonTypes>
           </vstov4:appAddIn>
         </vstov4:customization>
       </vstov4:customizations>
     </vstav3:application>
   </vstav3:addIn>
-<publisherIdentity name="CN=ARIEL8804\Administrator" issuerKeyHash="52a2fd5050a85c789ee4a809d198a48716416dbc" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>qQuLQZYlRfn2eCzoonTC1KZhiVU=</DigestValue></Reference></SignedInfo><SignatureValue>vCAMeXgC1sUGEIBvpFvP2QQx7mOxdsDBWV0cDFrNk5jf7RSbzAEDY0ex/4OxfMPCURnC+OT0A3+9UzpFE71vlo+SsYEXDcFAYOwXf1OCHw5Fw113cjIbHwVqqnmXvGA2QJ0+l7hib/3Lm07Spl0rkVjOHZWOraqmvITMnjPc9hY=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>3tbVwN15wX5bIFm9+3M+JLruO/+LAlPL4Yw+QE+w8H1Iaq6Ra/B1fhZykyxWuux26F+yX8kCg81X6elWCrDkSE9drwxfgnzLOx425l38xrzNezOFf3OmDTpAKRPu6EPHo4d2gJoq2Twrn0MaGBQXWq4M4pLbylzgxgbkuL/NKwU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="558961a6d4c274a2e82c78f6f9452596418b0ba9" Description="" Url=""><as:assemblyIdentity name="HunterCV.AddIn.dll" version="1.0.0.0" publicKeyToken="51684effbbe8d5c9" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=ARIEL8804\Administrator</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>u61uIgnFJT0amA42fnal/Pq2eko=</DigestValue></Reference></SignedInfo><SignatureValue>W+4kMV6ipRA0+vrem6i3Lx2pI7+VCVBtj5/DJLQT1e69gtm14HL+HrjAtrzNRDgMm/cXMVoabg5k7qXDQjqOETviZjPwtNRXBQ8OGUZR2AyggRsKwcCWei5Dl25a1Gr0a2W8VXPjuMPPo/MLfFw638Hcky9jfRtLKCcQKInRVqY=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>3tbVwN15wX5bIFm9+3M+JLruO/+LAlPL4Yw+QE+w8H1Iaq6Ra/B1fhZykyxWuux26F+yX8kCg81X6elWCrDkSE9drwxfgnzLOx425l38xrzNezOFf3OmDTpAKRPu6EPHo4d2gJoq2Twrn0MaGBQXWq4M4pLbylzgxgbkuL/NKwU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB9TCCAV6gAwIBAgIQb7jmNeAW27JFPp2WHkzXXzANBgkqhkiG9w0BAQUFADA5MTcwNQYDVQQDHi4AQQBSAEkARQBMADgAOAAwADQAXABBAGQAbQBpAG4AaQBzAHQAcgBhAHQAbwByMB4XDTEzMDUxOTE3NDIyOFoXDTE0MDUxOTIzNDIyOFowOTE3MDUGA1UEAx4uAEEAUgBJAEUATAA4ADgAMAA0AFwAQQBkAG0AaQBuAGkAcwB0AHIAYQB0AG8AcjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA3tbVwN15wX5bIFm9+3M+JLruO/+LAlPL4Yw+QE+w8H1Iaq6Ra/B1fhZykyxWuux26F+yX8kCg81X6elWCrDkSE9drwxfgnzLOx425l38xrzNezOFf3OmDTpAKRPu6EPHo4d2gJoq2Twrn0MaGBQXWq4M4pLbylzgxgbkuL/NKwUCAwEAATANBgkqhkiG9w0BAQUFAAOBgQDBbNUXWEih2MOFNs5AnBwEDooIdiI+7rSKv0HqLpm4033Gf/ap6YoXtd7Kml+ORHEK6wlJZDJTnB1sbQTWDz6AZWRfyPx4dJD9t5GjT1ipkyhgYzPF01P9+xVFAtpGkyCSR8HJw9szgNZRlt6cJ6y2Gt6MpyjpmkUP+xyiOB82oA==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+<publisherIdentity name="CN=ARIEL8804\Administrator" issuerKeyHash="52a2fd5050a85c789ee4a809d198a48716416dbc" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>3E+4zwzoWxhR97Ivy47WYZicsj4=</DigestValue></Reference></SignedInfo><SignatureValue>bXGu2RLBM/O6K7Pz+7RpYmxSIhz5++D7IC57XngxMpEPkMUJM+6U4A9sMTT3V+CsNO0z9+1vAlroJOWBIFWPEgERforj1WB5J8sZvSxrhAhQsOQvkXVkBvSsLP2XyO2NYUlelQNo0LtE2wwV8c03dsA+yJybtAQkh1SiXEotos8=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>3tbVwN15wX5bIFm9+3M+JLruO/+LAlPL4Yw+QE+w8H1Iaq6Ra/B1fhZykyxWuux26F+yX8kCg81X6elWCrDkSE9drwxfgnzLOx425l38xrzNezOFf3OmDTpAKRPu6EPHo4d2gJoq2Twrn0MaGBQXWq4M4pLbylzgxgbkuL/NKwU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="3eb29c9861d68ecb2fb2f751185be80ccfb84fdc" Description="" Url=""><as:assemblyIdentity name="HunterCV.AddIn.dll" version="1.0.0.0" publicKeyToken="51684effbbe8d5c9" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=ARIEL8804\Administrator</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>eUEUsFvW/IMhXcx/k8rPbbXWpE0=</DigestValue></Reference></SignedInfo><SignatureValue>jRLPAjjJ7UODtlEztpyV8edsMX3bWtBNUHqQo1GHUlxbxgOnFTdltJLc9nkrqrs5rfTYwIE78O3EctrP+jGczT8EgP44/A6jbkw/EJJC5MTKlYB+7uA+GbKg0h1MbKMwQJqp/m5jxC4wBowz38jRDkekzwNioMdAFr3M4Ke6+BE=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>3tbVwN15wX5bIFm9+3M+JLruO/+LAlPL4Yw+QE+w8H1Iaq6Ra/B1fhZykyxWuux26F+yX8kCg81X6elWCrDkSE9drwxfgnzLOx425l38xrzNezOFf3OmDTpAKRPu6EPHo4d2gJoq2Twrn0MaGBQXWq4M4pLbylzgxgbkuL/NKwU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB9TCCAV6gAwIBAgIQb7jmNeAW27JFPp2WHkzXXzANBgkqhkiG9w0BAQUFADA5MTcwNQYDVQQDHi4AQQBSAEkARQBMADgAOAAwADQAXABBAGQAbQBpAG4AaQBzAHQAcgBhAHQAbwByMB4XDTEzMDUxOTE3NDIyOFoXDTE0MDUxOTIzNDIyOFowOTE3MDUGA1UEAx4uAEEAUgBJAEUATAA4ADgAMAA0AFwAQQBkAG0AaQBuAGkAcwB0AHIAYQB0AG8AcjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA3tbVwN15wX5bIFm9+3M+JLruO/+LAlPL4Yw+QE+w8H1Iaq6Ra/B1fhZykyxWuux26F+yX8kCg81X6elWCrDkSE9drwxfgnzLOx425l38xrzNezOFf3OmDTpAKRPu6EPHo4d2gJoq2Twrn0MaGBQXWq4M4pLbylzgxgbkuL/NKwUCAwEAATANBgkqhkiG9w0BAQUFAAOBgQDBbNUXWEih2MOFNs5AnBwEDooIdiI+7rSKv0HqLpm4033Gf/ap6YoXtd7Kml+ORHEK6wlJZDJTnB1sbQTWDz6AZWRfyPx4dJD9t5GjT1ipkyhgYzPF01P9+xVFAtpGkyCSR8HJw9szgNZRlt6cJ6y2Gt6MpyjpmkUP+xyiOB82oA==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
