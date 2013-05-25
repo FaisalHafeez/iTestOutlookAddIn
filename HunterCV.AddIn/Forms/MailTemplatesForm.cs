@@ -25,6 +25,11 @@ namespace HunterCV.AddIn.Forms
 
         private void tbrUnderline_Click(object sender, EventArgs e)
         {
+            if (m_mailTemplate == null)
+            {
+                return;
+            }
+
             try
             {
                 if (!(rtbDoc.SelectionFont == null))
@@ -45,6 +50,11 @@ namespace HunterCV.AddIn.Forms
 
         private void tbrItalic_Click(object sender, EventArgs e)
         {
+            if (m_mailTemplate == null)
+            {
+                return;
+            }
+
             try
             {
                 if (!(rtbDoc.SelectionFont == null))
@@ -66,6 +76,11 @@ namespace HunterCV.AddIn.Forms
 
         private void tbrBold_Click(object sender, EventArgs e)
         {
+            if (m_mailTemplate == null)
+            {
+                return;
+            }
+
             try
             {
                 if (!(rtbDoc.SelectionFont == null))
@@ -88,24 +103,48 @@ namespace HunterCV.AddIn.Forms
 
         private void tbrRight_Click(object sender, EventArgs e)
         {
+            if (m_mailTemplate == null)
+            {
+                return;
+            }
+
+            rtbDoc.SelectAll();
             rtbDoc.SelectionAlignment = HorizontalAlignment.Right;
+            rtbDoc.SelectionLength = 0;
 
         }
 
         private void tbrCenter_Click(object sender, EventArgs e)
         {
+            if (m_mailTemplate == null)
+            {
+                return;
+            }
+
             rtbDoc.SelectionAlignment = HorizontalAlignment.Center;
 
         }
 
         private void tbrLeft_Click(object sender, EventArgs e)
         {
+            if (m_mailTemplate == null)
+            {
+                return;
+            }
+
+            rtbDoc.SelectAll();
             rtbDoc.SelectionAlignment = HorizontalAlignment.Left;
+            rtbDoc.SelectionLength = 0;
 
         }
 
         private void tspColor_Click(object sender, EventArgs e)
         {
+            if (m_mailTemplate == null)
+            {
+                return;
+            }
+
             try
             {
                 colorDialog1.Color = rtbDoc.ForeColor;
@@ -123,9 +162,14 @@ namespace HunterCV.AddIn.Forms
 
         private void tbrFont_Click(object sender, EventArgs e)
         {
+            if (m_mailTemplate == null)
+            {
+                return;
+            }
+
             try
             {
-                if (!(rtbDoc.SelectionFont == null))
+                if (!(rtbDoc.Font == null))
                 {
                     FontDialog1.Font = rtbDoc.SelectionFont;
                 }
@@ -134,6 +178,7 @@ namespace HunterCV.AddIn.Forms
                     FontDialog1.Font = null;
                 }
                 FontDialog1.ShowApply = true;
+                
                 if (FontDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     rtbDoc.SelectionFont = FontDialog1.Font;

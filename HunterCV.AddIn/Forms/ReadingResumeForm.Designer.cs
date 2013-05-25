@@ -40,16 +40,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(79, 20);
+            this.label1.Location = new System.Drawing.Point(105, 27);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(158, 13);
+            this.label1.Size = new System.Drawing.Size(211, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "reading resume file...Please wait";
             // 
             // ajaxLoading
             // 
             this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
-            this.ajaxLoading.Location = new System.Drawing.Point(54, 53);
+            this.ajaxLoading.Location = new System.Drawing.Point(109, 74);
+            this.ajaxLoading.Margin = new System.Windows.Forms.Padding(4);
             this.ajaxLoading.Name = "ajaxLoading";
             this.ajaxLoading.Size = new System.Drawing.Size(220, 19);
             this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -69,12 +71,14 @@
             // 
             // ReadingResumeForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(329, 84);
+            this.ClientSize = new System.Drawing.Size(439, 117);
             this.Controls.Add(this.ajaxLoading);
             this.Controls.Add(this.label1);
+            this.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ReadingResumeForm";

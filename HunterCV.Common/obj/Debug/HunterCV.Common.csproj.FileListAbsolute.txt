@@ -6,3 +6,7 @@ C:\Projects\iTestOutlookAddIn\HunterCV.Common\bin\Debug\HunterCV.Common.dll
 C:\Projects\iTestOutlookAddIn\HunterCV.Common\bin\Debug\HunterCV.Common.pdb
 C:\Projects\iTestOutlookAddIn\HunterCV.Common\obj\Debug\HunterCV.Common.dll
 C:\Projects\iTestOutlookAddIn\HunterCV.Common\obj\Debug\HunterCV.Common.pdb
+C:\Projects\HunterCV\HunterCV.Common\bin\Debug\HunterCV.Common.dll
+C:\Projects\HunterCV\HunterCV.Common\bin\Debug\HunterCV.Common.pdb
+C:\Projects\HunterCV\HunterCV.Common\obj\Debug\HunterCV.Common.dll
+C:\Projects\HunterCV\HunterCV.Common\obj\Debug\HunterCV.Common.pdb

@@ -26,6 +26,14 @@ namespace HunterCV.AddIn
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            bool blValidUsername = ValidateUserName();
+            bool blValidPassword = ValidatePassword();
+
+            if (!blValidPassword || !blValidUsername)
+            {
+                return;
+            }
+
             btnOK.Enabled = false;
 
             if (loginWorker.IsBusy != true)
@@ -100,5 +108,46 @@ namespace HunterCV.AddIn
         {
             System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["iTest.Site.ForgotPasswordUrl"]);
         }
+
+        private void tbUsername_Validating(object sender, CancelEventArgs e)
+        {
+            ValidateUserName();
+        }
+
+        private bool ValidateUserName()
+        {
+            bool bStatus = true;
+            if (tbUsername.Text.Trim() == "")
+            {
+                errorProvider1.SetError(tbUsername, "Please enter Username");
+                bStatus = false;
+            }
+            else
+            {
+                errorProvider1.SetError(tbUsername, "");
+            }
+            return bStatus;
+        }
+
+        private bool ValidatePassword()
+        {
+            bool bStatus = true;
+            if (tbPassword.Text.Trim() == "")
+            {
+                errorProvider1.SetError(tbPassword, "Please enter Password");
+                bStatus = false;
+            }
+            else
+            {
+                errorProvider1.SetError(tbPassword, "");
+            }
+            return bStatus;
+        }
+
+        private void tbPassword_Validating(object sender, CancelEventArgs e)
+        {
+            ValidatePassword();
+        }
+
     }
 }

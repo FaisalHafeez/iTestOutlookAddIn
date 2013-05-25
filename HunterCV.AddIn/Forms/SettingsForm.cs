@@ -26,7 +26,7 @@ namespace HunterCV.AddIn.Forms
 
                 if (ctls != null && ctls.Length > 0)
                 {
-                    if ( ctls[0].GetType() == typeof(TextBox))
+                    if (ctls[0].GetType() == typeof(TextBox) || ctls[0].GetType() == typeof(MaskedTextBox))
                     {
                         ctls[0].Text = pair.Value;
                     }
@@ -36,16 +36,24 @@ namespace HunterCV.AddIn.Forms
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
+            tbTablePageSize.Text = Properties.Settings.Default.PageSize.ToString();
+            cbUseProxy.Checked = Properties.Settings.Default.UseProxy;
 
+
+            tbProxyAddress.Text = Properties.Settings.Default.ProxyAddress;
+            tbProxyPort.Text = Properties.Settings.Default.ProxyPort.ToString();
+
+            tbProxyAddress.Enabled = cbUseProxy.Checked;
+            tbProxyPort.Enabled = cbUseProxy.Checked;
         }
 
-        public IEnumerable<Control> GetAll(Control control, Type type)
+        public IEnumerable<Control> GetAll(Control control, Type[] type)
         {
             var controls = control.Controls.Cast<Control>();
 
             return controls.SelectMany(ctrl => GetAll(ctrl, type))
                                       .Concat(controls)
-                                      .Where(c => c.GetType() == type);
+                                      .Where(c => type.Contains( c.GetType() ));
         }
 
         public string populateSettingsXml()
@@ -58,12 +66,15 @@ namespace HunterCV.AddIn.Forms
             //Write our root node
             sr = sr.Append("<settings>");
 
-            var ctls = GetAll(this, typeof(TextBox));
+            var ctls = GetAll(this, new Type[] { typeof(TextBox), typeof(MaskedTextBox) });
 
             foreach (Control ctl in ctls)
             {
-                sr = sr.Append("<setting title=\"" + ctl.Name + "\" value=\"" + ctl.Text + "\" />");
-                m_region.Settings.Add(new KeyValuePair<string, string>(ctl.Name, ctl.Text));
+                if (ctl.Tag != null && ctl.Tag.ToString() == "cloud")
+                {
+                    sr = sr.Append("<setting title=\"" + ctl.Name + "\" value=\"" + ctl.Text + "\" />");
+                    m_region.Settings.Add(new KeyValuePair<string, string>(ctl.Name, ctl.Text));
+                }
             }
             //Close the root node
 
@@ -78,6 +89,11 @@ namespace HunterCV.AddIn.Forms
             panelWait.Visible = true;
             button1.Enabled = false;
             button2.Enabled = false;
+
+            Properties.Settings.Default.PageSize = int.Parse(tbTablePageSize.Text);
+            Properties.Settings.Default.UseProxy = cbUseProxy.Checked;
+            Properties.Settings.Default.ProxyAddress = tbProxyAddress.Text;
+            Properties.Settings.Default.ProxyPort = int.Parse(tbProxyPort.Text);
 
             string xml = populateSettingsXml();
 
@@ -113,6 +129,18 @@ namespace HunterCV.AddIn.Forms
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbUseProxy_CheckedChanged(object sender, EventArgs e)
+        {
+            tbProxyAddress.Enabled = cbUseProxy.Checked;
+            tbProxyPort.Enabled = cbUseProxy.Checked;
+
         }
     }
 }

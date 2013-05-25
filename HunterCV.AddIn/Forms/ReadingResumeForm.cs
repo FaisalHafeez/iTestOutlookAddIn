@@ -17,11 +17,12 @@ namespace HunterCV.AddIn
         private string m_filePath;
 
         public Dictionary<String,String> ReadingResult { get; set; }
+        private MainRegion m_region;
 
-        public ReadingResumeForm(string filePath)
+        public ReadingResumeForm(MainRegion region, string filePath)
         {
             InitializeComponent();
-
+            m_region = region;
             ReadingResult = new Dictionary<string, string>();
 
             m_filePath = filePath;
@@ -76,9 +77,26 @@ namespace HunterCV.AddIn
                         );
 
                         this.ReadingResult.Add("Content", doc.Content.Text);
-                        this.ReadingResult.Add("Mobile1", GetMSWordWildCard(doc, "<[0-9][5][0-9]-[0-9]{7}>"));
-                        this.ReadingResult.Add("Mobile2", GetMSWordWildCard(doc, "<[0-9][5][0-9][0-9]{7}>"));
-                        this.ReadingResult.Add("Phone1", GetMSWordWildCard(doc, "<[0-9]{2}-[0-9]{7}>"));
+
+                        if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value))
+                        {
+                            this.ReadingResult.Add("MSWordMobile1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value + ">"));
+                        }
+
+                        if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value))
+                        {
+                            this.ReadingResult.Add("MSWordMobile2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value + ">"));
+                        }
+
+                        if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value))
+                        {
+                            this.ReadingResult.Add("MSWordPhone1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value + ">"));
+                        }
+
+                        if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value))
+                        {
+                            this.ReadingResult.Add("MSWordPhone2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value + ">"));
+                        }
 
                         app.Quit(ref objMissing, ref objMissing, ref objMissing);
                         break;

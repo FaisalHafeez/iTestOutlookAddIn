@@ -81,7 +81,18 @@ namespace HunterCV.AddIn
         public static bool Login(LoginDetails login)
         {
 
-            using (var httpClient = new HttpClient())
+            WebProxy proxy = null;
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+            {
+                proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+            }
+
+            using (var httpClient = new HttpClient(new HttpClientHandler()
+            {
+                UseProxy = Properties.Settings.Default.UseProxy,
+                Proxy = proxy
+            }))
             {
                 var response = httpClient.PostAsJsonAsync(
                     ConfigurationManager.AppSettings["iTest.Service.AccountsUrl"],
@@ -117,7 +128,19 @@ namespace HunterCV.AddIn
                 cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy,
+                    CookieContainer = cookieContainer
+                }))
                 {
                     var response = httpClient.PostAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"],
@@ -161,7 +184,19 @@ namespace HunterCV.AddIn
                 cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"]).Host;
                 cookieContainer.Add(cookie);
 
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PostAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"],
@@ -205,7 +240,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.AreasUrl"],
@@ -247,7 +294,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.RolesUrl"],
@@ -290,7 +349,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.StatusesUrl"],
@@ -332,7 +403,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.SettingsUrl"],
@@ -375,7 +458,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.PositionsStatusesUrl"],
@@ -418,7 +513,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.CompaniesUrl"],
@@ -460,7 +567,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"],
@@ -500,9 +619,21 @@ namespace HunterCV.AddIn
             cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"]).Host;
             cookieContainer.Add(cookie);
 
+            WebProxy proxy = null;
+
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+            {
+                proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+            }
+
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PostAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"],
@@ -545,7 +676,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"],
@@ -588,7 +731,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"],
@@ -632,7 +787,19 @@ namespace HunterCV.AddIn
 
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.PutAsJsonAsync(
                         ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"],
@@ -673,7 +840,19 @@ namespace HunterCV.AddIn
                 cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.DeleteAsync(
                         new Uri(string.Concat(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"], "/?id=" + candidate.CandidateID.ToString())),
@@ -704,6 +883,62 @@ namespace HunterCV.AddIn
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="position"></param>
+        public static void Delete(Position position)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+                cookie.Secure = false;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"]).Host;
+                cookieContainer.Add(cookie);
+
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
+                {
+                    var response = httpClient.DeleteAsync(
+                        new Uri(string.Concat(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"], "/?id=" + position.PositionID.ToString())),
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="candidate"></param>
         public static void DeleteResume(Resume resume)
         {
@@ -715,7 +950,19 @@ namespace HunterCV.AddIn
                 cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.DeleteAsync(
                         new Uri(string.Concat(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "/?id=" + resume.ResumeID.ToString())),
@@ -755,7 +1002,19 @@ namespace HunterCV.AddIn
                 cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var stream = httpClient.GetStreamAsync(string.Concat(
                              ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "/content/", resumeId.ToString()))
@@ -770,7 +1029,7 @@ namespace HunterCV.AddIn
                             count = stream.Read(buf, 0, 1024);
                             ms.Write(buf, 0, count);
                         } while (stream.CanRead && count > 0);
-                        
+
                         return ms.ToArray();
                     }
                 }
@@ -791,7 +1050,7 @@ namespace HunterCV.AddIn
                 throw ex;
             }
 
-            
+
         }
 
         private static byte[] ReadAllBytes(Stream source)
@@ -856,7 +1115,19 @@ namespace HunterCV.AddIn
 
                     if (fi.Exists)
                     {
-                        using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                        WebProxy proxy = null;
+
+                        if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                        {
+                            proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                        }
+
+                        using (var httpClient = new HttpClient(new HttpClientHandler()
+                        {
+                            CookieContainer = cookieContainer,
+                            UseProxy = Properties.Settings.Default.UseProxy,
+                            Proxy = proxy
+                        }))
                         {
                             using (var content = new MultipartFormDataContent())
                             {
@@ -901,7 +1172,19 @@ namespace HunterCV.AddIn
                 cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.GetAsync(string.Concat(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "/documents/", candidateId.ToString())).Result;
                     var documents = response.Content.ReadAsAsync<HunterCV.Common.DocumentCollection>().Result;
@@ -943,7 +1226,19 @@ namespace HunterCV.AddIn
                 cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
-                using (var httpClient = new HttpClient(new HttpClientHandler() { CookieContainer = cookieContainer }))
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
                 {
                     var response = httpClient.GetStringAsync(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Result;
 

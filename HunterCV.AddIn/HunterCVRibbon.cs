@@ -21,6 +21,12 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
+    
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
+
             formRegions.MainRegion.DoSearch(-1, true);
         }
 
@@ -29,6 +35,11 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
 
             if (formRegions.MainRegion.Areas != null)
             {
@@ -43,6 +54,11 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
+
             if (formRegions.MainRegion.Companies != null)
             {
                 ManageCompaniesForm frm = new ManageCompaniesForm(formRegions.MainRegion);
@@ -56,6 +72,11 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
+
             if (formRegions.MainRegion.Roles != null)
             {
                 ManageRolesForm frm = new ManageRolesForm(formRegions.MainRegion);
@@ -68,6 +89,11 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
 
             if (formRegions.MainRegion.CandidatesStatuses != null)
             {
@@ -88,6 +114,11 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
+
             MailTemplatesForm frm = new MailTemplatesForm(formRegions.MainRegion);
             frm.ShowDialog();
         }
@@ -97,6 +128,11 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
 
             PositionsForm frm = new PositionsForm(formRegions.MainRegion, FormOpenMode.Normal);
             frm.Show();
@@ -108,18 +144,20 @@ namespace HunterCV.AddIn
                     Globals.FormRegions
                     [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            int number = 1000;
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
+
+            int number = int.Parse(formRegions.MainRegion.Settings.Where(p => p.Key == "PositionsStartIndex").Single().Value);
 
             Guid guid = Guid.NewGuid();
 
             if (formRegions.MainRegion.Positions.Count() > 0)
             {
-                var max = (from p in formRegions.MainRegion.Positions
-                           select (p.PositionNumber)).Max();
-
-                if (max.HasValue)
+                while ( formRegions.MainRegion.Positions.Any( p => p.PositionNumber == number ) )
                 {
-                    number = max.Value + 1;
+                    number ++;
                 }
             }
 
@@ -143,6 +181,11 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
+
             if (formRegions.MainRegion.CandidatesStatuses != null)
             {
                 ManagePositionStatusesForm frm = new ManagePositionStatusesForm(formRegions.MainRegion);
@@ -156,8 +199,50 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
+
             SettingsForm frm = new SettingsForm(formRegions.MainRegion);
             frm.ShowDialog();
+        }
+
+        private void button4_Click_1(object sender, RibbonControlEventArgs e)
+        {
+            WindowFormRegionCollection formRegions =
+       Globals.FormRegions
+           [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (MainRegion.MainWorker.IsBusy)
+            {
+                return;
+            }
+
+            int number = int.Parse(formRegions.MainRegion.Settings.Where(p => p.Key == "CandidatesStartIndex").Single().Value);
+
+            Guid guid = Guid.NewGuid();
+
+            if (formRegions.MainRegion.Candidates.Count() > 0)
+            {
+                while (formRegions.MainRegion.Candidates.Any(p => p.CandidateNumber == number))
+                {
+                    number++;
+                }
+            }
+
+            Candidate newCandidate = new Candidate();
+            newCandidate.Username = ServiceHelper.LastLogin.Username;
+            newCandidate.CandidateNumber = number;
+            newCandidate.RegistrationDate = DateTime.Today;
+            newCandidate.CandidateID = guid;
+            newCandidate.CandidatePositions = new List<CandidatePosition>();
+
+            newCandidate.Status = "Classification";
+
+            CandidateEditForm form = new CandidateEditForm(true, formRegions.MainRegion, newCandidate);
+            form.Show();
+
         }
 
     }

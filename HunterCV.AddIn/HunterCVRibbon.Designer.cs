@@ -37,11 +37,13 @@
             this.InvidiaTab = this.Factory.CreateRibbonTab();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.button2 = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.group3 = this.Factory.CreateRibbonGroup();
+            this.group5 = this.Factory.CreateRibbonGroup();
             this.button7 = this.Factory.CreateRibbonButton();
             this.button8 = this.Factory.CreateRibbonButton();
+            this.button4 = this.Factory.CreateRibbonButton();
+            this.button2 = this.Factory.CreateRibbonButton();
             this.button6 = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.btnManageAreas = this.Factory.CreateRibbonButton();
@@ -53,10 +55,12 @@
             this.group2.SuspendLayout();
             this.group1.SuspendLayout();
             this.group3.SuspendLayout();
+            this.group5.SuspendLayout();
             // 
             // InvidiaTab
             // 
             this.InvidiaTab.Groups.Add(this.group4);
+            this.InvidiaTab.Groups.Add(this.group5);
             this.InvidiaTab.Groups.Add(this.group2);
             this.InvidiaTab.Groups.Add(this.group1);
             this.InvidiaTab.Groups.Add(this.group3);
@@ -67,7 +71,7 @@
             // 
             this.group4.Items.Add(this.button7);
             this.group4.Items.Add(this.button8);
-            this.group4.Label = "Positions";
+            this.group4.Label = "Openings";
             this.group4.Name = "group4";
             // 
             // group2
@@ -75,16 +79,6 @@
             this.group2.Items.Add(this.button2);
             this.group2.Label = "Data";
             this.group2.Name = "group2";
-            // 
-            // button2
-            // 
-            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button2.Label = "ReCloud";
-            this.button2.Name = "button2";
-            this.button2.OfficeImageId = "RecurrenceEdit";
-            this.button2.ScreenTip = "Refresh data from the cloud";
-            this.button2.ShowImage = true;
-            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
             // 
             // group1
             // 
@@ -102,6 +96,12 @@
             this.group3.Label = "HunterCV";
             this.group3.Name = "group3";
             // 
+            // group5
+            // 
+            this.group5.Items.Add(this.button4);
+            this.group5.Label = "Candidates";
+            this.group5.Name = "group5";
+            // 
             // button7
             // 
             this.button7.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -116,27 +116,48 @@
             // 
             this.button8.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.button8.Image = global::HunterCV.AddIn.Properties.Resources.add;
-            this.button8.Label = "New Position";
+            this.button8.Label = "New Opening";
             this.button8.Name = "button8";
             this.button8.OfficeImageId = "AccessFormModalDialog";
             this.button8.ShowImage = true;
             this.button8.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button8_Click);
             // 
+            // button4
+            // 
+            this.button4.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button4.Image = global::HunterCV.AddIn.Properties.Resources.addcandidate;
+            this.button4.Label = "New Candidate";
+            this.button4.Name = "button4";
+            this.button4.ShowImage = true;
+            this.button4.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button4_Click_1);
+            // 
+            // button2
+            // 
+            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button2.Label = "ReCloud";
+            this.button2.Name = "button2";
+            this.button2.OfficeImageId = "RecurrenceEdit";
+            this.button2.ScreenTip = "Refresh data from the cloud";
+            this.button2.ShowImage = true;
+            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
+            // 
             // button6
             // 
-            this.button6.Image = global::HunterCV.AddIn.Properties.Resources.bullet2;
+            this.button6.Image = global::HunterCV.AddIn.Properties.Resources.bullet;
             this.button6.Label = "Mail Templates";
             this.button6.Name = "button6";
             this.button6.OfficeImageId = "FilePrepareMenu";
+            this.button6.ShowImage = true;
             this.button6.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button6_Click);
             // 
             // button1
             // 
-            this.button1.Image = global::HunterCV.AddIn.Properties.Resources.bullet2;
+            this.button1.Image = global::HunterCV.AddIn.Properties.Resources.bullet;
             this.button1.Label = "Companies";
             this.button1.Name = "button1";
             this.button1.OfficeImageId = "CreateTableTemplatesGallery";
             this.button1.ScreenTip = "Manage companies";
+            this.button1.ShowImage = true;
             this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // btnManageAreas
@@ -147,6 +168,7 @@
             this.btnManageAreas.Name = "btnManageAreas";
             this.btnManageAreas.OfficeImageId = "ReviewAcceptChange";
             this.btnManageAreas.ScreenTip = "Manage areas";
+            this.btnManageAreas.ShowImage = true;
             this.btnManageAreas.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnManageAreas_Click);
             // 
             // button3
@@ -156,6 +178,7 @@
             this.button3.Name = "button3";
             this.button3.OfficeImageId = "AccessTableContacts";
             this.button3.ScreenTip = "Manage roles";
+            this.button3.ShowImage = true;
             this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button3_Click);
             // 
             // button5
@@ -194,6 +217,8 @@
             this.group1.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
+            this.group5.ResumeLayout(false);
+            this.group5.PerformLayout();
 
         }
 
@@ -213,6 +238,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button7;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button8;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button10;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group5;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button4;
     }
 
     partial class ThisRibbonCollection

@@ -5,22 +5,64 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using HunterCV.Common;
+using System.Drawing;
 
 namespace HunterCV.AddIn.ExtensionMethods
 {
     public static class Extensions
     {
-        public static string ReplaceCandidateWildCards(this string text, Candidate candidate)
-        {
-            text = Regex.Replace(text, @"((\{)(FIRSTNAME)(\}))|((\\\{)(FIRSTNAME)(\\\}))", candidate.FirstName ?? string.Empty);
-            text = Regex.Replace(text, @"((\{)(LASTNAME)(\}))|((\\\{)(LASTNAME)(\\\}))", candidate.LastName ?? string.Empty);
-            text = Regex.Replace(text, @"((\{)(EMAIL)(\}))|((\\\{)(EMAIL)(\\\}))", candidate.EMailAddress ?? string.Empty);
-            text = Regex.Replace(text, @"((\{)(MOBILE)(\}))|((\\\{)(MOBILE)(\\\}))", candidate.Mobile ?? string.Empty);
-            text = Regex.Replace(text, @"((\{)(PHONE)(\}))|((\\\{)(PHONE)(\\\}))", candidate.Phone ?? string.Empty);
-            text = Regex.Replace(text, @"((\{)(CANDIDATENUMBER)(\}))|((\\\{)(CANDIDATENUMBER)(\\\}))", candidate.CandidateNumber.Value.ToString());
+        private static RichTextBox m_rtb = new RichTextBox();
 
-            return text;
+        public static string ReplaceCandidateWildCards(this string rtf, Candidate candidate)
+        {
+            return ReplaceCandidateWildCards(rtf, candidate, false);
         }
+
+        private static void ReplaceWildCard(string wildcard, string replaceWith)
+        {
+            int index = m_rtb.Find(wildcard);
+
+            if (index >= 0)
+            {
+                m_rtb.Select(index, wildcard.Length);
+                m_rtb.SelectedText = replaceWith;
+            }
+        }
+
+        public static string ReplaceCandidateWildCards(this string rtf, Candidate candidate,bool blEncodeRtf )
+        {
+            CrossThreadUtility.InvokeControlAction<RichTextBox>(m_rtb, t =>
+           {
+               if (blEncodeRtf)
+               {
+                   t.Clear();
+                   
+                   m_rtb.Rtf = rtf;
+
+                   ReplaceWildCard(@"{FIRSTNAME}", candidate.FirstName);
+                   ReplaceWildCard(@"{LASTNAME}", candidate.LastName);
+                   ReplaceWildCard(@"{EMAIL}", candidate.EMailAddress);
+                   ReplaceWildCard(@"{MOBILE}", candidate.Mobile);
+                   ReplaceWildCard(@"{PHONE}", candidate.Phone);
+                   ReplaceWildCard(@"{CANDIDATENUMBER}", candidate.CandidateNumber.Value.ToString());
+
+
+                   rtf = m_rtb.Rtf;
+               }
+               else
+               {
+                   rtf = Regex.Replace(rtf, @"(\{)(FIRSTNAME)(\})", candidate.FirstName ?? string.Empty);
+                   rtf = Regex.Replace(rtf, @"(\{)(LASTNAME)(\})", candidate.LastName ?? string.Empty);
+                   rtf = Regex.Replace(rtf, @"(\{)(EMAIL)(\})", candidate.EMailAddress ?? string.Empty);
+                   rtf = Regex.Replace(rtf, @"(\{)(MOBILE)(\})", candidate.Mobile ?? string.Empty);
+                   rtf = Regex.Replace(rtf, @"(\{)(PHONE)(\})", candidate.Phone ?? string.Empty);
+                   rtf = Regex.Replace(rtf, @"(\{)(CANDIDATENUMBER)(\})", candidate.CandidateNumber.Value.ToString());
+               }
+           });
+
+            return rtf;
+        }
+
 
         public static TreeNode[] CloneNodes(this TreeNode[] nodes)
         {

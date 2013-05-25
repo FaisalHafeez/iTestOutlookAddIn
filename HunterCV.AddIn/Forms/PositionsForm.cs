@@ -20,6 +20,11 @@ namespace HunterCV.AddIn
         private bool m_ignoreCheckedEvent = false;
         private FormOpenMode m_openMode = FormOpenMode.Normal;
         private IEnumerable<Guid> m_selectedPositionsIds = null;
+        private IEnumerable<Position> m_filteredPositions;
+
+        private static int m_TotalRecords;
+        private static int m_TotalPages;
+        private static int m_CurrentPage;
 
         public IEnumerable<Guid> SelectedPositionsIds
         {
@@ -48,16 +53,14 @@ namespace HunterCV.AddIn
             DoSearch(-1);
         }
 
-        private void DoSearch(int columnIndex)
+        public void DoSearch(int columnIndex)
         {
             if (m_region.Positions == null)
             {
                 return;
             }
 
-            var loc = (from l in m_region.Positions select l);
-
-
+            m_filteredPositions = (from l in m_region.Positions select l);
 
             List<String> areas = GetCheckedAreas(tvAreas.Nodes, false);
 
@@ -65,25 +68,25 @@ namespace HunterCV.AddIn
             {
                 foreach (var area in areas)
                 {
-                    loc = loc.Where(p => p.PositionAreas != null && p.PositionAreas.Contains(area));
+                    m_filteredPositions = m_filteredPositions.Where(p => p.PositionAreas != null && p.PositionAreas.Contains(area));
                 }
             }
 
             if (m_openMode == FormOpenMode.SearchAndSelect)
             {
-                loc = loc.Where(a => a.Status != "Manned");
+                m_filteredPositions = m_filteredPositions.Where(a => a.Status != "Manned");
             }
             else
             {
                 if (!string.IsNullOrEmpty(cbStatus.Text))
                 {
-                    loc = loc.Where(a => a.Status == cbStatus.Text);
+                    m_filteredPositions = m_filteredPositions.Where(a => a.Status == cbStatus.Text);
                 }
             }
 
             if (!string.IsNullOrEmpty(cbCompany.Text))
             {
-                loc = loc.Where(a => a.Company == cbCompany.Text);
+                m_filteredPositions = m_filteredPositions.Where(a => a.Company == cbCompany.Text);
             }
 
             CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, tb =>
@@ -97,7 +100,7 @@ namespace HunterCV.AddIn
 
                     if (parse)
                     {
-                        loc = loc.Where(a => a.PositionNumber.Value == result);
+                        m_filteredPositions = m_filteredPositions.Where(a => a.PositionNumber.Value == result);
                     }
                 }
 
@@ -108,19 +111,23 @@ namespace HunterCV.AddIn
                 DateTime start = new DateTime(dateTimePicker1.Value.Year, dateTimePicker1.Value.Month, dateTimePicker1.Value.Day, 0, 0, 0);
                 DateTime end = new DateTime(dateTimePicker2.Value.Year, dateTimePicker2.Value.Month, dateTimePicker2.Value.Day, 23, 59, 59);
 
-                loc = loc.Where(a => a.PublishedAt.Value >= start && a.PublishedAt.Value <= end);
+                m_filteredPositions = m_filteredPositions.Where(a => a.PublishedAt.Value >= start && a.PublishedAt.Value <= end);
             }
+
+            m_TotalRecords = m_filteredPositions.Count();
+            m_TotalPages = m_TotalRecords / Properties.Settings.Default.PageSize + (m_TotalRecords % Properties.Settings.Default.PageSize > 0 ? 1 : 0);
+            m_CurrentPage = 0;
 
             if (columnIndex > 0 && dg.Columns[columnIndex].Name == "PositionNumber")
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
-                    loc = loc.OrderByDescending(p => p.PositionNumber);
+                    m_filteredPositions = m_filteredPositions.OrderByDescending(p => p.PositionNumber);
                     m_oldSortingAscending = false;
                 }
                 else
                 {
-                    loc = loc.OrderBy(p => p.PositionNumber);
+                    m_filteredPositions = m_filteredPositions.OrderBy(p => p.PositionNumber);
                     m_oldSortingAscending = true;
                 }
 
@@ -131,12 +138,12 @@ namespace HunterCV.AddIn
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
-                    loc = loc.OrderByDescending(p => p.PublishedAt);
+                    m_filteredPositions = m_filteredPositions.OrderByDescending(p => p.PublishedAt);
                     m_oldSortingAscending = false;
                 }
                 else
                 {
-                    loc = loc.OrderBy(p => p.PublishedAt);
+                    m_filteredPositions = m_filteredPositions.OrderBy(p => p.PublishedAt);
                     m_oldSortingAscending = true;
                 }
 
@@ -147,12 +154,12 @@ namespace HunterCV.AddIn
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
-                    loc = loc.OrderByDescending(p => p.PositionTitle);
+                    m_filteredPositions = m_filteredPositions.OrderByDescending(p => p.PositionTitle);
                     m_oldSortingAscending = false;
                 }
                 else
                 {
-                    loc = loc.OrderBy(p => p.PositionTitle);
+                    m_filteredPositions = m_filteredPositions.OrderBy(p => p.PositionTitle);
                     m_oldSortingAscending = true;
                 }
 
@@ -163,12 +170,12 @@ namespace HunterCV.AddIn
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
-                    loc = loc.OrderByDescending(p => p.PositionDescription);
+                    m_filteredPositions = m_filteredPositions.OrderByDescending(p => p.PositionDescription);
                     m_oldSortingAscending = false;
                 }
                 else
                 {
-                    loc = loc.OrderBy(p => p.PositionDescription);
+                    m_filteredPositions = m_filteredPositions.OrderBy(p => p.PositionDescription);
                     m_oldSortingAscending = true;
                 }
 
@@ -179,12 +186,12 @@ namespace HunterCV.AddIn
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
-                    loc = loc.OrderByDescending(p => p.PositionAreas);
+                    m_filteredPositions = m_filteredPositions.OrderByDescending(p => p.PositionAreas);
                     m_oldSortingAscending = false;
                 }
                 else
                 {
-                    loc = loc.OrderBy(p => p.PositionAreas);
+                    m_filteredPositions = m_filteredPositions.OrderBy(p => p.PositionAreas);
                     m_oldSortingAscending = true;
                 }
 
@@ -195,12 +202,12 @@ namespace HunterCV.AddIn
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
-                    loc = loc.OrderByDescending(p => p.PositionRole);
+                    m_filteredPositions = m_filteredPositions.OrderByDescending(p => p.PositionRole);
                     m_oldSortingAscending = false;
                 }
                 else
                 {
-                    loc = loc.OrderBy(p => p.PositionRole);
+                    m_filteredPositions = m_filteredPositions.OrderBy(p => p.PositionRole);
                     m_oldSortingAscending = true;
                 }
 
@@ -211,12 +218,12 @@ namespace HunterCV.AddIn
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
-                    loc = loc.OrderByDescending(p => p.Company);
+                    m_filteredPositions = m_filteredPositions.OrderByDescending(p => p.Company);
                     m_oldSortingAscending = false;
                 }
                 else
                 {
-                    loc = loc.OrderBy(p => p.Company);
+                    m_filteredPositions = m_filteredPositions.OrderBy(p => p.Company);
                     m_oldSortingAscending = true;
                 }
 
@@ -227,55 +234,85 @@ namespace HunterCV.AddIn
             {
                 if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
                 {
-                    loc = loc.OrderByDescending(p => p.Status);
+                    m_filteredPositions = m_filteredPositions.OrderByDescending(p => p.Status);
                     m_oldSortingAscending = false;
                 }
                 else
                 {
-                    loc = loc.OrderBy(p => p.Status);
+                    m_filteredPositions = m_filteredPositions.OrderBy(p => p.Status);
                     m_oldSortingAscending = true;
                 }
 
                 m_oldSortingIndex = columnIndex;
             }
 
+            //m_mainGridBindingSource = new BindingSource();
+            //m_mainGridBindingSource.DataSource = new List<Position>(m_filteredPositions);
 
-            m_mainGridBindingSource = new BindingSource();
-            m_mainGridBindingSource.DataSource = new List<Position>(loc);
+            //dg.Columns.Clear();
+            //dg.DataSource = m_mainGridBindingSource;
 
-            dg.Columns.Clear();
-            dg.DataSource = m_mainGridBindingSource;
-
-            if (loc.Count() > 0)
-            {
-                dg.Columns[0].Visible = false;
-                dg.Columns[10].Visible = false;
-                dg.Columns[11].Visible = false;
-            }
-
+            //if (m_filteredPositions.Count() > 0)
+            //{
+            //    dg.Columns[0].Visible = false;
+            //    dg.Columns[10].Visible = false;
+            //    dg.Columns[11].Visible = false;
+            //}
             if (m_openMode == FormOpenMode.SearchAndSelect)
             {
                 btnContinue.Enabled = true;
-                dg.ReadOnly = false;
+            }
 
-                for(int i =0;i<dg.ColumnCount;i++)
+            loadPage();
+        }
+
+        private void loadPage()
+        {
+            CrossThreadUtility.InvokeControlAction<DataGridView>(dg, dataGrid =>
+            {
+                var m_pagedCandidates = m_filteredPositions.Skip(m_CurrentPage * Properties.Settings.Default.PageSize)
+                    .Take(Properties.Settings.Default.PageSize);
+
+                m_mainGridBindingSource = new BindingSource();
+                m_mainGridBindingSource.DataSource = new List<Position>(m_pagedCandidates);
+                
+                dataGrid.Columns.Clear();
+                dataGrid.DataSource = m_mainGridBindingSource;
+                if (m_filteredPositions.Count() > 0 && dataGrid.Columns.Count > 0)
                 {
-                    dg.Columns[i].ReadOnly = true;
+                    dataGrid.Columns[0].Visible = false;
+                    dataGrid.Columns[10].Visible = false;
+                    dataGrid.Columns[11].Visible = false;
                 }
 
-                var col = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-                col.Width = 30;
-                col.Frozen = true;
-                col.DividerWidth = 3;
-                col.MinimumWidth = 30;
-                col.ReadOnly = false;
+                if (m_openMode == FormOpenMode.SearchAndSelect)
+                {
+                    dataGrid.ReadOnly = false;
 
-                dg.Columns.Insert(0, col);
-            }
-            else
-            {
-                dg.ReadOnly = true;
-            }
+                    for (int i = 0; i < dataGrid.ColumnCount; i++)
+                    {
+                        dataGrid.Columns[i].ReadOnly = true;
+                    }
+
+                    var col = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+                    col.Width = 30;
+                    col.Frozen = true;
+                    col.DividerWidth = 3;
+                    col.MinimumWidth = 30;
+                    col.ReadOnly = false;
+
+                    dataGrid.Columns.Insert(0, col);
+                }
+                else
+                {
+                    dataGrid.ReadOnly = true;
+                }
+
+            });
+
+            // Show Status
+            CrossThreadUtility.InvokeControlAction<Label>(lblStatus, label => label.Text = (m_CurrentPage + (m_TotalRecords > 0 ? 1 : 0)).ToString() + " / " + m_TotalPages.ToString());
+            CrossThreadUtility.InvokeControlAction<Panel>(panelWait, panel => panel.Visible = false);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -298,7 +335,7 @@ namespace HunterCV.AddIn
         {
             CrossThreadUtility.InvokeControlAction<ComboBox>(cbRole, cb => cb.Text = "");
             CrossThreadUtility.InvokeControlAction<CheckBox>(checkBox1, cb => cb.Checked = false);
-            CrossThreadUtility.InvokeControlAction<ComboBox>(cbStatus, cb => cb.Text = "");
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbStatus, cb => cb.SelectedIndex = -1);
             CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, cb =>
             {
                 cb.Text = "";
@@ -401,7 +438,7 @@ namespace HunterCV.AddIn
 
         private void button4_Click(object sender, EventArgs e)
         {
-            int number = 1000;
+            int number = int.Parse(m_region.Settings.Where(p => p.Key == "PositionsStartIndex").Single().Value);
 
             Guid guid = Guid.NewGuid();
 
@@ -429,6 +466,92 @@ namespace HunterCV.AddIn
             PositionEditForm frm = new PositionEditForm(m_region, position);
             frm.Show();
 
+        }
+
+
+        private void goFirst()
+        {
+            if (m_filteredPositions == null)
+            {
+                return;
+            }
+
+            m_CurrentPage = 0;
+
+            loadPage();
+        }
+
+        private void goPrevious()
+        {
+            if (m_filteredPositions == null)
+            {
+                return;
+            }
+
+            m_CurrentPage--;
+
+            if (m_CurrentPage < 1)
+                m_CurrentPage = 0;
+
+            loadPage();
+        }
+
+        private void goNext()
+        {
+            if (m_filteredPositions == null)
+            {
+                return;
+            }
+
+            m_CurrentPage++;
+
+            if (m_CurrentPage > (m_TotalPages - 1))
+                m_CurrentPage = m_TotalPages - 1;
+
+            loadPage();
+        }
+
+        private void goLast()
+        {
+            if (m_filteredPositions == null)
+            {
+                return;
+            }
+
+            m_CurrentPage = m_TotalPages - 1;
+
+            loadPage();
+        }
+
+        private void PositionsForm_Activated(object sender, EventArgs e)
+        {
+            m_mainGridBindingSource.ResetBindings(true);
+        }
+
+        private void btnFirst_Click(object sender, EventArgs e)
+        {
+            goFirst();
+        }
+
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            goPrevious();
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            goNext();
+        }
+
+        private void btnLast_Click(object sender, EventArgs e)
+        {
+            goLast();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            dateTimePicker1.Enabled = checkBox1.Checked;
+            dateTimePicker2.Enabled = checkBox1.Checked;
         }
     }
 }

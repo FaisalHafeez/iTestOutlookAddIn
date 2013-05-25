@@ -39,7 +39,6 @@
             this.tspColor = new System.Windows.Forms.ToolStripButton();
             this.ToolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tbrLeft = new System.Windows.Forms.ToolStripButton();
-            this.tbrCenter = new System.Windows.Forms.ToolStripButton();
             this.tbrRight = new System.Windows.Forms.ToolStripButton();
             this.ToolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tbrBold = new System.Windows.Forms.ToolStripButton();
@@ -54,7 +53,6 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.FontDialog1 = new System.Windows.Forms.FontDialog();
             this.panelWait = new System.Windows.Forms.Panel();
-            this.lblWaitStatus = new System.Windows.Forms.Label();
             this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -78,9 +76,11 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.tbSubject);
             this.groupBox1.Controls.Add(this.rtbDoc);
-            this.groupBox1.Location = new System.Drawing.Point(246, 17);
+            this.groupBox1.Location = new System.Drawing.Point(328, 24);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(554, 398);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(739, 551);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = " Template properties";
@@ -89,9 +89,10 @@
             // cbIncludeAttachments
             // 
             this.cbIncludeAttachments.AutoSize = true;
-            this.cbIncludeAttachments.Location = new System.Drawing.Point(96, 88);
+            this.cbIncludeAttachments.Location = new System.Drawing.Point(128, 122);
+            this.cbIncludeAttachments.Margin = new System.Windows.Forms.Padding(4);
             this.cbIncludeAttachments.Name = "cbIncludeAttachments";
-            this.cbIncludeAttachments.Size = new System.Drawing.Size(139, 17);
+            this.cbIncludeAttachments.Size = new System.Drawing.Size(173, 22);
             this.cbIncludeAttachments.TabIndex = 8;
             this.cbIncludeAttachments.Text = "Include CV attachments";
             this.cbIncludeAttachments.UseVisualStyleBackColor = true;
@@ -99,9 +100,10 @@
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(93, 341);
+            this.label4.Location = new System.Drawing.Point(124, 472);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(443, 46);
+            this.label4.Size = new System.Drawing.Size(591, 63);
             this.label4.TabIndex = 7;
             this.label4.Text = "* - You can use special reserved expressions as : {FIRSTNAME}, {LASTNAME}, {EMAIL" +
     "}, {PHONE}, {MOBILE} and {CANDIDATENUMBER} which will be replaced with candidate" +
@@ -110,17 +112,19 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 29);
+            this.label3.Location = new System.Drawing.Point(13, 40);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 13);
+            this.label3.Size = new System.Drawing.Size(104, 18);
             this.label3.TabIndex = 6;
             this.label3.Text = "Template Title :";
             // 
             // tbTitle
             // 
-            this.tbTitle.Location = new System.Drawing.Point(96, 29);
+            this.tbTitle.Location = new System.Drawing.Point(128, 40);
+            this.tbTitle.Margin = new System.Windows.Forms.Padding(4);
             this.tbTitle.Name = "tbTitle";
-            this.tbTitle.Size = new System.Drawing.Size(181, 20);
+            this.tbTitle.Size = new System.Drawing.Size(240, 26);
             this.tbTitle.TabIndex = 5;
             this.tbTitle.TextChanged += new System.EventHandler(this.tbTitle_TextChanged);
             // 
@@ -132,15 +136,14 @@
             this.tspColor,
             this.ToolStripSeparator4,
             this.tbrLeft,
-            this.tbrCenter,
             this.tbrRight,
             this.ToolStripSeparator2,
             this.tbrBold,
             this.tbrItalic,
             this.tbrUnderline});
-            this.ToolStrip1.Location = new System.Drawing.Point(96, 117);
+            this.ToolStrip1.Location = new System.Drawing.Point(128, 172);
             this.ToolStrip1.Name = "ToolStrip1";
-            this.ToolStrip1.Size = new System.Drawing.Size(208, 25);
+            this.ToolStrip1.Size = new System.Drawing.Size(185, 25);
             this.ToolStrip1.TabIndex = 4;
             this.ToolStrip1.Text = "ToolStrip1";
             // 
@@ -178,16 +181,6 @@
             this.tbrLeft.Size = new System.Drawing.Size(23, 22);
             this.tbrLeft.Text = "Left";
             this.tbrLeft.Click += new System.EventHandler(this.tbrLeft_Click);
-            // 
-            // tbrCenter
-            // 
-            this.tbrCenter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbrCenter.Image = ((System.Drawing.Image)(resources.GetObject("tbrCenter.Image")));
-            this.tbrCenter.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tbrCenter.Name = "tbrCenter";
-            this.tbrCenter.Size = new System.Drawing.Size(23, 22);
-            this.tbrCenter.Text = "Center";
-            this.tbrCenter.Click += new System.EventHandler(this.tbrCenter_Click);
             // 
             // tbrRight
             // 
@@ -237,44 +230,49 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 145);
+            this.label2.Location = new System.Drawing.Point(25, 201);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 13);
+            this.label2.Size = new System.Drawing.Size(86, 18);
             this.label2.TabIndex = 3;
             this.label2.Text = "Mail Body * :";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 58);
+            this.label1.Location = new System.Drawing.Point(25, 81);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(71, 13);
+            this.label1.Size = new System.Drawing.Size(91, 18);
             this.label1.TabIndex = 2;
             this.label1.Text = "Mail Subject :";
             // 
             // tbSubject
             // 
-            this.tbSubject.Location = new System.Drawing.Point(96, 55);
+            this.tbSubject.Location = new System.Drawing.Point(128, 76);
+            this.tbSubject.Margin = new System.Windows.Forms.Padding(4);
             this.tbSubject.Name = "tbSubject";
-            this.tbSubject.Size = new System.Drawing.Size(440, 20);
+            this.tbSubject.Size = new System.Drawing.Size(585, 26);
             this.tbSubject.TabIndex = 1;
             this.tbSubject.TextChanged += new System.EventHandler(this.tbSubject_TextChanged);
             // 
             // rtbDoc
             // 
-            this.rtbDoc.Location = new System.Drawing.Point(96, 145);
+            this.rtbDoc.Location = new System.Drawing.Point(128, 201);
+            this.rtbDoc.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDoc.Name = "rtbDoc";
-            this.rtbDoc.Size = new System.Drawing.Size(440, 190);
+            this.rtbDoc.Size = new System.Drawing.Size(585, 262);
             this.rtbDoc.TabIndex = 0;
             this.rtbDoc.Text = "";
             this.rtbDoc.TextChanged += new System.EventHandler(this.rtbDoc_TextChanged);
             // 
             // button1
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(607, 420);
+            this.button1.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(809, 582);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 23);
+            this.button1.Size = new System.Drawing.Size(149, 32);
             this.button1.TabIndex = 3;
             this.button1.Text = "Save and Close";
             this.button1.UseVisualStyleBackColor = true;
@@ -283,41 +281,34 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(725, 420);
+            this.button2.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(967, 582);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(100, 32);
             this.button2.TabIndex = 4;
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // panelWait
             // 
-            this.panelWait.Controls.Add(this.lblWaitStatus);
             this.panelWait.Controls.Add(this.ajaxLoading);
-            this.panelWait.Location = new System.Drawing.Point(246, 421);
+            this.panelWait.Location = new System.Drawing.Point(328, 583);
+            this.panelWait.Margin = new System.Windows.Forms.Padding(4);
             this.panelWait.Name = "panelWait";
-            this.panelWait.Size = new System.Drawing.Size(194, 24);
+            this.panelWait.Size = new System.Drawing.Size(336, 33);
             this.panelWait.TabIndex = 54;
             this.panelWait.Visible = false;
-            // 
-            // lblWaitStatus
-            // 
-            this.lblWaitStatus.AutoSize = true;
-            this.lblWaitStatus.Location = new System.Drawing.Point(27, 6);
-            this.lblWaitStatus.Margin = new System.Windows.Forms.Padding(5, 7, 3, 0);
-            this.lblWaitStatus.Name = "lblWaitStatus";
-            this.lblWaitStatus.Size = new System.Drawing.Size(69, 13);
-            this.lblWaitStatus.TabIndex = 23;
-            this.lblWaitStatus.Text = "please wait...";
             // 
             // ajaxLoading
             // 
             this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
-            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
+            this.ajaxLoading.Location = new System.Drawing.Point(58, 7);
+            this.ajaxLoading.Margin = new System.Windows.Forms.Padding(4);
             this.ajaxLoading.Name = "ajaxLoading";
-            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
+            this.ajaxLoading.Size = new System.Drawing.Size(220, 19);
             this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ajaxLoading.TabIndex = 22;
+            this.ajaxLoading.TabIndex = 25;
             this.ajaxLoading.TabStop = false;
             // 
             // groupBox2
@@ -325,9 +316,11 @@
             this.groupBox2.Controls.Add(this.btnDelete);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.listBox1);
-            this.groupBox2.Location = new System.Drawing.Point(12, 14);
+            this.groupBox2.Location = new System.Drawing.Point(16, 19);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(228, 401);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Size = new System.Drawing.Size(304, 555);
             this.groupBox2.TabIndex = 55;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Exists Templates";
@@ -335,10 +328,11 @@
             // btnDelete
             // 
             this.btnDelete.Enabled = false;
-            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.Location = new System.Drawing.Point(136, 222);
+            this.btnDelete.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Location = new System.Drawing.Point(181, 307);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.Size = new System.Drawing.Size(100, 32);
             this.btnDelete.TabIndex = 10;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -346,10 +340,11 @@
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(14, 222);
+            this.button3.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(19, 307);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(116, 23);
+            this.button3.Size = new System.Drawing.Size(155, 32);
             this.button3.TabIndex = 9;
             this.button3.Text = "New Template";
             this.button3.UseVisualStyleBackColor = true;
@@ -358,24 +353,28 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(14, 30);
+            this.listBox1.ItemHeight = 18;
+            this.listBox1.Location = new System.Drawing.Point(19, 42);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(4);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(197, 186);
+            this.listBox1.Size = new System.Drawing.Size(261, 256);
             this.listBox1.TabIndex = 0;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // MailTemplatesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(812, 451);
+            this.ClientSize = new System.Drawing.Size(1083, 624);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.panelWait);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox1);
+            this.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MailTemplatesForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Manage Mail Templates";
@@ -404,7 +403,6 @@
         private System.Windows.Forms.ToolStripButton tspColor;
         internal System.Windows.Forms.ToolStripSeparator ToolStripSeparator4;
         internal System.Windows.Forms.ToolStripButton tbrLeft;
-        internal System.Windows.Forms.ToolStripButton tbrCenter;
         internal System.Windows.Forms.ToolStripButton tbrRight;
         internal System.Windows.Forms.ToolStripSeparator ToolStripSeparator2;
         internal System.Windows.Forms.ToolStripButton tbrBold;
@@ -418,12 +416,11 @@
         private System.Windows.Forms.FontDialog FontDialog1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panelWait;
-        private System.Windows.Forms.Label lblWaitStatus;
-        private System.Windows.Forms.PictureBox ajaxLoading;
         private System.Windows.Forms.CheckBox cbIncludeAttachments;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.PictureBox ajaxLoading;
     }
 }

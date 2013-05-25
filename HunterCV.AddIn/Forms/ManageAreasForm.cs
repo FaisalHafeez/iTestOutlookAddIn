@@ -120,6 +120,8 @@ namespace HunterCV.AddIn
 
         private void btnClose_Click(object sender, EventArgs e)
         {
+            btnCancel.Enabled = false;
+            btnClose.Enabled = false;
             panelWait.Visible = true;
 
             string xml = populateTreeXml(tvAreas);

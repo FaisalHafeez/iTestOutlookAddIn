@@ -11,5 +11,7 @@ namespace HunterCV.Common
         public string FileName { get; set; }
         public string Description { get; set; }
         public bool IsCloudy { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsDirty { get; set; }
     }
 }

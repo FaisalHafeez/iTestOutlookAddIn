@@ -26,6 +26,7 @@ namespace HunterCV.AddIn
             m_region = region;
         }
 
+
         // This event handler is where the time-consuming work is done. 
         private void updateWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -119,6 +120,8 @@ namespace HunterCV.AddIn
 
         private void btnClose_Click(object sender, EventArgs e)
         {
+            btnCancel.Enabled = false;
+            btnClose.Enabled = false;
             panelWait.Visible = true;
 
             string xml = populateTreeXml(tvCompanies);

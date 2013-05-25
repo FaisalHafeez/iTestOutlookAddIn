@@ -814,7 +814,7 @@
         <EntityTypeShape EntityType="invidiadbModel.Application" Width="1.75" PointX="0.75" PointY="11.75" Height="2.1725878906249996" />
         <EntityTypeShape EntityType="invidiadbModel.CandidatePosition" Width="2.25" PointX="9.5" PointY="12.625" Height="2.1725878906249996" />
         <EntityTypeShape EntityType="invidiadbModel.Candidate" Width="1.75" PointX="7.25" PointY="8.625" Height="5.634013671874996" />
-        <EntityTypeShape EntityType="invidiadbModel.MailTemplate" Width="1.75" PointX="5" PointY="17.375" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="invidiadbModel.MailTemplate" Width="1.75" PointX="5" PointY="17.375" Height="2.364889322916671" />
         <EntityTypeShape EntityType="invidiadbModel.Position" Width="1.75" PointX="7.25" PointY="15" Height="3.5186979166666674" />
         <EntityTypeShape EntityType="invidiadbModel.Profile" Width="1.75" PointX="7.25" PointY="19.25" Height="2.172587890624996" />
         <EntityTypeShape EntityType="invidiadbModel.ResumeContent" Width="1.75" PointX="2.75" PointY="1.125" Height="1.5956835937499996" />
@@ -852,7 +852,7 @@
           <ConnectorPoint PointX="7.25" PointY="15.817047526041666" />
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.UserProfile" >
-          <ConnectorPoint PointX="5.875" PointY="16.634095052083332" />
+          <ConnectorPoint PointX="5.875" PointY="16.441793619791667" />
           <ConnectorPoint PointX="5.875" PointY="17.125" />
           <ConnectorPoint PointX="7" PointY="17.125" />
           <ConnectorPoint PointX="7" PointY="20.336293945312498" />
@@ -864,7 +864,7 @@
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.UsersInRoles" >
           <ConnectorPoint PointX="4.5" PointY="16.875" />
-          <ConnectorPoint PointX="5" PointY="16.634095052083332" />
+          <ConnectorPoint PointX="5" PointY="16.441793619791667" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

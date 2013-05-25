@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.btnOK = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -39,18 +40,20 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panelWait = new System.Windows.Forms.Panel();
-            this.label26 = new System.Windows.Forms.Label();
             this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.loginWorker = new System.ComponentModel.BackgroundWorker();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.panelWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(218, 117);
+            this.btnOK.Location = new System.Drawing.Point(211, 142);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(4);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.Size = new System.Drawing.Size(100, 32);
             this.btnOK.TabIndex = 5;
             this.btnOK.Text = "Login";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -59,9 +62,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(39, 21);
+            this.label1.Location = new System.Drawing.Point(52, 29);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.Size = new System.Drawing.Size(71, 18);
             this.label1.TabIndex = 1;
             this.label1.Text = "Username";
             // 
@@ -70,44 +74,51 @@
             this.cbRemember.AutoSize = true;
             this.cbRemember.Checked = true;
             this.cbRemember.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbRemember.Location = new System.Drawing.Point(110, 81);
+            this.cbRemember.Location = new System.Drawing.Point(147, 112);
+            this.cbRemember.Margin = new System.Windows.Forms.Padding(4);
             this.cbRemember.Name = "cbRemember";
-            this.cbRemember.Size = new System.Drawing.Size(125, 17);
+            this.cbRemember.Size = new System.Drawing.Size(161, 22);
             this.cbRemember.TabIndex = 2;
             this.cbRemember.Text = "Remember next login";
             this.cbRemember.UseVisualStyleBackColor = true;
             // 
             // tbUsername
             // 
-            this.tbUsername.Location = new System.Drawing.Point(110, 18);
+            this.tbUsername.Location = new System.Drawing.Point(147, 25);
+            this.tbUsername.Margin = new System.Windows.Forms.Padding(4);
             this.tbUsername.MaxLength = 50;
             this.tbUsername.Name = "tbUsername";
-            this.tbUsername.Size = new System.Drawing.Size(164, 20);
+            this.tbUsername.Size = new System.Drawing.Size(217, 26);
             this.tbUsername.TabIndex = 0;
+            this.tbUsername.Validating += new System.ComponentModel.CancelEventHandler(this.tbUsername_Validating);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 58);
+            this.label2.Location = new System.Drawing.Point(52, 81);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.Size = new System.Drawing.Size(67, 18);
             this.label2.TabIndex = 4;
             this.label2.Text = "Password";
             // 
             // tbPassword
             // 
-            this.tbPassword.Location = new System.Drawing.Point(110, 55);
+            this.tbPassword.Location = new System.Drawing.Point(147, 73);
+            this.tbPassword.Margin = new System.Windows.Forms.Padding(4);
             this.tbPassword.MaxLength = 50;
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(164, 20);
+            this.tbPassword.Size = new System.Drawing.Size(217, 26);
             this.tbPassword.TabIndex = 1;
+            this.tbPassword.Validating += new System.ComponentModel.CancelEventHandler(this.tbPassword_Validating);
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(137, 117);
+            this.btnCancel.Location = new System.Drawing.Point(319, 142);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(100, 32);
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -116,9 +127,10 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(4, 162);
+            this.linkLabel1.Location = new System.Drawing.Point(9, 215);
+            this.linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(146, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(191, 18);
             this.linkLabel1.TabIndex = 7;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Forgot username or password";
@@ -126,40 +138,33 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(7, 157);
+            this.groupBox1.Location = new System.Drawing.Point(12, 197);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(286, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(381, 3);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             // 
             // panelWait
             // 
-            this.panelWait.Controls.Add(this.label26);
             this.panelWait.Controls.Add(this.ajaxLoading);
-            this.panelWait.Location = new System.Drawing.Point(169, 162);
+            this.panelWait.Location = new System.Drawing.Point(208, 208);
+            this.panelWait.Margin = new System.Windows.Forms.Padding(4);
             this.panelWait.Name = "panelWait";
-            this.panelWait.Size = new System.Drawing.Size(134, 24);
+            this.panelWait.Size = new System.Drawing.Size(221, 33);
             this.panelWait.TabIndex = 24;
             this.panelWait.Visible = false;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(27, 6);
-            this.label26.Margin = new System.Windows.Forms.Padding(5, 7, 3, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(69, 13);
-            this.label26.TabIndex = 23;
-            this.label26.Text = "please wait...";
             // 
             // ajaxLoading
             // 
             this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
-            this.ajaxLoading.Location = new System.Drawing.Point(3, 3);
+            this.ajaxLoading.Location = new System.Drawing.Point(0, 10);
+            this.ajaxLoading.Margin = new System.Windows.Forms.Padding(4);
             this.ajaxLoading.Name = "ajaxLoading";
-            this.ajaxLoading.Size = new System.Drawing.Size(16, 16);
+            this.ajaxLoading.Size = new System.Drawing.Size(220, 19);
             this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ajaxLoading.TabIndex = 22;
+            this.ajaxLoading.TabIndex = 24;
             this.ajaxLoading.TabStop = false;
             // 
             // loginWorker
@@ -167,11 +172,16 @@
             this.loginWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.loginWorker_DoWork);
             this.loginWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.loginWorker_RunWorkerCompleted);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorProvider1.ContainerControl = this;
+            // 
             // LoginForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(305, 193);
+            this.ClientSize = new System.Drawing.Size(432, 252);
             this.Controls.Add(this.panelWait);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.linkLabel1);
@@ -182,7 +192,9 @@
             this.Controls.Add(this.cbRemember);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOK);
+            this.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LoginForm";
@@ -194,6 +206,7 @@
             this.panelWait.ResumeLayout(false);
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -211,8 +224,8 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Panel panelWait;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.PictureBox ajaxLoading;
         private System.ComponentModel.BackgroundWorker loginWorker;
+        private System.Windows.Forms.PictureBox ajaxLoading;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
