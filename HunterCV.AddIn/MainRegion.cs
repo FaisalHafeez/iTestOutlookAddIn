@@ -298,8 +298,26 @@ namespace HunterCV.AddIn
         }
 
         private int m_TotalRecords;
+
+        public int TotalRecords
+        {
+            get { return m_TotalRecords; }
+            set { m_TotalRecords = value; }
+        }
         private int m_TotalPages;
+
+        public int TotalPages
+        {
+            get { return m_TotalPages; }
+            set { m_TotalPages = value; }
+        }
         private int m_CurrentPage;
+
+        public int CurrentPage
+        {
+            get { return m_CurrentPage; }
+            set { m_CurrentPage = value; }
+        }
 
         #endregion
 
@@ -839,7 +857,7 @@ namespace HunterCV.AddIn
             CrossThreadUtility.InvokeControlAction<Panel>(panelWait, panel => panel.Visible = false);
         }
 
-        private void goFirst()
+        public void GoFirstPage()
         {
             if (m_filteredCandidates == null)
             {
@@ -851,7 +869,7 @@ namespace HunterCV.AddIn
             loadPage();
         }
 
-        private void goPrevious()
+        public void GoPreviousPage()
         {
             if (m_filteredCandidates == null)
             {
@@ -866,22 +884,27 @@ namespace HunterCV.AddIn
             loadPage();
         }
 
-        private void goNext()
+        public bool GoNextPage()
         {
             if (m_filteredCandidates == null)
             {
-                return;
+                return false;
             }
 
             m_CurrentPage++;
 
             if (m_CurrentPage > (m_TotalPages - 1))
+            {
                 m_CurrentPage = m_TotalPages - 1;
+                return false;
+            }
 
             loadPage();
+
+            return true;
         }
 
-        private void goLast()
+        public void GoLastPage()
         {
             if (m_filteredCandidates == null)
             {
@@ -1044,22 +1067,22 @@ namespace HunterCV.AddIn
 
         private void btnFirst_Click(object sender, EventArgs e)
         {
-            goFirst();
+            GoFirstPage();
         }
 
         private void btnPrevious_Click(object sender, EventArgs e)
         {
-            goPrevious();
+            GoPreviousPage();
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            goNext();
+            GoNextPage();
         }
 
         private void btnLast_Click(object sender, EventArgs e)
         {
-            goLast();
+            GoLastPage();
         }
 
     }

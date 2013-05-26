@@ -53,7 +53,7 @@ namespace HunterCV.AddIn
         {
             InitializeComponent();
 
-            tvAreas.Nodes.AddRange(region.Areas.CloneNodes());
+            //tvAreas.Nodes.AddRange(region.Areas.CloneNodes());
             cbStatus.Items.AddRange(region.CandidatesStatuses);
             cbRole.Items.AddRange(region.Roles);
 
@@ -72,7 +72,7 @@ namespace HunterCV.AddIn
         {
             InitializeComponent();
 
-            tvAreas.Nodes.AddRange(region.Areas.CloneNodes());
+            //tvAreas.Nodes.AddRange(region.Areas.CloneNodes());
             cbStatus.Items.AddRange(region.CandidatesStatuses);
             cbRole.Items.AddRange(region.Roles);
 
@@ -104,6 +104,9 @@ namespace HunterCV.AddIn
             cbStatus.Text = m_Candidate.Status;
             cbExperience.Text = m_Candidate.Experience.HasValue ? m_Candidate.Experience.Value.ToString() : "0";
             cbReference.Text = m_Candidate.Reference;
+
+            tvAreas.Nodes.Clear();
+            tvAreas.Nodes.AddRange(m_region.Areas.CloneNodes());
 
             if (m_Candidate.Status.ToLower() == "signed")
             {
@@ -365,6 +368,8 @@ namespace HunterCV.AddIn
                 //this.m_region.DoSearch(-1);
 
                 CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
+
+                Globals.ThisAddIn.Application.ActiveExplorer().Activate();
             }
         }
 
@@ -428,6 +433,12 @@ namespace HunterCV.AddIn
                 }
 
                 RefreshResumeGrid();
+
+                if (this.Width == 1200)
+                {
+                    ShowPreview();
+                }
+
             }
         }
 
@@ -536,6 +547,8 @@ namespace HunterCV.AddIn
                 CrossThreadUtility.InvokeControlAction<MainRegion>(m_region, f => f.MainGridBindingSource.ResetBindings(true));
 
                 CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
+
+                Globals.ThisAddIn.Application.ActiveExplorer().Activate();
             }
         }
 
@@ -896,7 +909,7 @@ namespace HunterCV.AddIn
                 {
                     btnShowHide.Enabled = true;
                     btnShowHide.Text = "Hide Preview <<";
-                    this.Width = 1184;
+                    this.Width = 1200;
                     //rtbPreview.AppendText(frm.ReadingResult["Content"]);
                 }
 
@@ -934,16 +947,16 @@ namespace HunterCV.AddIn
 
         private void btnShowHide_Click(object sender, EventArgs e)
         {
-            if (this.Width == 822)
+            if (this.Width == 673)
             {
-                this.Width = 1184;
+                this.Width = 1200;
                 btnShowHide.Text = "Hide Preview <<";
 
                 ShowPreview();
             }
             else
             {
-                this.Width = 822;
+                this.Width = 673;
                 btnShowHide.Text = "Show Preview >>";
             }
         }
@@ -959,54 +972,38 @@ namespace HunterCV.AddIn
                 //cloudy document
                 if (item.IsCloudy)
                 {
-                    var getBytesWorker = new BackgroundWorker();
-
-                    getBytesWorker.RunWorkerCompleted += (senders, es) =>
-                    {
-                        string path = Path.Combine(System.IO.Path.GetTempPath(), item.FileName);
-                        System.IO.File.WriteAllBytes(path, (byte[])es.Result);
-                        try
-                        {
-                            CrossThreadUtility.InvokeControlAction<Spire.DocViewer.Forms.DocDocumentViewer>(docDocumentViewer1, v => v.LoadFromFile(path));
-                        }
-                        finally
-                        {
-                            CrossThreadUtility.InvokeControlAction<DataGridView>(dataGridViewCV, dv => dv.Enabled = true);
-                            CrossThreadUtility.InvokeControlAction<Panel>(panelCVWait, panel => panel.Visible = false);
-                        }
-                    };
-
-                    getBytesWorker.DoWork += (senders, es) =>
-                    {
-                        try
-                        {
-                            if (!es.Cancel)
-                            {
-                                es.Result = ServiceHelper.GetResumeContent(item.ResumeID);
-                            }
-                        }
-                        finally
-                        {
-
-                        }
-                    };
-
-                    getBytesWorker.RunWorkerAsync();
+                    webBrowser1.Navigate(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2Fwww.positionsbox.com%2Fapi%2Fresumeservices%2Fcontent%2F{0}&a=bi&pagenumber=1&w=800", item.ResumeID));
                 }
                 else
                 {
                     // open exists documents
                     fi = new FileInfo(item.FileName);
 
-                    if (fi.Exists)
-                    {
-                        CrossThreadUtility.InvokeControlAction<Spire.DocViewer.Forms.DocDocumentViewer>(docDocumentViewer1, v => v.LoadFromFile(fi.FullName));
-                    }
+                    //if (fi.Exists)
+                    //{
+                    //    CrossThreadUtility.InvokeControlAction<Spire.DocViewer.Forms.DocDocumentViewer>(docDocumentViewer1, v => v.LoadFromFile(fi.FullName));
+                    //}
                 }
 
 
             }
 
+        }
+
+        void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            //webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
+            //System.Windows.Forms.HtmlDocument document =
+            //        this.webBrowser1.Document;
+
+            //if (document != null && document.GetElementById("gview") != null)
+            //{
+            //    var element = document.GetElementById("gview");
+
+            //    string text = element.OuterText;
+            //}
+
+            webBrowser1.Document.Window.ScrollTo(200,0);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1456,6 +1453,54 @@ namespace HunterCV.AddIn
         private void tbEMailAddress_Validating(object sender, CancelEventArgs e)
         {
             ValidateEmail();
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if ( m_region.DataGrid.SelectedRows.Count > 0 )
+            {
+                Candidate item = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
+
+                if ( item.CandidateID != m_Candidate.CandidateID )
+                {
+                    MessageBox.Show("You've lost selection on the grid, please make sure You're pointing the right row", "HunterCV",  MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    int selectedIndex = m_region.DataGrid.SelectedRows[0].Index;
+                    m_region.DataGrid.ClearSelection();
+
+                    if (selectedIndex == m_region.DataGrid.Rows.Count - 1)
+                    {
+                        if (m_region.GoNextPage() && m_region.DataGrid.Rows.Count > 0)
+                        {
+                            m_region.DataGrid.Rows[0].Selected = true;
+                            m_Candidate = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
+
+                            SetValues();
+                            SetTitle();
+
+                            //load documents
+                            retrieveCVWorker.RunWorkerAsync(m_Candidate.CandidateID);
+
+
+                        }
+                    }
+                    else
+                    {
+                        m_region.DataGrid.Rows[selectedIndex + 1].Selected = true;
+
+                        m_Candidate = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
+
+                        SetValues();
+                        SetTitle();
+
+                        //load documents
+                        retrieveCVWorker.RunWorkerAsync(m_Candidate.CandidateID);
+
+                    }
+                }
+            }
         }
     }
 }

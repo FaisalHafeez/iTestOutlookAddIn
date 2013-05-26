@@ -181,6 +181,7 @@
     <Compile Include="ApiControllers\CandidatesController.cs" />
     <Compile Include="ApiControllers\CandidateStatusesController.cs" />
     <Compile Include="ApiControllers\CompaniesController.cs" />
+    <Compile Include="ApiControllers\ResumeServicesController.cs" />
     <Compile Include="ApiControllers\SettingsController.cs" />
     <Compile Include="ApiControllers\MailTemplatesController.cs" />
     <Compile Include="ApiControllers\PositionsController.cs" />
