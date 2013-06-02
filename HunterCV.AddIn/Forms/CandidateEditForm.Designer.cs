@@ -121,9 +121,13 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.btnPrevious = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
+            this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.panelPreviewWait = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.picPreview = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -144,6 +148,10 @@
             this.panelWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            this.panelPreviewWait.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -371,7 +379,7 @@
             this.cbReference.Margin = new System.Windows.Forms.Padding(4);
             this.cbReference.Name = "cbReference";
             this.cbReference.Size = new System.Drawing.Size(165, 26);
-            this.cbReference.TabIndex = 47;
+            this.cbReference.TabIndex = 9;
             // 
             // cbExperience
             // 
@@ -444,7 +452,7 @@
             this.cbStatus.Margin = new System.Windows.Forms.Padding(4);
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.Size = new System.Drawing.Size(232, 26);
-            this.cbStatus.TabIndex = 42;
+            this.cbStatus.TabIndex = 8;
             // 
             // label10
             // 
@@ -464,7 +472,7 @@
             this.tbEMailAddress.Margin = new System.Windows.Forms.Padding(4);
             this.tbEMailAddress.Name = "tbEMailAddress";
             this.tbEMailAddress.Size = new System.Drawing.Size(235, 26);
-            this.tbEMailAddress.TabIndex = 40;
+            this.tbEMailAddress.TabIndex = 7;
             this.tbEMailAddress.Validating += new System.ComponentModel.CancelEventHandler(this.tbEMailAddress_Validating);
             // 
             // mtbPhone
@@ -475,7 +483,7 @@
             this.mtbPhone.Mask = "(99) 000-0000";
             this.mtbPhone.Name = "mtbPhone";
             this.mtbPhone.Size = new System.Drawing.Size(143, 26);
-            this.mtbPhone.TabIndex = 39;
+            this.mtbPhone.TabIndex = 5;
             this.mtbPhone.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
             // 
             // label9
@@ -498,7 +506,7 @@
             this.cbRole.Margin = new System.Windows.Forms.Padding(4);
             this.cbRole.Name = "cbRole";
             this.cbRole.Size = new System.Drawing.Size(235, 26);
-            this.cbRole.TabIndex = 35;
+            this.cbRole.TabIndex = 6;
             // 
             // tvAreas
             // 
@@ -509,7 +517,7 @@
             this.tvAreas.Margin = new System.Windows.Forms.Padding(4);
             this.tvAreas.Name = "tvAreas";
             this.tvAreas.Size = new System.Drawing.Size(197, 202);
-            this.tvAreas.TabIndex = 34;
+            this.tvAreas.TabIndex = 10;
             this.tvAreas.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             this.tvAreas.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvAreas_AfterSelect);
             // 
@@ -521,7 +529,7 @@
             this.mtbMobile.Mask = "(999) 000-0000";
             this.mtbMobile.Name = "mtbMobile";
             this.mtbMobile.Size = new System.Drawing.Size(143, 26);
-            this.mtbMobile.TabIndex = 33;
+            this.mtbMobile.TabIndex = 4;
             this.mtbMobile.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
             // 
             // dtpDOB
@@ -533,7 +541,7 @@
             this.dtpDOB.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
             this.dtpDOB.Name = "dtpDOB";
             this.dtpDOB.Size = new System.Drawing.Size(143, 26);
-            this.dtpDOB.TabIndex = 32;
+            this.dtpDOB.TabIndex = 3;
             // 
             // label7
             // 
@@ -593,7 +601,7 @@
             this.tbIdentity.Margin = new System.Windows.Forms.Padding(4);
             this.tbIdentity.Name = "tbIdentity";
             this.tbIdentity.Size = new System.Drawing.Size(98, 26);
-            this.tbIdentity.TabIndex = 23;
+            this.tbIdentity.TabIndex = 2;
             // 
             // label3
             // 
@@ -612,7 +620,7 @@
             this.tbLastName.Margin = new System.Windows.Forms.Padding(4);
             this.tbLastName.Name = "tbLastName";
             this.tbLastName.Size = new System.Drawing.Size(143, 26);
-            this.tbLastName.TabIndex = 21;
+            this.tbLastName.TabIndex = 1;
             this.tbLastName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbLastName_KeyUp);
             this.tbLastName.Validating += new System.ComponentModel.CancelEventHandler(this.tbLastName_Validating);
             // 
@@ -633,7 +641,7 @@
             this.tbFirstName.Margin = new System.Windows.Forms.Padding(4);
             this.tbFirstName.Name = "tbFirstName";
             this.tbFirstName.Size = new System.Drawing.Size(143, 26);
-            this.tbFirstName.TabIndex = 19;
+            this.tbFirstName.TabIndex = 0;
             this.tbFirstName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbFirstName_KeyUp);
             this.tbFirstName.Validating += new System.ComponentModel.CancelEventHandler(this.tbFirstName_Validating);
             // 
@@ -1197,16 +1205,6 @@
             this.errorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProvider1.ContainerControl = this;
             // 
-            // webBrowser1
-            // 
-            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
-            this.webBrowser1.Location = new System.Drawing.Point(680, 73);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(545, 617);
-            this.webBrowser1.TabIndex = 56;
-            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
-            // 
             // btnPrevious
             // 
             this.btnPrevious.Location = new System.Drawing.Point(17, 603);
@@ -1216,6 +1214,7 @@
             this.btnPrevious.TabIndex = 57;
             this.btnPrevious.Text = "<< Previous";
             this.btnPrevious.UseVisualStyleBackColor = true;
+            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
             // btnNext
             // 
@@ -1228,14 +1227,65 @@
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
+            // pictureBox7
+            // 
+            this.pictureBox7.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox7.Image")));
+            this.pictureBox7.Location = new System.Drawing.Point(4, 7);
+            this.pictureBox7.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox7.Name = "pictureBox7";
+            this.pictureBox7.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox7.TabIndex = 59;
+            this.pictureBox7.TabStop = false;
+            // 
+            // panelPreviewWait
+            // 
+            this.panelPreviewWait.Controls.Add(this.label8);
+            this.panelPreviewWait.Controls.Add(this.pictureBox7);
+            this.panelPreviewWait.Location = new System.Drawing.Point(856, 8);
+            this.panelPreviewWait.Name = "panelPreviewWait";
+            this.panelPreviewWait.Size = new System.Drawing.Size(203, 58);
+            this.panelPreviewWait.TabIndex = 60;
+            this.panelPreviewWait.Visible = false;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(72, 21);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(121, 18);
+            this.label8.TabIndex = 60;
+            this.label8.Text = "Loading preview...";
+            // 
+            // picPreview
+            // 
+            this.picPreview.InitialImage = null;
+            this.picPreview.Location = new System.Drawing.Point(6, 3);
+            this.picPreview.Name = "picPreview";
+            this.picPreview.Size = new System.Drawing.Size(268, 242);
+            this.picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.picPreview.TabIndex = 61;
+            this.picPreview.TabStop = false;
+            // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.picPreview);
+            this.panel1.Location = new System.Drawing.Point(667, 72);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(521, 617);
+            this.panel1.TabIndex = 64;
+            // 
             // CandidateEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(667, 693);
+            this.Controls.Add(this.panelPreviewWait);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnPrevious);
-            this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnShowHide);
             this.Controls.Add(this.panelWait);
@@ -1285,6 +1335,12 @@
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+            this.panelPreviewWait.ResumeLayout(false);
+            this.panelPreviewWait.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1383,8 +1439,12 @@
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnPrevious;
+        private System.Windows.Forms.PictureBox pictureBox7;
+        private System.Windows.Forms.Panel panelPreviewWait;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.PictureBox picPreview;
+        private System.Windows.Forms.Panel panel1;
     }
 }

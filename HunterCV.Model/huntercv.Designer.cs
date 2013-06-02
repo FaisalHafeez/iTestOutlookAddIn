@@ -239,6 +239,22 @@ namespace HunterCV.Model
             }
         }
         private ObjectSet<User> _Users;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Preview> Previews
+        {
+            get
+            {
+                if ((_Previews == null))
+                {
+                    _Previews = base.CreateObjectSet<Preview>("Previews");
+                }
+                return _Previews;
+            }
+        }
+        private ObjectSet<Preview> _Previews;
 
         #endregion
 
@@ -322,6 +338,14 @@ namespace HunterCV.Model
         public void AddToUsers(User user)
         {
             base.AddObject("Users", user);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Previews EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPreviews(Preview preview)
+        {
+            base.AddObject("Previews", preview);
         }
 
         #endregion
@@ -1968,6 +1992,135 @@ namespace HunterCV.Model
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="invidiadbModel", Name="Preview")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Preview : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Preview object.
+        /// </summary>
+        /// <param name="previewID">Initial value of the PreviewID property.</param>
+        public static Preview CreatePreview(global::System.Guid previewID)
+        {
+            Preview preview = new Preview();
+            preview.PreviewID = previewID;
+            return preview;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid PreviewID
+        {
+            get
+            {
+                return _PreviewID;
+            }
+            set
+            {
+                if (_PreviewID != value)
+                {
+                    OnPreviewIDChanging(value);
+                    ReportPropertyChanging("PreviewID");
+                    _PreviewID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("PreviewID");
+                    OnPreviewIDChanged();
+                }
+            }
+        }
+        private global::System.Guid _PreviewID;
+        partial void OnPreviewIDChanging(global::System.Guid value);
+        partial void OnPreviewIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                OnFileNameChanging(value);
+                ReportPropertyChanging("FileName");
+                _FileName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileName");
+                OnFileNameChanged();
+            }
+        }
+        private global::System.String _FileName;
+        partial void OnFileNameChanging(global::System.String value);
+        partial void OnFileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ContentType
+        {
+            get
+            {
+                return _ContentType;
+            }
+            set
+            {
+                OnContentTypeChanging(value);
+                ReportPropertyChanging("ContentType");
+                _ContentType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ContentType");
+                OnContentTypeChanged();
+            }
+        }
+        private global::System.String _ContentType;
+        partial void OnContentTypeChanging(global::System.String value);
+        partial void OnContentTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] FileContent
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_FileContent);
+            }
+            set
+            {
+                OnFileContentChanging(value);
+                ReportPropertyChanging("FileContent");
+                _FileContent = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FileContent");
+                OnFileContentChanged();
+            }
+        }
+        private global::System.Byte[] _FileContent;
+        partial void OnFileContentChanging(global::System.Byte[] value);
+        partial void OnFileContentChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="invidiadbModel", Name="Profile")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -2739,6 +2892,30 @@ namespace HunterCV.Model
         private global::System.String _Settings;
         partial void OnSettingsChanging(global::System.String value);
         partial void OnSettingsChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LicenseType
+        {
+            get
+            {
+                return _LicenseType;
+            }
+            set
+            {
+                OnLicenseTypeChanging(value);
+                ReportPropertyChanging("LicenseType");
+                _LicenseType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LicenseType");
+                OnLicenseTypeChanged();
+            }
+        }
+        private global::System.String _LicenseType;
+        partial void OnLicenseTypeChanging(global::System.String value);
+        partial void OnLicenseTypeChanged();
 
         #endregion
 

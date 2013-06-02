@@ -13,6 +13,8 @@ using HunterCV.Common;
 using System.Net.Http;
 using HunterCV.AddIn.ExtensionMethods;
 using System.Threading;
+using log4net;
+using log4net.Config;
 
 namespace HunterCV.AddIn
 {
@@ -49,12 +51,15 @@ namespace HunterCV.AddIn
 
         #endregion
 
-        //static constructor
-        static MainRegion()
-        {
-            m_retrieveWorker.DoWork += new DoWorkEventHandler(m_retrieveWorker_DoWork);
-            m_retrieveWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(m_retrieveWorker_RunWorkerCompleted);
-        }
+        public static readonly ILog Logger =
+                        LogManager.GetLogger(typeof(MainRegion));
+
+        static MainRegion() 
+        { 
+            XmlConfigurator.Configure();
+
+            Logger.InfoFormat("Starts logger...");
+        } 
 
         public void RefreshRoles()
         {
@@ -100,12 +105,12 @@ namespace HunterCV.AddIn
 
             worker.DoWork += (senders, es) =>
             {
-                if (m_candidates == null && !m_retrieveWorker.IsBusy)
+                if (m_candidates == null && !roleWorker.IsBusy)
                 {
                     CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
-                    m_retrieveWorker.RunWorkerAsync();
+                    roleWorker.RunWorkerAsync();
                 }
-                else if (!m_retrieveWorker.IsBusy)
+                else if (!roleWorker.IsBusy)
                 {
                     RefreshAreas();
                     RefreshRoles();
@@ -139,6 +144,20 @@ namespace HunterCV.AddIn
             get
             {
                 return this.OutlookFormRegion.Application;
+            }
+        }
+
+        public GridRowSelectionTypes GridRowSelectionType { get; set; }
+
+        public CandidateEditForm CurrentCandidateForm
+        {
+            get
+            {
+                return m_CurrentCandidateForm;
+            }
+            set
+            {
+                m_CurrentCandidateForm = value;
             }
         }
 
@@ -276,6 +295,7 @@ namespace HunterCV.AddIn
 
         #region Private static fields
 
+        private CandidateEditForm m_CurrentCandidateForm;
         private static BindingList<HunterCV.Common.Candidate> m_candidates;
         private static BindingList<HunterCV.Common.Position> m_positions;
         private static List<MailTemplate> m_templates;
@@ -287,13 +307,19 @@ namespace HunterCV.AddIn
         private static Guid m_roleId;
         private static BindingSource m_mainGridBindingSource;
         private static List<KeyValuePair<string, string>> m_Settings = null;
-        private static BackgroundWorker m_retrieveWorker = new BackgroundWorker();
+        private static LicenseType m_license;
 
-        public static BackgroundWorker MainWorker
+        public static LicenseType License
+        {
+            get { return MainRegion.m_license; }
+            set { MainRegion.m_license = value; }
+        }
+
+        public bool IsRoleWorkerBusy
         {
             get
             {
-                return m_retrieveWorker;
+                return roleWorker.IsBusy;
             }
         }
 
@@ -322,7 +348,6 @@ namespace HunterCV.AddIn
         #endregion
 
         private bool m_ignoreCheckedEvent = false;
-        private IEnumerable<Candidate> m_filteredCandidates;
 
         // Occurs when the form region is closed.
         // Use this.OutlookItem to get a reference to the current Outlook item.
@@ -349,17 +374,8 @@ namespace HunterCV.AddIn
         private void dataGridView1_DragDrop(object sender, DragEventArgs e)
         {
             string[] fileNames = null;
-            int number = int.Parse(this.Settings.Where(p => p.Key == "CandidatesStartIndex").Single().Value);
 
             Guid guid = Guid.NewGuid();
-
-            if (m_candidates.Count() > 0)
-            {
-                while (m_candidates.Any(p => p.CandidateNumber == number))
-                {
-                    number++;
-                }
-            }
 
             try
             {
@@ -396,14 +412,15 @@ namespace HunterCV.AddIn
                     string tempPath = System.IO.Path.GetTempPath();
 
                     // put the zip file into the temp directory
-                    string theFile = Path.Combine(tempPath, number.ToString() + "." + fileName.ToString().Split('.').Last());
+                    string theFile = Path.Combine(tempPath, fileName.ToString());
 
                     FileInfo fi = new FileInfo(theFile);
 
+                    int file_rescue = 1;
+
                     while (fi.Exists)
                     {
-                        number++;
-                        theFile = Path.Combine(tempPath, number.ToString() + "." + fileName.ToString().Split('.').Last());
+                        theFile = Path.Combine(tempPath, fi.Name, "(" + file_rescue + ")", fi.Extension );
                         fi = new FileInfo(theFile);
                     }
 
@@ -439,7 +456,6 @@ namespace HunterCV.AddIn
 
                         Candidate newCandidate = new Candidate();
                         newCandidate.Username = ServiceHelper.LastLogin.Username;
-                        newCandidate.CandidateNumber = number;
                         newCandidate.RegistrationDate = mailItem.SentOn;
                         newCandidate.MailEntryID = mailItem.EntryID;
                         newCandidate.CandidateID = guid;
@@ -509,13 +525,13 @@ namespace HunterCV.AddIn
         }
 
         // This event handler is where the time-consuming work is done. 
-        private static void m_retrieveWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void m_retrieveWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             e.Result = ServiceHelper.GetUserData();
         }
 
         // This event handler deals with the results of the background operation. 
-        private static void m_retrieveWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void m_retrieveWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //panelWait.Visible = false;
 
@@ -531,7 +547,26 @@ namespace HunterCV.AddIn
             {
                 m_roleId = ((UserData)e.Result).roleId;
 
-                m_candidates = new BindingList<Candidate>(((UserData)e.Result).candidates.ToList());
+                var license = ((UserData)e.Result).license;
+
+                if (license == Role.FreeLicenseGuid)
+                {
+                    m_license = LicenseType.Free;
+                }
+                else if (license == Role.StandardLicenseGuid)
+                {
+                    m_license = LicenseType.Standard;
+                }
+                else if (license == Role.PremiumLicenseGuid)
+                {
+                    m_license = LicenseType.Premium;
+                }
+                else
+                {
+                    m_license = LicenseType.Free;
+                }
+
+
                 m_positions = new BindingList<Position>(((UserData)e.Result).positions.ToList());
 
 
@@ -651,12 +686,28 @@ namespace HunterCV.AddIn
 
         public void DoSearch(int columnIndex, bool reload)
         {
+            m_CurrentPage = 0;
+
+            if (m_oldSortingIndex == columnIndex && columnIndex != -1)
+            {
+                m_oldSortingAscending = !m_oldSortingAscending;
+            }
+            else
+            {
+                if (m_oldSortingIndex == -1)
+                {
+                    m_oldSortingAscending = false;
+                }
+
+                m_oldSortingIndex = columnIndex;
+            }
+
             if (reload)
             {
-                if (m_retrieveWorker.IsBusy != true)
+                if (candidatesWorker.IsBusy != true)
                 {
                     panelWait.Visible = true;
-                    m_retrieveWorker.RunWorkerAsync();
+                    candidatesWorker.RunWorkerAsync();
                 }
                 return;
             }
@@ -664,176 +715,28 @@ namespace HunterCV.AddIn
             FilterCandidates(columnIndex);
         }
 
-        private void FilterCandidates(int columnIndex)
+        private void FilterCandidates()
         {
-            if (m_candidates == null)
-            {
-                return;
-            }
-
-            m_filteredCandidates = (from l in m_candidates select l);
-
-            if (!string.IsNullOrEmpty(tbName.Text))
-            {
-                string[] segments = tbName.Text.Split(' ');
-
-                foreach (string s in segments)
-                {
-                    m_filteredCandidates = m_filteredCandidates.Where(a => a.FirstName.Contains(tbName.Text) || a.LastName.Contains(tbName.Text));
-                }
-
-            }
-
-            List<String> areas = GetCheckedAreas(tvAreas.Nodes, false);
-
-            if (areas.Count() > 0)
-            {
-                m_filteredCandidates = m_filteredCandidates.Where(p => areas.Contains(p.Areas));
-            }
-
-
-            CrossThreadUtility.InvokeControlAction<ComboBox>(cbRole, cb =>
-            {
-                if (!string.IsNullOrEmpty(cb.Text))
-                    m_filteredCandidates = m_filteredCandidates.Where(a => a.Roles == cb.Text);
-            });
-
-            CrossThreadUtility.InvokeControlAction<ComboBox>(cbStatus, cb =>
-            {
-                if (!string.IsNullOrEmpty(cb.Text))
-                    m_filteredCandidates = m_filteredCandidates.Where(a => a.Status == cb.Text);
-            });
-
-            CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, tb =>
-            {
-                if (!string.IsNullOrEmpty(tb.Text))
-                {
-                    bool parse;
-                    int result;
-
-                    parse = int.TryParse(tb.Text, out result);
-
-                    if (parse)
-                    {
-                        m_filteredCandidates = m_filteredCandidates.Where(a => a.CandidateNumber.Value == result);
-                    }
-                }
-
-            });
-
-            if (checkBox1.Checked)
-            {
-                DateTime start = new DateTime(dateTimePicker1.Value.Year, dateTimePicker1.Value.Month, dateTimePicker1.Value.Day, 0, 0, 0);
-                DateTime end = new DateTime(dateTimePicker2.Value.Year, dateTimePicker2.Value.Month, dateTimePicker2.Value.Day, 23, 59, 59);
-
-                m_filteredCandidates = m_filteredCandidates.Where(a => a.RegistrationDate.Value >= start && a.RegistrationDate.Value <= end);
-            }
-
-
-            m_TotalRecords = m_filteredCandidates.Count();
-            m_TotalPages = m_TotalRecords / Properties.Settings.Default.PageSize + (m_TotalRecords % Properties.Settings.Default.PageSize
-                > 0 ? 1 : 0);
-            m_CurrentPage = 0;
-
-            //Sorting 
-
-            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "CandidateNumber")
-            {
-                if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderByDescending(p => p.CandidateNumber);
-                    m_oldSortingAscending = false;
-                }
-                else
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderBy(p => p.CandidateNumber);
-                    m_oldSortingAscending = true;
-                }
-
-                m_oldSortingIndex = columnIndex;
-            }
-
-
-            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "RegistrationDate")
-            {
-                if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderByDescending(p => p.RegistrationDate);
-                    m_oldSortingAscending = false;
-                }
-                else
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderBy(p => p.RegistrationDate);
-                    m_oldSortingAscending = true;
-                }
-
-                m_oldSortingIndex = columnIndex;
-            }
-
-
-            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "FirstName")
-            {
-                if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderByDescending(p => p.FirstName);
-                    m_oldSortingAscending = false;
-                }
-                else
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderBy(p => p.FirstName);
-                    m_oldSortingAscending = true;
-                }
-
-                m_oldSortingIndex = columnIndex;
-            }
-
-            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "LastName")
-            {
-                if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderByDescending(p => p.LastName);
-                    m_oldSortingAscending = false;
-                }
-                else
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderBy(p => p.LastName);
-                    m_oldSortingAscending = true;
-                }
-
-                m_oldSortingIndex = columnIndex;
-            }
-
-            if (columnIndex > 0 && DataGrid.Columns[columnIndex].Name == "Experience")
-            {
-                if (m_oldSortingIndex == columnIndex && m_oldSortingAscending)
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderByDescending(p => p.Experience);
-                    m_oldSortingAscending = false;
-                }
-                else
-                {
-                    m_filteredCandidates = m_filteredCandidates.OrderBy(p => p.Experience);
-                    m_oldSortingAscending = true;
-                }
-
-                m_oldSortingIndex = columnIndex;
-            }
-
-            loadPage();
+            FilterCandidates(-1);
         }
 
-        private void loadPage()
+        private void FilterCandidates(int columnIndex)
+        {
+            if (!candidatesWorker.IsBusy)
+            {
+                candidatesWorker.RunWorkerAsync();
+            }
+        }
+
+        private void SetCandidatesInGridView()
         {
             CrossThreadUtility.InvokeControlAction<DataGridView>(dataGridView1, dg =>
             {
-                var m_pagedCandidates = m_filteredCandidates.Skip(m_CurrentPage * Properties.Settings.Default.PageSize)
-                    .Take(Properties.Settings.Default.PageSize);
-
                 m_mainGridBindingSource = new BindingSource();
-                m_mainGridBindingSource.DataSource = new List<Candidate>(m_pagedCandidates);
+                m_mainGridBindingSource.DataSource = new List<Candidate>(m_candidates);
 
                 dg.DataSource = m_mainGridBindingSource;
-                if (m_filteredCandidates.Count() > 0 && dg.Columns.Count > 0)
+                if (m_candidates.Count() > 0 && dg.Columns.Count > 0)
                 {
                     dg.Columns[0].Visible = false;
                     dg.Columns[7].Visible = false;
@@ -853,40 +756,45 @@ namespace HunterCV.AddIn
             });
 
             // Show Status
-            CrossThreadUtility.InvokeControlAction<Label>(lblStatus, label => label.Text = (m_CurrentPage + (m_TotalRecords > 0 ?  1 : 0)).ToString() + " / " + m_TotalPages.ToString());
+            CrossThreadUtility.InvokeControlAction<Label>(lblStatus, label => label.Text = (m_CurrentPage + (m_TotalRecords > 0 ? 1 : 0)).ToString() + " / " + m_TotalPages.ToString());
             CrossThreadUtility.InvokeControlAction<Panel>(panelWait, panel => panel.Visible = false);
         }
 
         public void GoFirstPage()
         {
-            if (m_filteredCandidates == null)
+            if (m_candidates == null)
             {
                 return;
             }
 
             m_CurrentPage = 0;
 
-            loadPage();
+            FilterCandidates();
         }
 
-        public void GoPreviousPage()
+        public bool GoPreviousPage()
         {
-            if (m_filteredCandidates == null)
+            if (m_candidates == null)
             {
-                return;
+                return false;
             }
 
             m_CurrentPage--;
 
-            if (m_CurrentPage < 1)
+            if (m_CurrentPage < 0)
+            {
                 m_CurrentPage = 0;
+                return false;
+            }
 
-            loadPage();
+            FilterCandidates();
+
+            return true;
         }
 
         public bool GoNextPage()
         {
-            if (m_filteredCandidates == null)
+            if (m_candidates == null)
             {
                 return false;
             }
@@ -899,21 +807,21 @@ namespace HunterCV.AddIn
                 return false;
             }
 
-            loadPage();
+            FilterCandidates();
 
             return true;
         }
 
         public void GoLastPage()
         {
-            if (m_filteredCandidates == null)
+            if (m_candidates == null)
             {
                 return;
             }
 
             m_CurrentPage = m_TotalPages - 1;
 
-            loadPage();
+            FilterCandidates();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -1016,10 +924,7 @@ namespace HunterCV.AddIn
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-
-
             DoSearch(e.ColumnIndex);
-
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -1039,12 +944,12 @@ namespace HunterCV.AddIn
         {
             showFormTimer.Enabled = false;
 
-            if (m_areas == null && !m_retrieveWorker.IsBusy)
+            if (m_areas == null && !roleWorker.IsBusy)
             {
                 panelWait.Visible = true;
-                m_retrieveWorker.RunWorkerAsync();
+                roleWorker.RunWorkerAsync();
             }
-            else if (!m_retrieveWorker.IsBusy)
+            else if (!roleWorker.IsBusy)
             {
                 RefreshAreas();
                 RefreshRoles();
@@ -1083,6 +988,156 @@ namespace HunterCV.AddIn
         private void btnLast_Click(object sender, EventArgs e)
         {
             GoLastPage();
+        }
+
+        private void candidatesWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
+
+            CandidatesApiRequest request = new CandidatesApiRequest();
+            request.PageSize = Properties.Settings.Default.PageSize;
+            request.PageNumber = m_CurrentPage;
+
+            IEnumerable<String> areas = null;
+            CrossThreadUtility.InvokeControlAction<TreeView>(tvAreas, tree =>
+            {
+                areas = GetCheckedAreas(tree.Nodes, false).ToArray<string>();
+            });
+
+            if (areas.Count() > 0)
+            {
+                request.FilterAreas = areas.Aggregate((i, j) => i + "," + j);
+            }
+
+            if (!string.IsNullOrEmpty(tbName.Text))
+            {
+                request.FilterFullName = tbName.Text.Trim();
+            }
+
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbRole, cb =>
+            {
+                if (!string.IsNullOrEmpty(cb.Text))
+                {
+                    request.FilterRole = cb.Text;
+                }
+            });
+
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbStatus, cb =>
+            {
+                if (!string.IsNullOrEmpty(cb.Text))
+                {
+                    request.FilterStatus = cb.Text;
+                }
+            });
+
+            CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, tb =>
+            {
+                if (!string.IsNullOrEmpty(tb.Text))
+                {
+                    bool parse;
+                    int result;
+
+                    parse = int.TryParse(tb.Text, out result);
+
+                    if (parse)
+                    {
+                        request.FilterCandidateNumber = result;
+                    }
+                }
+
+            });
+            CrossThreadUtility.InvokeControlAction<CheckBox>(checkBox1, cb =>
+            {
+                if (cb.Checked)
+                {
+                    DateTime start = new DateTime(dateTimePicker1.Value.Year, dateTimePicker1.Value.Month, dateTimePicker1.Value.Day, 0, 0, 0);
+                    DateTime end = new DateTime(dateTimePicker2.Value.Year, dateTimePicker2.Value.Month, dateTimePicker2.Value.Day, 23, 59, 59);
+
+                    request.FilterRegistrationStartDate = start;
+                    request.FilterRegistrationEndDate = end;
+                }
+            });
+
+            CrossThreadUtility.InvokeControlAction<DataGridView>(dataGridView1, dg =>
+            {
+                if (m_oldSortingIndex > -1)
+                {
+                    request.SortField = dg.Columns[m_oldSortingIndex].Name;
+                }
+                else
+                {
+                    request.SortField = "CandidateNumber";
+                }
+
+                request.SortType = m_oldSortingAscending ? 2 : 1;
+            });
+
+            e.Result = ServiceHelper.SearchCandidates(request);
+        }
+
+        public bool IsCandidatesWorkerBusy
+        {
+            get
+            {
+                return candidatesWorker.IsBusy;
+            }
+        }
+
+        private void candidatesWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled == true)
+            {
+
+            }
+            else if (e.Error != null)
+            {
+                MessageBox.Show("Login failed, please try again\n\nError:" + e.Error.Message, "HunterCV");
+            }
+            else
+            {
+
+                var response = (CandidatesApiResponse)e.Result;
+
+                m_TotalPages = response.TotalPages;
+                m_TotalRecords = response.TotalRows;
+
+                m_candidates = new BindingList<Candidate>( response.Candidates.ToList() );
+
+                SetCandidatesInGridView();
+
+                CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
+
+                if (this.CurrentCandidateForm != null)
+                {
+                    CrossThreadUtility.InvokeControlAction<DataGridView>(dataGridView1, dg =>
+                    {
+                        dg.ClearSelection();
+
+                        if (this.GridRowSelectionType == GridRowSelectionTypes.First)
+                        {
+                            dg.Rows[0].Selected = true;
+                        }
+                        else
+                        {
+                            dg.Rows[dg.Rows.Count - 1].Selected = true;
+                        }
+
+                        this.CurrentCandidateForm.Candidate = dg.SelectedRows[0].DataBoundItem as Candidate;
+
+                        this.CurrentCandidateForm.SetFormValues();
+                        this.CurrentCandidateForm.SetFormTitle();
+                        this.CurrentCandidateForm.LoadResumes();
+
+                        CrossThreadUtility.InvokeControlAction<CandidateEditForm>(this.CurrentCandidateForm, form =>
+                            {
+                                form.Enabled = true;
+                                this.CurrentCandidateForm = null;
+                            });
+                    });
+                }
+
+            }
+
         }
 
     }

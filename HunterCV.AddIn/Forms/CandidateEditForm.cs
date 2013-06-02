@@ -16,14 +16,26 @@ using HunterCV.AddIn.ExtensionMethods;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Collections.Specialized;
+using System.Drawing.Imaging;
 
 namespace HunterCV.AddIn
 {
     public partial class CandidateEditForm : Form
     {
+        private const int PREVIEW_OPEN = 1200;
+        private const int PREVIEW_CLOSE = 673;
+
         private bool m_skipEvents = false;
         private BindingList<HunterCV.Common.Resume> m_bind_documents = null;
         private Candidate m_Candidate;
+
+        public Candidate Candidate
+        {
+            get { return m_Candidate; }
+            set { m_Candidate = value; }
+        }
+
         private MainRegion m_region;
         List<HunterCV.Common.Resume> m_documents = null;
 
@@ -45,8 +57,8 @@ namespace HunterCV.AddIn
 
             //btnShowHide.Enabled = false;
 
-            SetValues();
-            SetTitle();
+            SetFormValues();
+            SetFormTitle();
         }
 
         public CandidateEditForm(bool isNew, MainRegion region, Candidate entity)
@@ -61,10 +73,11 @@ namespace HunterCV.AddIn
             m_region = region;
             m_isNew = isNew;
 
+
             //((Control)this.tabPageDocuments).Enabled = false;
 
-            SetValues();
-            SetTitle();
+            SetFormValues();
+            SetFormTitle();
 
         }
 
@@ -83,12 +96,32 @@ namespace HunterCV.AddIn
 
             //((Control)this.tabPageDocuments).Enabled = false;
 
-            SetValues();
-            SetTitle();
+            SetFormValues();
+            SetFormTitle();
 
         }
 
-        private void SetValues()
+        public void LoadResumes()
+        {
+            CrossThreadUtility.InvokeControlAction<PictureBox>(picPreview, p =>
+            {
+                if (p.Image != null)
+                {
+                    p.Image.Dispose();
+                    p.Image = null;
+                }
+            });
+
+            if (this.Width == PREVIEW_OPEN)
+            {
+                CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p => p.Visible = true);
+            }
+
+            //load documents
+            retrieveCVWorker.RunWorkerAsync(m_Candidate.CandidateID);
+        }
+
+        public void SetFormValues()
         {
             tbUsername.Text = m_Candidate.Username;
             tbFirstName.Text = m_Candidate.FirstName;
@@ -138,7 +171,7 @@ namespace HunterCV.AddIn
 
         }
 
-        private void SetTitle()
+        public void SetFormTitle()
         {
             lblTitle.Text = tbFirstName.Text + " " + tbLastName.Text + (m_Candidate.CandidateNumber.HasValue ? " -" + m_Candidate.CandidateNumber.Value.ToString("0000") : string.Empty);
             this.Text = lblTitle.Text;
@@ -223,57 +256,18 @@ namespace HunterCV.AddIn
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void HandleResume()
         {
-            bool bFirstName = ValidateFirstName();
-            bool bLastName = ValidateLastName();
-            bool bEmail = ValidateEmail();
-
-            if (!bFirstName || !bLastName || !bEmail)
-            {
-                return;
-            }
-
-            //reset resume path
-            m_Candidate.ResumePath = null;
-
-            if (m_isNew)
-            {
-                if (!string.IsNullOrEmpty(tbFirstName.Text) && !string.IsNullOrEmpty(tbLastName.Text))
-                {
-                    var similar = m_region.Candidates.Where(c => c.FirstName == tbFirstName.Text && c.LastName == tbLastName.Text);
-
-                    if (similar != null && similar.Count() > 0)
-                    {
-                        using (DuplicateCandidatesForm dupiForm = new DuplicateCandidatesForm(m_region, similar))
-                        {
-                            if (dupiForm.ShowDialog(this) == System.Windows.Forms.DialogResult.Cancel)
-                            {
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            RetrieveValues();
-            panelWait.Visible = true;
 
             var uploadWorker = new BackgroundWorker();
 
             uploadWorker.RunWorkerCompleted += (senders, es) =>
             {
-                CrossThreadUtility.InvokeControlAction<Label>(lblWaitStatus, lbl => lbl.Text = "Saving candidate...");
+                //finish saving process - close form
+                CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
 
-                if (m_isNew)
-                {
-                    insertWorker.RunWorkerAsync();
-                }
-                else
-                {
-                    updateWorker.RunWorkerAsync();
-                }
+                Globals.ThisAddIn.Application.ActiveExplorer().Activate();
+
             };
 
             uploadWorker.DoWork += (senders, es) =>
@@ -311,44 +305,80 @@ namespace HunterCV.AddIn
             };
 
             uploadWorker.RunWorkerAsync();
+        }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            bool bFirstName = ValidateFirstName();
+            bool bLastName = ValidateLastName();
+            bool bEmail = ValidateEmail();
+
+            if (!bFirstName || !bLastName || !bEmail)
+            {
+                return;
+            }
+
+            //reset resume path
+            m_Candidate.ResumePath = null;
+
+            RetrieveValues();
+            panelWait.Visible = true;
+
+            if (m_isNew)
+            {
+                insertWorker.RunWorkerAsync();
+            }
+            else
+            {
+                updateWorker.RunWorkerAsync();
+            }
         }
 
         // This event handler is where the time-consuming work is done. 
         private void insertWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            panelWait.Invoke((MethodInvoker)delegate
-            {
-                panelWait.Visible = true;
-            });
-
             ServiceHelper.Add(m_Candidate);
         }
 
         private void insertWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            panelWait.Invoke((MethodInvoker)delegate
-            {
-                panelWait.Visible = false;
-            });
-
             if (e.Cancelled == true)
             {
 
             }
             else if (e.Error != null)
             {
-                LoginForm form = new LoginForm();
-                form.ShowDialog(this);
+                if (e.Error is DuplicateCandidatesException)
+                {
+                    DuplicateCandidatesForm form = new DuplicateCandidatesForm(m_region, ((DuplicateCandidatesException)e.Error).Duplicates);
 
-                if (ServiceHelper.IsLoggedIn)
-                {
-                    updateWorker.RunWorkerAsync();
+                    CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
+
+                    CrossThreadUtility.InvokeControlAction<CandidateEditForm>(this, f =>
+                    {
+                        if (form.ShowDialog(f) == System.Windows.Forms.DialogResult.Cancel)
+                        {
+                            panelWait.Invoke((MethodInvoker)delegate
+                            {
+                                panelWait.Visible = false;
+                            });
+
+                            return;
+                        }
+                        else
+                        {
+                            CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
+
+                            //mark skip
+                            m_Candidate.SkipDuplicatesCheck = true;
+
+                            //run worker again
+                            insertWorker.RunWorkerAsync();
+                        }
+                    });
                 }
-                else
-                {
-                    return;
-                }
+
+
             }
             else
             {
@@ -362,16 +392,10 @@ namespace HunterCV.AddIn
                 m_region.Candidates.Add(m_Candidate);
                 CrossThreadUtility.InvokeControlAction<MainRegion>(m_region, f => f.DoSearch(-1));
 
-                // set filter
-                //this.m_region.ClearFilter();
-                //this.m_region.CandidateNumber = m_Candidate.CandidateNumber.Value;
-                //this.m_region.DoSearch(-1);
-
-                CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
-
-                Globals.ThisAddIn.Application.ActiveExplorer().Activate();
+                HandleResume();
             }
         }
+
 
         // This event handler is where the time-consuming work is done. 
         private void retrieveCVWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -434,7 +458,7 @@ namespace HunterCV.AddIn
 
                 RefreshResumeGrid();
 
-                if (this.Width == 1200)
+                if (this.Width == PREVIEW_OPEN)
                 {
                     ShowPreview();
                 }
@@ -468,8 +492,6 @@ namespace HunterCV.AddIn
         // This event handler is where the time-consuming work is done. 
         private void updateWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
-
             ServiceHelper.Update(m_Candidate);
         }
 
@@ -524,16 +546,34 @@ namespace HunterCV.AddIn
             }
             else if (e.Error != null)
             {
-                LoginForm form = new LoginForm();
-                form.ShowDialog(this);
+                if (e.Error is DuplicateCandidatesException)
+                {
+                    DuplicateCandidatesForm form = new DuplicateCandidatesForm(m_region, ((DuplicateCandidatesException)e.Error).Duplicates);
 
-                if (ServiceHelper.IsLoggedIn)
-                {
-                    updateWorker.RunWorkerAsync();
-                }
-                else
-                {
-                    return;
+                    CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
+
+                    CrossThreadUtility.InvokeControlAction<CandidateEditForm>(this, f =>
+                    {
+                        if (form.ShowDialog(f) == System.Windows.Forms.DialogResult.Cancel)
+                        {
+                            panelWait.Invoke((MethodInvoker)delegate
+                            {
+                                panelWait.Visible = false;
+                            });
+
+                            return;
+                        }
+                        else
+                        {
+                            CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
+
+                            //mark skip
+                            m_Candidate.SkipDuplicatesCheck = true;
+
+                            //run worker again
+                            updateWorker.RunWorkerAsync();
+                        }
+                    });
                 }
             }
             else
@@ -546,9 +586,7 @@ namespace HunterCV.AddIn
 
                 CrossThreadUtility.InvokeControlAction<MainRegion>(m_region, f => f.MainGridBindingSource.ResetBindings(true));
 
-                CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
-
-                Globals.ThisAddIn.Application.ActiveExplorer().Activate();
+                HandleResume();
             }
         }
 
@@ -568,6 +606,8 @@ namespace HunterCV.AddIn
             }
 
             this.Close();
+            Globals.ThisAddIn.Application.ActiveExplorer().Activate();
+
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -586,13 +626,13 @@ namespace HunterCV.AddIn
         {
             button5.Enabled = !m_isNew;
 
-            //load documents
-            retrieveCVWorker.RunWorkerAsync(m_Candidate.CandidateID);
-
+            LoadResumes();
             RefreshMailTemplatesContextMenu();
 
             mtbMobile.Mask = m_region.Settings.Where(p => p.Key == "MobileFormat").Single().Value;
             mtbPhone.Mask = m_region.Settings.Where(p => p.Key == "PhoneFormat").Single().Value;
+
+            panelPreviewWait.Top = 300;
 
             BindPositionsGrid();
         }
@@ -775,12 +815,12 @@ namespace HunterCV.AddIn
 
         private void tbFirstName_KeyUp(object sender, KeyEventArgs e)
         {
-            SetTitle();
+            SetFormTitle();
         }
 
         private void tbLastName_KeyUp(object sender, KeyEventArgs e)
         {
-            SetTitle();
+            SetFormTitle();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -849,7 +889,7 @@ namespace HunterCV.AddIn
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are You sure to permanently delete this candidate from database ?", "HunterCV", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+            if (MessageBox.Show("Are You sure to permanently delete this candidate from database ?", "HunterCV", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
             {
                 button1.Enabled = false;
                 button2.Enabled = false;
@@ -858,9 +898,9 @@ namespace HunterCV.AddIn
 
                 try
                 {
-                    BackgroundWorker worker = new BackgroundWorker();
+                    BackgroundWorker removeWorker = new BackgroundWorker();
 
-                    worker.RunWorkerCompleted += (senders, es) =>
+                    removeWorker.RunWorkerCompleted += (senders, es) =>
                     {
                         CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
 
@@ -871,9 +911,10 @@ namespace HunterCV.AddIn
                             });
 
                         CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
+                        Globals.ThisAddIn.Application.ActiveExplorer().Activate();
                     };
 
-                    worker.DoWork += (senders, es) =>
+                    removeWorker.DoWork += (senders, es) =>
                     {
                         CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
 
@@ -881,7 +922,7 @@ namespace HunterCV.AddIn
                         ServiceHelper.Delete(m_Candidate);
                     };
 
-                    worker.RunWorkerAsync();
+                    removeWorker.RunWorkerAsync();
                 }
                 catch (HttpRequestException)
                 {
@@ -893,7 +934,10 @@ namespace HunterCV.AddIn
         private void CandidateEditForm_Shown(object sender, EventArgs e)
         {
             readingResumeTimer.Enabled = true;
-
+            if (tbFirstName.CanFocus)
+            {
+                tbFirstName.Focus();
+            }
         }
 
         private void readingResumeTimer_Tick(object sender, EventArgs e)
@@ -905,13 +949,14 @@ namespace HunterCV.AddIn
                 ReadingResumeForm frm = new ReadingResumeForm(m_region, m_Candidate.ResumePath);
                 frm.ShowDialog(this);
 
-                if (frm.ReadingResult.ContainsKey("Content"))
-                {
-                    btnShowHide.Enabled = true;
-                    btnShowHide.Text = "Hide Preview <<";
-                    this.Width = 1200;
-                    //rtbPreview.AppendText(frm.ReadingResult["Content"]);
-                }
+                btnShowHide_Click(null, new EventArgs());
+                //if (frm.ReadingResult.ContainsKey("Content"))
+                //{
+                //    btnShowHide.Enabled = true;
+                //    btnShowHide.Text = "Hide Preview <<";
+                //    this.Width = 1200;
+                //    //rtbPreview.AppendText(frm.ReadingResult["Content"]);
+                //}
 
 
                 if (frm.ReadingResult.ContainsKey("MSWordMobile1WildCards") &&
@@ -947,16 +992,23 @@ namespace HunterCV.AddIn
 
         private void btnShowHide_Click(object sender, EventArgs e)
         {
-            if (this.Width == 673)
+            if (this.Width == PREVIEW_CLOSE)
             {
-                this.Width = 1200;
+                this.Width = PREVIEW_OPEN;
                 btnShowHide.Text = "Hide Preview <<";
+
+                if (picPreview.Image != null)
+                {
+                    picPreview = null;
+                }
+
+                panelPreviewWait.Visible = true;
 
                 ShowPreview();
             }
             else
             {
-                this.Width = 673;
+                this.Width = PREVIEW_CLOSE;
                 btnShowHide.Text = "Show Preview >>";
             }
         }
@@ -969,41 +1021,141 @@ namespace HunterCV.AddIn
 
                 FileInfo fi = null;
 
-                //cloudy document
-                if (item.IsCloudy)
+                //in case cached
+                string fileCached = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.InternetCache), string.Format("huntercv.resume.{0}.jpg", item.ResumeID));
+
+                if (File.Exists(fileCached))
                 {
-                    webBrowser1.Navigate(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2Fwww.positionsbox.com%2Fapi%2Fresumeservices%2Fcontent%2F{0}&a=bi&pagenumber=1&w=800", item.ResumeID));
+                    CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
+                    {
+                        picPreview.Image = new Bitmap(fileCached);
+                    });
+
+                    FinishLoadingPreview();
                 }
                 else
                 {
-                    // open exists documents
-                    fi = new FileInfo(item.FileName);
 
-                    //if (fi.Exists)
-                    //{
-                    //    CrossThreadUtility.InvokeControlAction<Spire.DocViewer.Forms.DocDocumentViewer>(docDocumentViewer1, v => v.LoadFromFile(fi.FullName));
-                    //}
+                    //cloudy document
+                    if (item.IsCloudy)
+                    {
+                        CrossThreadUtility.InvokeControlAction<Panel>(panel1, p =>
+                        {
+                            var googleDoc = new BackgroundWorker();
+
+                            googleDoc.DoWork += (senders, es) =>
+                            {
+                                es.Result = ServiceHelper.GetGoogleDocStream(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2Fwww.positionsbox.com%2Fapi%2Fresumeservices%2Fcontent%2F{0}&a=bi&pagenumber=1&w=800", item.ResumeID));
+                            };
+
+                            googleDoc.RunWorkerCompleted += (senders, es) =>
+                            {
+                                if (es.Error == null)
+                                {
+                                    Stream sr = es.Result as Stream;
+
+                                    if (sr != null)
+                                    {
+                                        CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
+                                            {
+                                                picPreview.Image = Bitmap.FromStream((Stream)es.Result);
+                                                picPreview.Image.Save(fileCached, ImageFormat.Jpeg);
+                                            });
+
+                                    }
+
+                                    FinishLoadingPreview();
+                                }
+                                else
+                                {
+                                    //somw error
+                                    CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p2 => p2.Visible = false);
+                                }
+                            };
+
+                            googleDoc.RunWorkerAsync();
+                        });
+                    }
+                    else
+                    {
+                        Guid previewId = Guid.NewGuid();
+
+                        // open exists documents
+                        fi = new FileInfo(item.FileName);
+
+                        var uploadPreviewWorker = new BackgroundWorker();
+
+                        uploadPreviewWorker.RunWorkerCompleted += (senders, es) =>
+                        {
+                            Stream sr = es.Result as Stream;
+
+                            if (sr != null)
+                            {
+                                CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
+                                {
+                                    picPreview.Image = Bitmap.FromStream((Stream)es.Result);
+                                    picPreview.Image.Save(fileCached, ImageFormat.Jpeg);
+                                });
+                            }
+
+
+                            //delete preview
+                            var deletePreviewWorker = new BackgroundWorker();
+                            deletePreviewWorker.DoWork += (senderss, ess) =>
+                            {
+                                Thread.Sleep(3000);
+
+                                ServiceHelper.DeletePreview(new Preview
+                                {
+                                    PreviewID = previewId
+                                });
+
+                            };
+                            deletePreviewWorker.RunWorkerAsync();
+
+                            FinishLoadingPreview();
+                        };
+
+                        uploadPreviewWorker.DoWork += (senders, es) =>
+                        {
+                            try
+                            {
+                                if (!es.Cancel)
+                                {
+                                    ServiceHelper.Upload(new Preview
+                                    {
+                                        PreviewID = previewId,
+                                        FileName = fi.FullName
+                                    });
+
+                                    es.Result = ServiceHelper.GetGoogleDocStream(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2Fwww.positionsbox.com%2Fapi%2Fpreviews%2Fcontent%3fid={0}&a=bi&pagenumber=1&w=800", previewId.ToString()));
+                                }
+                            }
+                            finally
+                            {
+
+                            }
+                        };
+
+                        if (fi.Exists)
+                        {
+                            uploadPreviewWorker.RunWorkerAsync();
+                        }
+                        else
+                        {
+                            CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p => p.Visible = false);
+                        }
+                    }
                 }
 
+            }
+            else
+            {
+                //no documents 
 
+                CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p => p.Visible = false);
             }
 
-        }
-
-        void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-            //webBrowser1.Refresh(WebBrowserRefreshOption.Completely);
-            //System.Windows.Forms.HtmlDocument document =
-            //        this.webBrowser1.Document;
-
-            //if (document != null && document.GetElementById("gview") != null)
-            //{
-            //    var element = document.GetElementById("gview");
-
-            //    string text = element.OuterText;
-            //}
-
-            webBrowser1.Document.Window.ScrollTo(200,0);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1111,6 +1263,13 @@ namespace HunterCV.AddIn
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
+            if (MainRegion.License == LicenseType.Free && m_bind_documents != null &&
+                m_bind_documents.Count() > 0)
+            {
+                MessageBox.Show(this, "Sorry, but this license type does not allow more entities of those types", "HunterCV", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             openFileDialog1.Multiselect = false;
 
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -1421,8 +1580,8 @@ namespace HunterCV.AddIn
         {
             bool bStatus = true;
 
-            string MatchEmailPattern = 
-			@"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
+            string MatchEmailPattern =
+            @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
      + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
 				[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
      + @"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
@@ -1447,7 +1606,7 @@ namespace HunterCV.AddIn
 
         private void tbLastName_Validating(object sender, CancelEventArgs e)
         {
-             ValidateLastName();
+            ValidateLastName();
         }
 
         private void tbEMailAddress_Validating(object sender, CancelEventArgs e)
@@ -1457,50 +1616,101 @@ namespace HunterCV.AddIn
 
         private void btnNext_Click(object sender, EventArgs e)
         {
-            if ( m_region.DataGrid.SelectedRows.Count > 0 )
+            if (retrieveCVWorker.IsBusy || m_region.IsCandidatesWorkerBusy)
+            {
+                return;
+            }
+
+            if (m_region.DataGrid.SelectedRows.Count > 0)
             {
                 Candidate item = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
 
-                if ( item.CandidateID != m_Candidate.CandidateID )
+                if (item.CandidateID != m_Candidate.CandidateID)
                 {
-                    MessageBox.Show("You've lost selection on the grid, please make sure You're pointing the right row", "HunterCV",  MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("You've lost selection on the grid, please make sure You're pointing the right row", "HunterCV", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     int selectedIndex = m_region.DataGrid.SelectedRows[0].Index;
-                    m_region.DataGrid.ClearSelection();
 
                     if (selectedIndex == m_region.DataGrid.Rows.Count - 1)
                     {
-                        if (m_region.GoNextPage() && m_region.DataGrid.Rows.Count > 0)
+                        if (m_region.GoNextPage())
                         {
-                            m_region.DataGrid.Rows[0].Selected = true;
-                            m_Candidate = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
-
-                            SetValues();
-                            SetTitle();
-
-                            //load documents
-                            retrieveCVWorker.RunWorkerAsync(m_Candidate.CandidateID);
-
-
+                            this.Enabled = false;
+                            m_region.CurrentCandidateForm = this;
+                            m_region.GridRowSelectionType = GridRowSelectionTypes.First;
                         }
                     }
                     else
                     {
+                        m_region.DataGrid.ClearSelection();
                         m_region.DataGrid.Rows[selectedIndex + 1].Selected = true;
 
                         m_Candidate = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
 
-                        SetValues();
-                        SetTitle();
+                        SetFormValues();
+                        SetFormTitle();
 
-                        //load documents
-                        retrieveCVWorker.RunWorkerAsync(m_Candidate.CandidateID);
-
+                        LoadResumes();
                     }
                 }
             }
         }
+
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            if (retrieveCVWorker.IsBusy || m_region.IsCandidatesWorkerBusy)
+            {
+                return;
+            }
+
+            if (m_region.DataGrid.SelectedRows.Count > 0)
+            {
+                Candidate item = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
+
+                if (item.CandidateID != m_Candidate.CandidateID)
+                {
+                    MessageBox.Show("You've lost selection on the grid, please make sure You're pointing the right row", "HunterCV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    int selectedIndex = m_region.DataGrid.SelectedRows[0].Index;
+
+                    if (selectedIndex == 0)
+                    {
+                        if (m_region.GoPreviousPage())
+                        {
+                            this.Enabled = false;
+                            m_region.CurrentCandidateForm = this;
+                            m_region.GridRowSelectionType = GridRowSelectionTypes.Last;
+                        }
+                    }
+                    else
+                    {
+                        m_region.DataGrid.ClearSelection();
+                        m_region.DataGrid.Rows[selectedIndex - 1].Selected = true;
+
+                        m_Candidate = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
+
+                        SetFormValues();
+                        SetFormTitle();
+                        LoadResumes();
+                    }
+                }
+            }
+        }
+
+        private void FinishLoadingPreview()
+        {
+            CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p => p.Visible = false);
+
+            CrossThreadUtility.InvokeControlAction<PictureBox>(picPreview, p =>
+            {
+                p.Visible = true;
+            });
+
+        }
+
     }
 }

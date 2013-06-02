@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using System.Net;
 using HunterCV.Common;
 using System.IO;
+using System.ComponentModel;
+using HunterCV.AddIn.ExtensionMethods;
 
 namespace HunterCV.AddIn
 {
@@ -95,7 +97,7 @@ namespace HunterCV.AddIn
             }))
             {
                 var response = httpClient.PostAsJsonAsync(
-                    ConfigurationManager.AppSettings["iTest.Service.AccountsUrl"],
+                    ConfigurationManager.AppSettings["HunterCV.Service.AccountsUrl"],
                     new { username = login.Username, password = login.Password },
                     CancellationToken.None
                 ).Result;
@@ -125,7 +127,7 @@ namespace HunterCV.AddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 WebProxy proxy = null;
@@ -143,12 +145,22 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PostAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.CandidatesUrl"],
                         candidate,
                         CancellationToken.None
                     ).Result;
 
                     response.EnsureSuccessStatusCode();
+
+                    IEnumerable<Candidate> duplicates = response.Content.ReadAsAsync<IEnumerable<Candidate>>().Result;
+
+                    if (duplicates != null && duplicates.Any())
+                    {
+                        throw new DuplicateCandidatesException
+                        {
+                            Duplicates = duplicates
+                        };
+                    }
                 }
             }
             catch (HttpRequestException hre)
@@ -181,7 +193,7 @@ namespace HunterCV.AddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.PositionsUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 WebProxy proxy = null;
@@ -199,13 +211,22 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PostAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.PositionsUrl"],
                         position,
                         CancellationToken.None
                     ).Result;
 
+                    if (response.StatusCode == HttpStatusCode.Forbidden)
+                    {
+                        throw new LicenseException(typeof(ThisAddIn), null, response.ReasonPhrase);
+                    }
+
                     response.EnsureSuccessStatusCode();
                 }
+            }
+            catch (LicenseException)
+            {
+                throw;
             }
             catch (HttpRequestException hre)
             {
@@ -235,7 +256,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.AreasUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.AreasUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -255,7 +276,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.AreasUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.AreasUrl"],
                         area,
                         CancellationToken.None
                     ).Result;
@@ -289,7 +310,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.RolesUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.RolesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -309,7 +330,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.RolesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.RolesUrl"],
                         role,
                         CancellationToken.None
                     ).Result;
@@ -344,7 +365,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.StatusesUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.StatusesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -364,7 +385,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.StatusesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.StatusesUrl"],
                         status,
                         CancellationToken.None
                     ).Result;
@@ -398,7 +419,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.SettingsUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.SettingsUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -418,7 +439,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.SettingsUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.SettingsUrl"],
                         settings,
                         CancellationToken.None
                     ).Result;
@@ -453,7 +474,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsStatusesUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.PositionsStatusesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -473,7 +494,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.PositionsStatusesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.PositionsStatusesUrl"],
                         status,
                         CancellationToken.None
                     ).Result;
@@ -508,7 +529,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CompaniesUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.CompaniesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -528,7 +549,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.CompaniesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.CompaniesUrl"],
                         company,
                         CancellationToken.None
                     ).Result;
@@ -562,7 +583,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -582,7 +603,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"],
                         resume,
                         CancellationToken.None
                     ).Result;
@@ -616,7 +637,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.MailTemplatesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             WebProxy proxy = null;
@@ -636,7 +657,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PostAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.MailTemplatesUrl"],
                         templates,
                         CancellationToken.None
                     ).Result;
@@ -671,7 +692,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.MailTemplatesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -691,7 +712,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.MailTemplatesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.MailTemplatesUrl"],
                         template,
                         CancellationToken.None
                     ).Result;
@@ -726,7 +747,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.PositionsUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -746,7 +767,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.PositionsUrl"],
                         position,
                         CancellationToken.None
                     ).Result;
@@ -782,7 +803,7 @@ namespace HunterCV.AddIn
             var cookieContainer = new CookieContainer();
             Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
             cookie.Secure = false;
-            cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
+            cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.CandidatesUrl"]).Host;
             cookieContainer.Add(cookie);
 
             try
@@ -802,7 +823,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.PutAsJsonAsync(
-                        ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"],
+                        ConfigurationManager.AppSettings["HunterCV.Service.CandidatesUrl"],
                         candidate,
                         CancellationToken.None
                     ).Result;
@@ -837,7 +858,7 @@ namespace HunterCV.AddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 WebProxy proxy = null;
@@ -855,7 +876,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.DeleteAsync(
-                        new Uri(string.Concat(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"], "/?id=" + candidate.CandidateID.ToString())),
+                        new Uri(string.Concat(ConfigurationManager.AppSettings["HunterCV.Service.CandidatesUrl"], "/?id=" + candidate.CandidateID.ToString())),
                         CancellationToken.None
                     ).Result;
 
@@ -891,7 +912,7 @@ namespace HunterCV.AddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.PositionsUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 WebProxy proxy = null;
@@ -909,7 +930,56 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.DeleteAsync(
-                        new Uri(string.Concat(ConfigurationManager.AppSettings["iTest.Service.PositionsUrl"], "/?id=" + position.PositionID.ToString())),
+                        new Uri(string.Concat(ConfigurationManager.AppSettings["HunterCV.Service.PositionsUrl"], "/?id=" + position.PositionID.ToString())),
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="candidate"></param>
+        public static void DeletePreview(Preview preview)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
+                {
+                    var response = httpClient.DeleteAsync(
+                        new Uri(string.Concat(ConfigurationManager.AppSettings["HunterCV.Service.PreviewsUrl"], "/?id=" + preview.PreviewID.ToString())),
                         CancellationToken.None
                     ).Result;
 
@@ -947,7 +1017,7 @@ namespace HunterCV.AddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 WebProxy proxy = null;
@@ -965,7 +1035,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var response = httpClient.DeleteAsync(
-                        new Uri(string.Concat(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "/?id=" + resume.ResumeID.ToString())),
+                        new Uri(string.Concat(ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"], "/?id=" + resume.ResumeID.ToString())),
                         CancellationToken.None
                     ).Result;
 
@@ -991,6 +1061,51 @@ namespace HunterCV.AddIn
         }
 
 
+        public static Stream GetGoogleDocStream(string url)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
+                {
+                    var stream = httpClient.GetStreamAsync(url)
+                             .Result;
+
+
+                    return stream;
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+
+
+        }
+
+
 
         public static byte[] GetResumeContent(int resumeId)
         {
@@ -999,7 +1114,7 @@ namespace HunterCV.AddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 WebProxy proxy = null;
@@ -1017,7 +1132,7 @@ namespace HunterCV.AddIn
                 }))
                 {
                     var stream = httpClient.GetStreamAsync(string.Concat(
-                             ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "/content/", resumeId.ToString()))
+                             ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"], "/content/", resumeId.ToString()))
                              .Result;
 
                     using (MemoryStream ms = new MemoryStream())
@@ -1097,6 +1212,58 @@ namespace HunterCV.AddIn
             }
         }
 
+        public static void Upload(Preview preview)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+
+                FileInfo fi = new FileInfo(preview.FileName);
+
+                    if (fi.Exists)
+                    {
+                        WebProxy proxy = null;
+
+                        if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                        {
+                            proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                        }
+
+                        using (var httpClient = new HttpClient(new HttpClientHandler()
+                        {
+                            UseProxy = Properties.Settings.Default.UseProxy,
+                            Proxy = proxy
+                        }))
+                        {
+                            using (var content = new MultipartFormDataContent())
+                            {
+                                var filestream = new FileStream(fi.FullName, FileMode.Open);
+                                content.Add(new StreamContent(filestream), "file", fi.Name);
+
+                                HttpResponseMessage responseUpload = httpClient.PostAsync(string.Concat(ConfigurationManager.AppSettings["HunterCV.Service.PreviewsUrl"], "?PreviewId=", preview.PreviewID.ToString()), content).Result;
+                                responseUpload.EnsureSuccessStatusCode();
+                            }
+                        }
+                    }
+                
+            }
+            catch (HttpRequestException hre)
+            {
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                throw ex;
+            }
+
+
+        }
+
+
         public static void Upload(Guid candidateId, IEnumerable<Resume> documents)
         {
             try
@@ -1104,7 +1271,7 @@ namespace HunterCV.AddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 IEnumerable<Resume> not_cloudy = documents.Where(d => !d.IsCloudy);
@@ -1135,7 +1302,7 @@ namespace HunterCV.AddIn
                                 content.Add(new StreamContent(filestream), "file", fi.Name);
                                 content.Add(new StringContent(doc.Description ?? string.Empty));
 
-                                HttpResponseMessage responseUpload = httpClient.PostAsync(string.Concat(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "?CandidateID=", candidateId.ToString()), content).Result;
+                                HttpResponseMessage responseUpload = httpClient.PostAsync(string.Concat(ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"], "?CandidateID=", candidateId.ToString()), content).Result;
                                 responseUpload.EnsureSuccessStatusCode();
                             }
                         }
@@ -1169,7 +1336,7 @@ namespace HunterCV.AddIn
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 WebProxy proxy = null;
@@ -1186,7 +1353,7 @@ namespace HunterCV.AddIn
                     Proxy = proxy
                 }))
                 {
-                    var response = httpClient.GetAsync(string.Concat(ConfigurationManager.AppSettings["iTest.Service.ResumesUrl"], "/documents/", candidateId.ToString())).Result;
+                    var response = httpClient.GetAsync(string.Concat(ConfigurationManager.AppSettings["HunterCV.Service.ResumesUrl"], "/documents/", candidateId.ToString())).Result;
                     var documents = response.Content.ReadAsAsync<HunterCV.Common.DocumentCollection>().Result;
 
                     response.EnsureSuccessStatusCode();
@@ -1212,18 +1379,14 @@ namespace HunterCV.AddIn
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public static UserData GetUserData()
+        public static CandidatesApiResponse SearchCandidates(CandidatesApiRequest request)
         {
             try
             {
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;
-                cookie.Domain = new Uri(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Host;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.CandidatesUrl"]).Host;
                 cookieContainer.Add(cookie);
 
                 WebProxy proxy = null;
@@ -1240,7 +1403,61 @@ namespace HunterCV.AddIn
                     Proxy = proxy
                 }))
                 {
-                    var response = httpClient.GetStringAsync(ConfigurationManager.AppSettings["iTest.Service.CandidatesUrl"]).Result;
+                    var response = httpClient.GetAsync( string.Concat( ConfigurationManager.AppSettings["HunterCV.Service.CandidatesUrl"], "?" ,
+                            
+                       request.GetQueryString() )).Result;
+
+                    var des = (CandidatesApiResponse)Newtonsoft.Json.JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result, typeof(CandidatesApiResponse));
+
+                    return des;
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                m_isLoggedIn = false;
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                m_isLoggedIn = false;
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static UserData GetUserData()
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+                cookie.Secure = false;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.RolesUrl"]).Host;
+                cookieContainer.Add(cookie);
+
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
+                {
+                    var response = httpClient.GetStringAsync(ConfigurationManager.AppSettings["HunterCV.Service.RolesUrl"]).Result;
 
                     var des = (UserData)Newtonsoft.Json.JsonConvert.DeserializeObject(response, typeof(UserData));
 

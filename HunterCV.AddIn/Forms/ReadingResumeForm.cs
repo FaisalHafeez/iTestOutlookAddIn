@@ -35,72 +35,84 @@ namespace HunterCV.AddIn
 
         private void readingWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            FileInfo fi = new FileInfo(m_filePath);
-
-            if (fi.Exists)
+            try
             {
-                switch (fi.Extension)
+                FileInfo fi = new FileInfo(m_filePath);
+
+                if (fi.Exists)
                 {
-                    //case ".pdf":
-                    //    PDFParser parser = new PDFParser();
+                    switch (fi.Extension)
+                    {
+                        //case ".pdf":
+                        //    PDFParser parser = new PDFParser();
 
-                    //    string pdfContent;
+                        //    string pdfContent;
 
-                    //    bool extracted = parser.ExtractText(m_filePath, out pdfContent);
+                        //    bool extracted = parser.ExtractText(m_filePath, out pdfContent);
 
-                    //    if (extracted && !string.IsNullOrEmpty( pdfContent.Trim()) )
-                    //    {
-                    //        this.ReadingResult.Add("Content", pdfContent);
-                    //        this.ReadingResult.Add("Mobile1", GetPDFRegularExpression(pdfContent.Replace(" ",""), @"0(5[012345678]|6[47]){1}(\s)?(\-)?(\s)?[^0\D]{1}\d{6}"));
-                    //        this.ReadingResult.Add("Phone1", GetPDFRegularExpression(pdfContent.Replace(" ", ""), @"0(5[012345678]|6[47]){1}(\s)?(\-)?(\s)?[^0\D]{1}\d{6}"));
-                    //    }
+                        //    if (extracted && !string.IsNullOrEmpty( pdfContent.Trim()) )
+                        //    {
+                        //        this.ReadingResult.Add("Content", pdfContent);
+                        //        this.ReadingResult.Add("Mobile1", GetPDFRegularExpression(pdfContent.Replace(" ",""), @"0(5[012345678]|6[47]){1}(\s)?(\-)?(\s)?[^0\D]{1}\d{6}"));
+                        //        this.ReadingResult.Add("Phone1", GetPDFRegularExpression(pdfContent.Replace(" ", ""), @"0(5[012345678]|6[47]){1}(\s)?(\-)?(\s)?[^0\D]{1}\d{6}"));
+                        //    }
 
-                    //    break;
-                    case ".doc":
-                    case ".docx":
-                    case ".rtf":
-                        Object objMissing = Type.Missing;
-                        Object objTrue = true;
-                        Object objFalse = true;
+                        //    break;
+                        case ".doc":
+                        case ".docx":
+                        case ".rtf":
+                            Object objMissing = Type.Missing;
+                            Object objTrue = true;
+                            Object objFalse = true;
 
-                        Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+                            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
 
-                        Object name = m_filePath;
-                        Object confirmConversions = false;
+                            Object name = m_filePath;
+                            Object confirmConversions = false;
 
-                        Microsoft.Office.Interop.Word.Document doc = app.Documents.Open(
-                            ref name, ref confirmConversions,
-                            ref objMissing, ref objMissing, ref objMissing, ref objMissing,
-                            ref objMissing, ref objMissing, ref objMissing, ref objMissing,
-                            ref objMissing, ref objMissing, ref objMissing, ref objMissing,
-                            ref objMissing, ref objMissing
-                        );
+                            Microsoft.Office.Interop.Word.Document doc = app.Documents.Open(
+                                ref name, ref confirmConversions,
+                                ref objMissing, ref objMissing, ref objMissing, ref objMissing,
+                                ref objMissing, ref objMissing, ref objMissing, ref objMissing,
+                                ref objMissing, ref objMissing, ref objMissing, ref objMissing,
+                                ref objMissing, ref objMissing
+                            );
 
-                        this.ReadingResult.Add("Content", doc.Content.Text);
+                            this.ReadingResult.Add("Content", doc.Content.Text);
 
-                        if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value))
-                        {
-                            this.ReadingResult.Add("MSWordMobile1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value + ">"));
-                        }
+                            if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value))
+                            {
+                                this.ReadingResult.Add("MSWordMobile1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value + ">"));
+                            }
 
-                        if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value))
-                        {
-                            this.ReadingResult.Add("MSWordMobile2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value + ">"));
-                        }
+                            if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value))
+                            {
+                                this.ReadingResult.Add("MSWordMobile2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value + ">"));
+                            }
 
-                        if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value))
-                        {
-                            this.ReadingResult.Add("MSWordPhone1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value + ">"));
-                        }
+                            if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value))
+                            {
+                                this.ReadingResult.Add("MSWordPhone1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value + ">"));
+                            }
 
-                        if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value))
-                        {
-                            this.ReadingResult.Add("MSWordPhone2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value + ">"));
-                        }
+                            if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value))
+                            {
+                                this.ReadingResult.Add("MSWordPhone2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value + ">"));
+                            }
 
-                        app.Quit(ref objMissing, ref objMissing, ref objMissing);
-                        break;
+                            doc.Close(objMissing, objMissing, objMissing);
+                            app.Quit(ref objMissing, ref objMissing, ref objMissing);
+
+                            doc = null;
+                            GC.Collect(); // force final cleanup!
+                            GC.WaitForPendingFinalizers();
+                            break;
+                    }
                 }
+            }
+            catch
+            {
+
             }
         }
 

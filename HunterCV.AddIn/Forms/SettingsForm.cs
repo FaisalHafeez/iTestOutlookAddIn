@@ -30,13 +30,17 @@ namespace HunterCV.AddIn.Forms
                     {
                         ctls[0].Text = pair.Value;
                     }
+                    else if (ctls[0].GetType() == typeof(NumericUpDown))
+                    {
+                        ((NumericUpDown)ctls[0]).Value = Convert.ToDecimal( pair.Value );
+                    }
                 }
             }
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            tbTablePageSize.Text = Properties.Settings.Default.PageSize.ToString();
+            udPageSize.Value = Properties.Settings.Default.PageSize;
             cbUseProxy.Checked = Properties.Settings.Default.UseProxy;
 
 
@@ -66,7 +70,7 @@ namespace HunterCV.AddIn.Forms
             //Write our root node
             sr = sr.Append("<settings>");
 
-            var ctls = GetAll(this, new Type[] { typeof(TextBox), typeof(MaskedTextBox) });
+            var ctls = GetAll(this, new Type[] { typeof(TextBox), typeof(MaskedTextBox), typeof(NumericUpDown) });
 
             foreach (Control ctl in ctls)
             {
@@ -90,7 +94,7 @@ namespace HunterCV.AddIn.Forms
             button1.Enabled = false;
             button2.Enabled = false;
 
-            Properties.Settings.Default.PageSize = int.Parse(tbTablePageSize.Text);
+            Properties.Settings.Default.PageSize = Convert.ToInt32( udPageSize.Value );
             Properties.Settings.Default.UseProxy = cbUseProxy.Checked;
             Properties.Settings.Default.ProxyAddress = tbProxyAddress.Text;
             Properties.Settings.Default.ProxyPort = int.Parse(tbProxyPort.Text);

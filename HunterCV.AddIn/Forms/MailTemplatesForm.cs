@@ -313,6 +313,13 @@ namespace HunterCV.AddIn.Forms
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if (MainRegion.License == LicenseType.Free && m_bindingList != null &&
+                m_bindingList.Count() > 1)
+            {
+                MessageBox.Show(this, "Sorry, but this license type does not allow more entities of those types", "HunterCV", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             m_mailTemplate = null;
 
             rtbDoc.Clear();

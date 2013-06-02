@@ -6,8 +6,8 @@ namespace HunterCV.Common
 {
     public class UserData
     {
+        public Guid license { get; set; }
         public Guid roleId { get; set; }
-        public IEnumerable<HunterCV.Common.Candidate> candidates { get; set; }
         public string areas { get; set; }
         public string companies { get; set; }
         public string roles { get; set; }
@@ -48,6 +48,7 @@ namespace HunterCV.Common
         public Nullable<DateTime> SigningDate { get; set; }
         public Nullable<DateTime> WorkStartDate { get; set; }
         public IList<CandidatePosition> CandidatePositions {get; set; }
+        public bool SkipDuplicatesCheck { get; set; }
 
     }
 }

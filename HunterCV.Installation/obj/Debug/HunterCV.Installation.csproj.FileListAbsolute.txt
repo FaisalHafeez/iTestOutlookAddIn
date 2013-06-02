@@ -1,0 +1,4 @@
+C:\Projects\HunterCV\HunterCV.Installation\bin\Debug\HunterCV.Installation.dll
+C:\Projects\HunterCV\HunterCV.Installation\bin\Debug\HunterCV.Installation.pdb
+C:\Projects\HunterCV\HunterCV.Installation\obj\Debug\HunterCV.Installation.dll
+C:\Projects\HunterCV\HunterCV.Installation\obj\Debug\HunterCV.Installation.pdb

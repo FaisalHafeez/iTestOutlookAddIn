@@ -23,10 +23,29 @@ namespace HunterCV.FrontSite.ApiControllers
         public void Post(HunterCV.Common.Position position)
         {
             string userName = Membership.GetUser().UserName;
-            
+
             using (hunterCVEntities context = new hunterCVEntities())
             {
                 var user = context.Users.Single(u => u.UserName == userName);
+
+                var role = context.Users.Single(uu => uu.UserName == userName)
+                 .Roles.Single();
+
+                if (role.LicenseType == "Free")
+                {
+                    int count = context.Positions.Where(c => c.UserId == user.UserId).Count();
+
+                    if (count >= 1)
+                    {
+                        throw new HttpResponseException(
+                            new HttpResponseMessage { 
+                                    StatusCode = HttpStatusCode.Forbidden, 
+                                    Content = new StringContent("License"),
+                                    ReasonPhrase = "This license type does not allow the operation"
+                                });
+
+                    }
+                }
 
                 Position target = Mapper.Map<HunterCV.Common.Position, Position>(position);
                 target.User = user;
@@ -59,7 +78,7 @@ namespace HunterCV.FrontSite.ApiControllers
         public void Put(HunterCV.Common.Position position)
         {
             string userName = Membership.GetUser().UserName;
-            
+
             using (hunterCVEntities context = new hunterCVEntities())
             {
                 var curruser = context.Users.Single(user => user.UserName == userName);
@@ -86,7 +105,7 @@ namespace HunterCV.FrontSite.ApiControllers
 
             using (hunterCVEntities context = new hunterCVEntities())
             {
-                var positions = context.Users.Single( user => user.UserName == userName )
+                var positions = context.Users.Single(user => user.UserName == userName)
                                  .Roles.Single().Users
                                  .SelectMany(p => p.Positions);
 

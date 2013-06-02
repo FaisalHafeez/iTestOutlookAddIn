@@ -21,8 +21,8 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
-    
-            if (MainRegion.MainWorker.IsBusy)
+
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -36,7 +36,7 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -54,7 +54,7 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -72,7 +72,7 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -90,7 +90,7 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -114,7 +114,7 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -129,7 +129,7 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -144,7 +144,7 @@ namespace HunterCV.AddIn
                     Globals.FormRegions
                     [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -181,7 +181,7 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
@@ -199,7 +199,7 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy)
             {
                 return;
             }
@@ -214,26 +214,15 @@ namespace HunterCV.AddIn
        Globals.FormRegions
            [Globals.ThisAddIn.Application.ActiveExplorer()];
 
-            if (MainRegion.MainWorker.IsBusy)
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
 
-            int number = int.Parse(formRegions.MainRegion.Settings.Where(p => p.Key == "CandidatesStartIndex").Single().Value);
-
             Guid guid = Guid.NewGuid();
-
-            if (formRegions.MainRegion.Candidates.Count() > 0)
-            {
-                while (formRegions.MainRegion.Candidates.Any(p => p.CandidateNumber == number))
-                {
-                    number++;
-                }
-            }
 
             Candidate newCandidate = new Candidate();
             newCandidate.Username = ServiceHelper.LastLogin.Username;
-            newCandidate.CandidateNumber = number;
             newCandidate.RegistrationDate = DateTime.Today;
             newCandidate.CandidateID = guid;
             newCandidate.CandidatePositions = new List<CandidatePosition>();

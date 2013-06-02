@@ -21,8 +21,26 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1B88584FD4894405B4841AA656352B21"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2529929CAB884DE28DCB49029AADE908"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2570CE995EE98340C67A9AFF399F9B66"
         "OwnerKey" = "8:_D5F2CFC2CE8F4ABCBB341D09118A06F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_30B530CA205A465BAB2ADD956C402304"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -40,6 +58,18 @@
         "Entry"
         {
         "MsmKey" = "8:_37A9E8B0121A8E3A4ABE2CB9811CE25C"
+        "OwnerKey" = "8:_F7EDC2867CD64F6E9CA721827A6E3013"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_37A9E8B0121A8E3A4ABE2CB9811CE25C"
+        "OwnerKey" = "8:_4CD49B04B272401DA9DA46E0E5593D50"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_37A9E8B0121A8E3A4ABE2CB9811CE25C"
         "OwnerKey" = "8:_8A1148BCEC31F3C03C3F252927BF8FCD"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -47,6 +77,12 @@
         {
         "MsmKey" = "8:_37A9E8B0121A8E3A4ABE2CB9811CE25C"
         "OwnerKey" = "8:_8B7E1C8450E9C2ABF458F44862DF719F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4CD49B04B272401DA9DA46E0E5593D50"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -70,7 +106,25 @@
         "Entry"
         {
         "MsmKey" = "8:_50A15DECCEBB30BE050CC6D5555D0438"
+        "OwnerKey" = "8:_4CD49B04B272401DA9DA46E0E5593D50"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_50A15DECCEBB30BE050CC6D5555D0438"
         "OwnerKey" = "8:_D5F2CFC2CE8F4ABCBB341D09118A06F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5CA93F589B6748D0801D2859CC0033D0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_61672B098DA94CB3AF8B8D8B0906BD21"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -135,6 +189,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_90A4E8C2F80BF6F227141A0B1A4E11CA"
+        "OwnerKey" = "8:_D5F2CFC2CE8F4ABCBB341D09118A06F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C3F34FCB5CC16C548E8A262C1206C220"
         "OwnerKey" = "8:_D5F2CFC2CE8F4ABCBB341D09118A06F2"
         "MsmSig" = "8:_UNDEFINED"
@@ -153,6 +213,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_EDC9BB03D80D481DADF5B83B629952FC"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F29B0A3A9F52E6C95D1A14A3C7179D40"
         "OwnerKey" = "8:_D5F2CFC2CE8F4ABCBB341D09118A06F2"
         "MsmSig" = "8:_UNDEFINED"
@@ -165,8 +231,44 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F7EDC2867CD64F6E9CA721827A6E3013"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D5F2CFC2CE8F4ABCBB341D09118A06F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F7EDC2867CD64F6E9CA721827A6E3013"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EDC9BB03D80D481DADF5B83B629952FC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_61672B098DA94CB3AF8B8D8B0906BD21"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4CD49B04B272401DA9DA46E0E5593D50"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_90A4E8C2F80BF6F227141A0B1A4E11CA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -315,6 +417,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
     }
@@ -322,6 +437,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_22A0B3D0071F4A8A84D1DCD0AEDC7DF4"
+            {
+            "Name" = "8:HunterCV.Installation.dll"
+            "Condition" = "8:"
+            "Object" = "8:_EDC9BB03D80D481DADF5B83B629952FC"
+            "FileType" = "3:1"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_E99726C1_48AA_4FC6_AFCA_C31222CA512E"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -376,6 +505,46 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1B88584FD4894405B4841AA656352B21"
+            {
+            "SourcePath" = "8:..\\HunterCV.Installation\\bin\\Debug\\HunterCV.Installation.pdb"
+            "TargetName" = "8:HunterCV.Installation.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2529929CAB884DE28DCB49029AADE908"
+            {
+            "SourcePath" = "8:..\\HunterCV.AddIn\\bin\\Debug\\System.Net.Http.xml"
+            "TargetName" = "8:System.Net.Http.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2570CE995EE98340C67A9AFF399F9B66"
             {
             "AssemblyRegister" = "3:1"
@@ -407,6 +576,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_30B530CA205A465BAB2ADD956C402304"
+            {
+            "SourcePath" = "8:..\\HunterCV.AddIn\\bin\\Debug\\System.Net.Http.WebRequest.xml"
+            "TargetName" = "8:System.Net.Http.WebRequest.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_335A4CF83720499D95864E51B42B39AF"
             {
             "SourcePath" = "8:..\\HunterCV.AddIn\\bin\\Debug\\HunterCV.AddIn.dll.manifest"
@@ -414,7 +603,7 @@
             "Tag" = "8:"
             "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
             "Condition" = "8:"
-            "Transitive" = "11:FALSE"
+            "Transitive" = "11:TRUE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
@@ -456,6 +645,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4CD49B04B272401DA9DA46E0E5593D50"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4CD49B04B272401DA9DA46E0E5593D50"
+                    {
+                    "Name" = "8:System.Net.Http.Formatting.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\HunterCV.AddIn\\bin\\Debug\\System.Net.Http.Formatting.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4ED16EE89BB288D8BA93218EA9217880"
@@ -520,6 +740,57 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5CA93F589B6748D0801D2859CC0033D0"
+            {
+            "SourcePath" = "8:..\\HunterCV.AddIn\\bin\\Debug\\System.Net.Http.Formatting.xml"
+            "TargetName" = "8:System.Net.Http.Formatting.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_61672B098DA94CB3AF8B8D8B0906BD21"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_61672B098DA94CB3AF8B8D8B0906BD21"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\HunterCV.AddIn\\bin\\Debug\\System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6C12AD8455688A668381A896B5B2585E"
             {
             "AssemblyRegister" = "3:1"
@@ -558,7 +829,7 @@
             "Tag" = "8:"
             "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
             "Condition" = "8:"
-            "Transitive" = "11:FALSE"
+            "Transitive" = "11:TRUE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
@@ -695,6 +966,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_90A4E8C2F80BF6F227141A0B1A4E11CA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_90A4E8C2F80BF6F227141A0B1A4E11CA"
+                    {
+                    "Name" = "8:log4net.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:log4net.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C3F34FCB5CC16C548E8A262C1206C220"
             {
             "AssemblyRegister" = "3:1"
@@ -757,6 +1059,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EDC9BB03D80D481DADF5B83B629952FC"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:HunterCV.Installation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_EDC9BB03D80D481DADF5B83B629952FC"
+                    {
+                    "Name" = "8:HunterCV.Installation.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\HunterCV.Installation\\bin\\Debug\\HunterCV.Installation.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F29B0A3A9F52E6C95D1A14A3C7179D40"
             {
             "AssemblyRegister" = "3:1"
@@ -798,10 +1131,41 @@
                     "_F454DA63D396DAACD0A83DC479596AF9"
                     {
                     "Name" = "8:HunterCV.Common.dll"
-                    "Attributes" = "3:512"
+                    "Attributes" = "3:576"
                     }
                 }
             "SourcePath" = "8:HunterCV.Common.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
+            "Condition" = "8:"
+            "Transitive" = "11:TRUE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F7EDC2867CD64F6E9CA721827A6E3013"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F7EDC2867CD64F6E9CA721827A6E3013"
+                    {
+                    "Name" = "8:System.Net.Http.WebRequest.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\HunterCV.AddIn\\bin\\Debug\\System.Net.Http.WebRequest.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D21C8CDF034041C18DC0A5AF85571AC8"
@@ -816,7 +1180,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
         }
@@ -853,7 +1217,7 @@
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
-            "Transitive" = "11:FALSE"
+            "Transitive" = "11:TRUE"
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
@@ -886,15 +1250,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:HunterCV"
-        "ProductCode" = "8:{4CCF2DB5-22E6-45A8-9C4E-9C406C9B1677}"
-        "PackageCode" = "8:{64E1C60C-6FE4-4F6A-A6F6-B339EEC10450}"
+        "ProductCode" = "8:{E5DA4779-61C3-49F4-BAA8-EF09366669DC}"
+        "PackageCode" = "8:{E45A2F70-9988-4FE1-AB8F-FB59D43345FE}"
         "UpgradeCode" = "8:{F4882FF6-C8DD-4BE4-BC9F-CCDD95BF7E85}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:1.1.5"
         "Manufacturer" = "8:KnowledgeMagicians ltd"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1032,7 +1396,7 @@
                                                                     "Condition" = "8:"
                                                                     "Transitive" = "11:FALSE"
                                                                     "ValueTypes" = "3:1"
-                                                                    "Value" = "8:[TARGETDIR]HunterCV.AddIn.vsto"
+                                                                    "Value" = "8:[TARGETDIR]HunterCV.AddIn.vsto|vstolocal"
                                                                     }
                                                                     "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_C3FFAA401F2245A4B0F7D9171C9302FE"
                                                                     {

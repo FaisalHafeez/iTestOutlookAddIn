@@ -65,8 +65,9 @@
             this.panelWait = new System.Windows.Forms.Panel();
             this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.retrieveWorker = new System.ComponentModel.BackgroundWorker();
             this.showFormTimer = new System.Windows.Forms.Timer(this.components);
+            this.candidatesWorker = new System.ComponentModel.BackgroundWorker();
+            this.roleWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -291,7 +292,7 @@
             this.pictureBox1.Image = global::HunterCV.AddIn.Properties.Resources.draghere;
             this.pictureBox1.Location = new System.Drawing.Point(746, 8);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(128, 55);
+            this.pictureBox1.Size = new System.Drawing.Size(156, 55);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 52;
             this.pictureBox1.TabStop = false;
@@ -437,6 +438,16 @@
             this.showFormTimer.Interval = 500;
             this.showFormTimer.Tick += new System.EventHandler(this.showFormTimer_Tick);
             // 
+            // candidatesWorker
+            // 
+            this.candidatesWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.candidatesWorker_DoWork);
+            this.candidatesWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.candidatesWorker_RunWorkerCompleted);
+            // 
+            // roleWorker
+            // 
+            this.roleWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.m_retrieveWorker_DoWork);
+            this.roleWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.m_retrieveWorker_RunWorkerCompleted);
+            // 
             // MainRegion
             // 
             this.AllowDrop = true;
@@ -506,7 +517,6 @@
         private System.Windows.Forms.ComboBox cbStatus;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timer1;
-        private System.ComponentModel.BackgroundWorker retrieveWorker;
         private System.Windows.Forms.Timer showFormTimer;
         private System.Windows.Forms.Panel panelWait;
         private System.Windows.Forms.PictureBox ajaxLoading;
@@ -517,6 +527,9 @@
         private System.Windows.Forms.Button btnPrevious;
         private System.Windows.Forms.Button btnFirst;
         private System.Windows.Forms.PictureBox pictureBox1;
+
+        private System.ComponentModel.BackgroundWorker candidatesWorker;
+        private System.ComponentModel.BackgroundWorker roleWorker;
 
         public partial class MainRegionFactory : Microsoft.Office.Tools.Outlook.IFormRegionFactory
         {

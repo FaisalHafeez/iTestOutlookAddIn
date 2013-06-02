@@ -164,20 +164,34 @@ namespace HunterCV.AddIn
 
                 saveWorker.RunWorkerCompleted += (senders, es) =>
                 {
-                    m_position.IsNew = false;
-
-                    CrossThreadUtility.InvokeControlAction<MainRegion>(m_region, m => m.Positions.Add(m_position));
-
-                    Form form = MainRegion.GetForm(typeof(PositionsForm));
-
-                    if (form is PositionsForm)
+                    if (es.Error != null)
                     {
-                        CrossThreadUtility.InvokeControlAction<PositionsForm>(((PositionsForm)form), f => f.DoSearch(-1));
+                        if (es.Error is LicenseException)
+                        {
+                            CrossThreadUtility.InvokeControlAction<Form>(this, f =>
+                            {
+                                MessageBox.Show(this, "Sorry, but this license type does not allow more entities of those types", "HunterCV", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                f.Close();
+                                
+                            });
+                        }
                     }
+                    else
+                    {
+                        m_position.IsNew = false;
+
+                        CrossThreadUtility.InvokeControlAction<MainRegion>(m_region, m => m.Positions.Add(m_position));
+
+                        Form form = MainRegion.GetForm(typeof(PositionsForm));
+
+                        if (form is PositionsForm)
+                        {
+                            CrossThreadUtility.InvokeControlAction<PositionsForm>(((PositionsForm)form), f => f.DoSearch(-1));
+                        }
 
 
-                    CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
-
+                        CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
+                    }
                 };
 
                 

@@ -169,6 +169,7 @@
             // 
             // loginWorker
             // 
+            this.loginWorker.WorkerSupportsCancellation = true;
             this.loginWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.loginWorker_DoWork);
             this.loginWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.loginWorker_RunWorkerCompleted);
             // 

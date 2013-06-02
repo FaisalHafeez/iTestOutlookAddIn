@@ -13,6 +13,15 @@ namespace HunterCV.AddIn.ExtensionMethods
     {
         private static RichTextBox m_rtb = new RichTextBox();
 
+        public static string GetQueryString(this object obj)
+        {
+            var properties = from p in obj.GetType().GetProperties()
+                             where p.GetValue(obj, null) != null
+                             select p.Name + "=" + System.Uri.EscapeDataString(p.GetValue(obj, null).ToString());
+
+            return String.Join("&", properties.ToArray());
+        }
+
         public static string ReplaceCandidateWildCards(this string rtf, Candidate candidate)
         {
             return ReplaceCandidateWildCards(rtf, candidate, false);

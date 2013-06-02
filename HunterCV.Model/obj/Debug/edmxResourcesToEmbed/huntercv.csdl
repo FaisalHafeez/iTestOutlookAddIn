@@ -51,6 +51,7 @@
       <End Role="Role" EntitySet="Roles" />
       <End Role="User" EntitySet="Users" />
     </AssociationSet>
+    <EntitySet Name="Previews" EntityType="invidiadbModel.Preview" />
   </EntityContainer>
   <EntityType Name="Application">
     <Key>
@@ -182,6 +183,7 @@
     <NavigationProperty Name="Application" Relationship="invidiadbModel.RoleApplication" FromRole="Role" ToRole="Application" />
     <NavigationProperty Name="MailTemplates" Relationship="invidiadbModel.FK_MailTemplates_Roles" FromRole="Role" ToRole="MailTemplate" />
     <NavigationProperty Name="Users" Relationship="invidiadbModel.UsersInRoles" FromRole="Role" ToRole="User" />
+    <Property Type="String" Name="LicenseType" MaxLength="100" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -310,4 +312,13 @@
     <End Type="invidiadbModel.Role" Role="Role" Multiplicity="*" />
     <End Type="invidiadbModel.User" Role="User" Multiplicity="*" />
   </Association>
+  <EntityType Name="Preview">
+    <Key>
+      <PropertyRef Name="PreviewID" />
+    </Key>
+    <Property Type="Guid" Name="PreviewID" Nullable="false" />
+    <Property Type="String" Name="FileName" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="ContentType" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="Binary" Name="FileContent" MaxLength="Max" FixedLength="false" />
+  </EntityType>
 </Schema>

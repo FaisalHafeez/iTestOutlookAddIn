@@ -40,10 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CandidatesApiRequest.cs" />
     <Compile Include="Candidate.cs" />
     <Compile Include="Area.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="CandidatePosition.cs" />
+    <Compile Include="CandidatesApiResponse.cs" />
+    <Compile Include="Preview.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="LogOnModel.cs" />
     <Compile Include="PositionStatus.cs" />

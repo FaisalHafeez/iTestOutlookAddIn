@@ -11,6 +11,7 @@
           <EntitySet Name="Candidates" EntityType="invidiadbModel.Store.Candidates" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MailTemplates" EntityType="invidiadbModel.Store.MailTemplates" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Positions" EntityType="invidiadbModel.Store.Positions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Previews" EntityType="invidiadbModel.Store.Previews" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Profiles" EntityType="invidiadbModel.Store.Profiles" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ResumeContents" EntityType="invidiadbModel.Store.ResumeContents" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Resumes" EntityType="invidiadbModel.Store.Resumes" store:Type="Tables" Schema="dbo" />
@@ -85,10 +86,7 @@
             <PropertyRef Name="CandidateID" />
           </Key>
           <Property Name="CandidateID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="UserId" Type="uniqueidentifier" />
           <Property Name="RegistrationDate" Type="datetime" />
-          <Property Name="MailEntryID" Type="nvarchar" MaxLength="500" />
-          <Property Name="CandidateNumber" Type="int" />
           <Property Name="IdentityNumber" Type="nvarchar" MaxLength="9" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
           <Property Name="LastName" Type="nvarchar" MaxLength="100" />
@@ -105,7 +103,10 @@
           <Property Name="Status" Type="nvarchar" MaxLength="100" />
           <Property Name="SentToCompanies" Type="nvarchar" MaxLength="1000" />
           <Property Name="Former8200" Type="bit" />
+          <Property Name="CandidateNumber" Type="int" />
+          <Property Name="MailEntryID" Type="nvarchar" MaxLength="500" />
           <Property Name="Reference" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserId" Type="uniqueidentifier" />
           <Property Name="SigningDate" Type="datetime" />
           <Property Name="WorkStartDate" Type="datetime" />
         </EntityType>
@@ -136,6 +137,15 @@
           <Property Name="PublishedAt" Type="datetime" />
           <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Events" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="Previews">
+          <Key>
+            <PropertyRef Name="PreviewID" />
+          </Key>
+          <Property Name="PreviewID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="150" />
+          <Property Name="ContentType" Type="varchar" MaxLength="100" />
+          <Property Name="FileContent" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Profiles">
           <Key>
@@ -177,6 +187,7 @@
           <Property Name="CandidatesRoles" Type="nvarchar" MaxLength="2000" />
           <Property Name="PositionsStatuses" Type="nvarchar" MaxLength="2000" />
           <Property Name="Settings" Type="nvarchar" MaxLength="2000" />
+          <Property Name="LicenseType" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -383,6 +394,7 @@
             <End Role="Role" EntitySet="Roles" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="Previews" EntityType="invidiadbModel.Preview" />
         </EntityContainer>
         <EntityType Name="Application">
           <Key>
@@ -514,6 +526,7 @@
           <NavigationProperty Name="Application" Relationship="invidiadbModel.RoleApplication" FromRole="Role" ToRole="Application" />
           <NavigationProperty Name="MailTemplates" Relationship="invidiadbModel.FK_MailTemplates_Roles" FromRole="Role" ToRole="MailTemplate" />
           <NavigationProperty Name="Users" Relationship="invidiadbModel.UsersInRoles" FromRole="Role" ToRole="User" />
+          <Property Type="String" Name="LicenseType" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -642,6 +655,15 @@
           <End Type="invidiadbModel.Role" Role="Role" Multiplicity="*" />
           <End Type="invidiadbModel.User" Role="User" Multiplicity="*" />
         </Association>
+        <EntityType Name="Preview">
+          <Key>
+            <PropertyRef Name="PreviewID" />
+          </Key>
+          <Property Type="Guid" Name="PreviewID" Nullable="false" />
+          <Property Type="String" Name="FileName" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContentType" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Binary" Name="FileContent" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -758,6 +780,7 @@
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="invidiadbModel.Role">
               <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="LicenseType" ColumnName="LicenseType" />
                 <ScalarProperty Name="Settings" ColumnName="Settings" />
                 <ScalarProperty Name="PositionsStatuses" ColumnName="PositionsStatuses" />
                 <ScalarProperty Name="CandidatesRoles" ColumnName="CandidatesRoles" />
@@ -790,6 +813,16 @@
               <ScalarProperty Name="RoleId" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Previews">
+            <EntityTypeMapping TypeName="invidiadbModel.Preview">
+              <MappingFragment StoreEntitySet="Previews">
+                <ScalarProperty Name="FileContent" ColumnName="FileContent" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="PreviewID" ColumnName="PreviewID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -805,7 +838,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
@@ -866,6 +899,7 @@
           <ConnectorPoint PointX="4.5" PointY="16.875" />
           <ConnectorPoint PointX="5" PointY="16.441793619791667" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="invidiadbModel.Preview" Width="1.5" PointX="0.75" PointY="3.75" Height="1.7879850260416674" />
       </Diagram>
     </Diagrams>
   </Designer>

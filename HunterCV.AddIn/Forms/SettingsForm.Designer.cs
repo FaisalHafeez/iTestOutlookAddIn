@@ -35,7 +35,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.CandidatesStartIndex = new System.Windows.Forms.MaskedTextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.tbTablePageSize = new System.Windows.Forms.MaskedTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.PhoneFormat = new System.Windows.Forms.TextBox();
@@ -60,12 +59,14 @@
             this.button2 = new System.Windows.Forms.Button();
             this.panelWait = new System.Windows.Forms.Panel();
             this.ajaxLoading = new System.Windows.Forms.PictureBox();
+            this.udPageSize = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panelWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udPageSize)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -82,11 +83,11 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.udPageSize);
             this.tabPage1.Controls.Add(this.PositionsStartIndex);
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.CandidatesStartIndex);
             this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.tbTablePageSize);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.PhoneFormat);
@@ -140,15 +141,6 @@
             this.label6.Size = new System.Drawing.Size(175, 18);
             this.label6.TabIndex = 7;
             this.label6.Text = "Candidates # starts counter";
-            // 
-            // tbTablePageSize
-            // 
-            this.tbTablePageSize.Location = new System.Drawing.Point(236, 131);
-            this.tbTablePageSize.Mask = "00";
-            this.tbTablePageSize.Name = "tbTablePageSize";
-            this.tbTablePageSize.Size = new System.Drawing.Size(57, 26);
-            this.tbTablePageSize.TabIndex = 6;
-            this.tbTablePageSize.ValidatingType = typeof(int);
             // 
             // label3
             // 
@@ -398,6 +390,28 @@
             this.ajaxLoading.TabIndex = 25;
             this.ajaxLoading.TabStop = false;
             // 
+            // udPageSize
+            // 
+            this.udPageSize.Location = new System.Drawing.Point(236, 129);
+            this.udPageSize.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.udPageSize.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.udPageSize.Name = "udPageSize";
+            this.udPageSize.Size = new System.Drawing.Size(49, 26);
+            this.udPageSize.TabIndex = 11;
+            this.udPageSize.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -426,6 +440,7 @@
             this.panelWait.ResumeLayout(false);
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udPageSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -444,7 +459,6 @@
         private System.Windows.Forms.Panel panelWait;
         private System.Windows.Forms.PictureBox ajaxLoading;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.MaskedTextBox tbTablePageSize;
         private System.Windows.Forms.CheckBox cbUseProxy;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbProxyAddress;
@@ -463,5 +477,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown udPageSize;
     }
 }

@@ -18,7 +18,7 @@ namespace HunterCV.AddIn.Forms
             this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
+            this.textBoxDescription.Text = "You are using a " + MainRegion.License.ToString() + " license type.";
 
             Facebook.FacebookClient client = new Facebook.FacebookClient();
             client.AppId = "160688314109596";

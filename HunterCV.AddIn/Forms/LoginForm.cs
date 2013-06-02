@@ -46,8 +46,8 @@ namespace HunterCV.AddIn
         // This event handler deals with the results of the background operation. 
         private void loginWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            panelWait.Visible = false;
-            btnOK.Enabled = true;
+            CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
+            CrossThreadUtility.InvokeControlAction<Button>(btnOK, b => b.Enabled = true);
 
             if (e.Cancelled == true)
             {
@@ -55,7 +55,23 @@ namespace HunterCV.AddIn
             }
             else if (e.Error != null)
             {
-                MessageBox.Show("Login failed, please try again\n\nError:" + e.Error.Message , "HunterCV");
+                string errors = string.Empty;
+
+                if (e.Error is AggregateException)
+                {
+                    var exception = (AggregateException)e.Error;
+
+                    foreach (Exception ex in exception.InnerExceptions)
+                    {
+                        errors += "\n" + ex.ToString();
+                    }
+                }
+                else
+                {
+                    errors = e.Error.ToString();
+                }
+
+                MessageBox.Show("Login failed, please try again\n\nError:" + errors , "HunterCV");
             }
             else
             {
@@ -63,21 +79,25 @@ namespace HunterCV.AddIn
 
                 if (result)
                 {
-                    ServiceHelper.LastLogin = new LoginDetails
+                    CrossThreadUtility.InvokeControlAction<Form>(this, f =>
+                    {
+                        ServiceHelper.LastLogin = new LoginDetails
                         {
                             Username = tbUsername.Text,
                             Password = tbPassword.Text
                         };
 
-                    if (cbRemember.Checked)
-                    {
-                        //save credentials if checkbox is on
-                        Properties.Settings.Default.Username = tbUsername.Text;
-                        Properties.Settings.Default.Password = tbPassword.Text;
-                        Properties.Settings.Default.Save();
-                    }
 
-                    this.Close();
+                        if (cbRemember.Checked)
+                        {
+                            //save credentials if checkbox is on
+                            Properties.Settings.Default.Username = tbUsername.Text;
+                            Properties.Settings.Default.Password = tbPassword.Text;
+                            Properties.Settings.Default.Save();
+                        }
+
+                        f.Close();
+                    });
                 }
                 else
                 {
