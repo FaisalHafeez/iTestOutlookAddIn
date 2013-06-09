@@ -14,6 +14,7 @@ namespace HunterCV.Common
         public string FilterFullName { get; set; }
         public string FilterRole { get; set; }
         public string FilterAreas { get; set; }
+        public Nullable<bool> FilterFavorites { get; set; }
         public Nullable<int> FilterCandidateNumber { get; set; }
         public string FilterStatus { get; set; }
         public Nullable<DateTime> FilterRegistrationStartDate { get; set; }

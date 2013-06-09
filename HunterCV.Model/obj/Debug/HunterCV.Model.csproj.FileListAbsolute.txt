@@ -12,4 +12,4 @@ C:\Projects\HunterCV\HunterCV.Model\bin\Debug\EntityFramework.dll
 C:\Projects\HunterCV\HunterCV.Model\bin\Debug\EntityFramework.xml
 C:\Projects\HunterCV\HunterCV.Model\obj\Debug\HunterCV.Model.dll
 C:\Projects\HunterCV\HunterCV.Model\obj\Debug\HunterCV.Model.pdb
-C:\Projects\HunterCV\HunterCV.Model\obj\Debug\HunterCV.Model.csprojResolveAssemblyReference.cache
+C:\Projects\HunterCV\HunterCV.Model\bin\Debug\Microsoft.Linq.Translations.dll

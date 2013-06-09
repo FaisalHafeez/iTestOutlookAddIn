@@ -75,11 +75,8 @@ C:\Projects\HunterCV\HunterCV.AddIn\obj\Debug\HunterCV.AddIn.csproj.GenerateReso
 C:\Projects\HunterCV\HunterCV.AddIn\obj\Debug\HunterCV.AddIn.dll
 C:\Projects\HunterCV\HunterCV.AddIn\obj\Debug\HunterCV.AddIn.pdb
 C:\Projects\HunterCV\HunterCV.AddIn\obj\Debug\HunterCV.AddIn.DuplicateCandidatesForm.resources
+C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\log4net.dll
+C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\log4net.xml
 C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\System.Net.Http.dll
 C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\System.Net.Http.Formatting.dll
 C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\System.Net.Http.WebRequest.dll
-C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\System.Net.Http.xml
-C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\System.Net.Http.Formatting.xml
-C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\System.Net.Http.WebRequest.xml
-C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\log4net.dll
-C:\Projects\HunterCV\HunterCV.AddIn\bin\Debug\log4net.xml

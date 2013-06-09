@@ -21,13 +21,34 @@ namespace HunterCV.FrontSite.ApiControllers
         /// 
         /// </summary>
         /// <param name="candidate"></param>
-        public IEnumerable<HunterCV.Common.Candidate> Post(HunterCV.Common.Candidate candidate)
+        public HunterCV.Common.PostCandidateApiResponse Post(HunterCV.Common.Candidate candidate)
         {
             string userName = Membership.GetUser().UserName;
+
+            var response = new HunterCV.Common.PostCandidateApiResponse();
 
             using (hunterCVEntities context = new hunterCVEntities())
             {
                 var user = context.Users.Single(u => u.UserName == userName);
+                var role = context.Users.Single(u => u.UserName == userName)
+                    .Roles.Single();
+
+                if (role.LicenseType == "Free")
+                {
+                    int count = context.Candidates.Where(c => c.UserId == user.UserId ).Count();
+
+                    if (count >= 10)
+                    {
+                        throw new HttpResponseException(
+                            new HttpResponseMessage
+                            {
+                                StatusCode = HttpStatusCode.Forbidden,
+                                Content = new StringContent("License"),
+                                ReasonPhrase = "This license type does not allow the operation"
+                            });
+
+                    }
+                }
 
                 if (!candidate.SkipDuplicatesCheck)
                 {
@@ -37,13 +58,10 @@ namespace HunterCV.FrontSite.ApiControllers
 
                     if (candidates.Any())
                     {
-                        return candidates.Select(p => Mapper.Map<Candidate, HunterCV.Common.Candidate>(p)).ToList();
+                        response.Duplicates = candidates.Select(p => Mapper.Map<Candidate, HunterCV.Common.Candidate>(p)).ToList();
+                        return response;
                     }
                 }
-
-                //get index for candidate number
-                var role = context.Users.Single(u => u.UserName == userName)
-                    .Roles.Single();
 
                 int startIndex = 1000;
 
@@ -66,14 +84,21 @@ namespace HunterCV.FrontSite.ApiControllers
                 }
 
                 candidate.CandidateNumber = startIndex;
+                response.NewCandidate = candidate;
 
                 Candidate target = Mapper.Map<HunterCV.Common.Candidate, Candidate>(candidate);
                 target.User = user;
-
                 context.Candidates.AddObject(target);
+
+                //check favorite
+                if (candidate.IsFavorite)
+                {
+                    target.FavoriteUsers.Add(user);
+                }
+
                 context.SaveChanges();
 
-                return null;
+                return response;
             }
         }
 
@@ -147,12 +172,35 @@ namespace HunterCV.FrontSite.ApiControllers
                         context.ObjectStateManager.ChangeObjectState(entity.CandidatePositions.Where(p => p.PositionId == position.PositionId).Single(), EntityState.Added);
                     }
                 }
+
+                //check favorite
+                if (candidate.IsFavorite)
+                {
+                    if (!entity.FavoriteUsers.Contains(curruser))
+                    {
+                        entity.FavoriteUsers.Add(curruser);
+                    }
+                }
+                else
+                {
+                    if (entity.FavoriteUsers.Contains(curruser))
+                    {
+                        entity.FavoriteUsers.Remove(curruser);
+                    }
+                }
+
+
                 context.SaveChanges();
 
                 return null;
             }
         }
 
+        /// <summary>
+        /// Gets candidates
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public HunterCV.Common.CandidatesApiResponse Get([FromUri]HunterCV.Common.CandidatesApiRequest request)
         {
             string userName = Membership.GetUser().UserName;
@@ -163,8 +211,10 @@ namespace HunterCV.FrontSite.ApiControllers
 
             using (hunterCVEntities context = new hunterCVEntities())
             {
-                var candidates = context.Users.Single(user => user.UserName == userName)
-                                 .Roles.Single().Users
+                var user = context.Users.Single(u => u.UserName == userName);
+
+                var candidates = request.FilterFavorites.HasValue && request.FilterFavorites.Value ? 
+                    user.FavoriteCandidates : user.Roles.Single().Users
                                  .SelectMany(p => p.Candidates);
 
                 var m_filteredCandidates = (from l in candidates select l);
@@ -217,6 +267,18 @@ namespace HunterCV.FrontSite.ApiControllers
                     > 0 ? 1 : 0);
 
                 //Sorting 
+
+                if (request.SortField == "IsFavorite")
+                {
+                    if (request.SortType == 1)
+                    {
+                        m_filteredCandidates = m_filteredCandidates.OrderByDescending(p => p.CandidateNumber);
+                    }
+                    else
+                    {
+                        m_filteredCandidates = m_filteredCandidates.OrderBy(p => p.CandidateNumber);
+                    }
+                }
 
                 if (request.SortField == "CandidateNumber")
                 {

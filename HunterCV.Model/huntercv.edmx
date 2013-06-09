@@ -9,6 +9,7 @@
           <EntitySet Name="Applications" EntityType="invidiadbModel.Store.Applications" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CandidatePositions" EntityType="invidiadbModel.Store.CandidatePositions" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Candidates" EntityType="invidiadbModel.Store.Candidates" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FavoriteCandidates" EntityType="invidiadbModel.Store.FavoriteCandidates" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MailTemplates" EntityType="invidiadbModel.Store.MailTemplates" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Positions" EntityType="invidiadbModel.Store.Positions" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Previews" EntityType="invidiadbModel.Store.Previews" store:Type="Tables" Schema="dbo" />
@@ -29,6 +30,14 @@
           <AssociationSet Name="FK_Candidates_Users" Association="invidiadbModel.Store.FK_Candidates_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Candidates" EntitySet="Candidates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FavoriteCandidates_Candidates" Association="invidiadbModel.Store.FK_FavoriteCandidates_Candidates">
+            <End Role="Candidates" EntitySet="Candidates" />
+            <End Role="FavoriteCandidates" EntitySet="FavoriteCandidates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FavoriteCandidates_Users" Association="invidiadbModel.Store.FK_FavoriteCandidates_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FavoriteCandidates" EntitySet="FavoriteCandidates" />
           </AssociationSet>
           <AssociationSet Name="FK_MailTemplates_Roles" Association="invidiadbModel.Store.FK_MailTemplates_Roles">
             <End Role="Roles" EntitySet="Roles" />
@@ -109,6 +118,14 @@
           <Property Name="UserId" Type="uniqueidentifier" />
           <Property Name="SigningDate" Type="datetime" />
           <Property Name="WorkStartDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FavoriteCandidates">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CandidateID" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CandidateID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="MailTemplates">
           <Key>
@@ -239,6 +256,30 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Candidates">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FavoriteCandidates_Candidates">
+          <End Role="Candidates" Type="invidiadbModel.Store.Candidates" Multiplicity="1" />
+          <End Role="FavoriteCandidates" Type="invidiadbModel.Store.FavoriteCandidates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candidates">
+              <PropertyRef Name="CandidateID" />
+            </Principal>
+            <Dependent Role="FavoriteCandidates">
+              <PropertyRef Name="CandidateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FavoriteCandidates_Users">
+          <End Role="Users" Type="invidiadbModel.Store.Users" Multiplicity="1" />
+          <End Role="FavoriteCandidates" Type="invidiadbModel.Store.FavoriteCandidates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="FavoriteCandidates">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -395,6 +436,10 @@
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="Previews" EntityType="invidiadbModel.Preview" />
+          <AssociationSet Name="FavoriteCandidates" Association="invidiadbModel.FavoriteCandidates">
+            <End Role="Candidate" EntitySet="Candidates" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Application">
           <Key>
@@ -448,6 +493,7 @@
           <NavigationProperty Name="User" Relationship="invidiadbModel.FK_Candidates_Users" FromRole="Candidate" ToRole="User" />
           <Property Type="DateTime" Name="SigningDate" />
           <Property Type="DateTime" Name="WorkStartDate" />
+          <NavigationProperty Name="FavoriteUsers" Relationship="invidiadbModel.FavoriteCandidates" FromRole="Candidate" ToRole="User" />
         </EntityType>
         <EntityType Name="MailTemplate">
           <Key>
@@ -542,6 +588,7 @@
           <NavigationProperty Name="Positions" Relationship="invidiadbModel.FK_Positions_Users" FromRole="User" ToRole="Position" />
           <NavigationProperty Name="Profile" Relationship="invidiadbModel.UserProfile" FromRole="User" ToRole="Profile" />
           <NavigationProperty Name="Roles" Relationship="invidiadbModel.UsersInRoles" FromRole="User" ToRole="Role" />
+          <NavigationProperty Name="FavoriteCandidates" Relationship="invidiadbModel.FavoriteCandidates" FromRole="User" ToRole="Candidate" />
         </EntityType>
         <Association Name="RoleApplication">
           <End Type="invidiadbModel.Application" Role="Application" Multiplicity="1" />
@@ -664,6 +711,10 @@
           <Property Type="String" Name="ContentType" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="Binary" Name="FileContent" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <Association Name="FavoriteCandidates">
+          <End Type="invidiadbModel.Candidate" Role="Candidate" Multiplicity="*" />
+          <End Type="invidiadbModel.User" Role="User" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -823,6 +874,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="FavoriteCandidates" TypeName="invidiadbModel.FavoriteCandidates" StoreEntitySet="FavoriteCandidates">
+            <EndProperty Name="User">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="Candidate">
+              <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -846,7 +905,7 @@
       <Diagram Name="huntercv" ZoomLevel="109">
         <EntityTypeShape EntityType="invidiadbModel.Application" Width="1.75" PointX="0.75" PointY="11.75" Height="2.1725878906249996" />
         <EntityTypeShape EntityType="invidiadbModel.CandidatePosition" Width="2.25" PointX="9.5" PointY="12.625" Height="2.1725878906249996" />
-        <EntityTypeShape EntityType="invidiadbModel.Candidate" Width="1.75" PointX="7.25" PointY="8.625" Height="5.634013671874996" />
+        <EntityTypeShape EntityType="invidiadbModel.Candidate" Width="1.75" PointX="7.25" PointY="8.625" Height="6.0186165364583335" />
         <EntityTypeShape EntityType="invidiadbModel.MailTemplate" Width="1.75" PointX="5" PointY="17.375" Height="2.364889322916671" />
         <EntityTypeShape EntityType="invidiadbModel.Position" Width="1.75" PointX="7.25" PointY="15" Height="3.5186979166666674" />
         <EntityTypeShape EntityType="invidiadbModel.Profile" Width="1.75" PointX="7.25" PointY="19.25" Height="2.172587890624996" />
@@ -860,32 +919,32 @@
           <ConnectorPoint PointX="2.75" PointY="18.634348958333334" />
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.UserApplication" >
-          <ConnectorPoint PointX="1.9340841015625" PointY="13.922587890625" />
-          <ConnectorPoint PointX="1.9340841015625" PointY="15.970599713541663" />
-          <ConnectorPoint PointX="5" PointY="15.970599713541663" />
+          <ConnectorPoint PointX="2.5" PointY="12.624999500000001" />
+          <ConnectorPoint PointX="5.875" PointY="12.624999500000001" />
+          <ConnectorPoint PointX="5.875" PointY="13.5" />
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.FK_CandidatePositions_Candidates" >
-          <ConnectorPoint PointX="9" PointY="13.634308268229166" />
-          <ConnectorPoint PointX="9.5" PointY="13.634308268229166" />
+          <ConnectorPoint PointX="9" PointY="13.6800414453125" />
+          <ConnectorPoint PointX="9.5" PointY="13.6800414453125" />
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.FK_CandidatePositions_Positions" >
           <ConnectorPoint PointX="9" PointY="15" />
           <ConnectorPoint PointX="9.5" PointY="14.797587890625" />
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.FK_Candidates_Users" >
-          <ConnectorPoint PointX="6.75" PointY="13.879506835937498" />
-          <ConnectorPoint PointX="7.25" PointY="13.879506835937498" />
+          <ConnectorPoint PointX="6.75" PointY="14.167958984375" />
+          <ConnectorPoint PointX="7.25" PointY="14.167958984375" />
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.FK_MailTemplates_Roles" >
           <ConnectorPoint PointX="4.5" PointY="18.557444661458334" />
           <ConnectorPoint PointX="5" PointY="18.557444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.FK_Positions_Users" >
-          <ConnectorPoint PointX="6.75" PointY="15.817047526041666" />
-          <ConnectorPoint PointX="7.25" PointY="15.817047526041666" />
+          <ConnectorPoint PointX="6.75" PointY="15.817047526041668" />
+          <ConnectorPoint PointX="7.25" PointY="15.817047526041668" />
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.UserProfile" >
-          <ConnectorPoint PointX="5.875" PointY="16.441793619791667" />
+          <ConnectorPoint PointX="5.875" PointY="16.634095052083335" />
           <ConnectorPoint PointX="5.875" PointY="17.125" />
           <ConnectorPoint PointX="7" PointY="17.125" />
           <ConnectorPoint PointX="7" PointY="20.336293945312498" />
@@ -897,9 +956,13 @@
         </AssociationConnector>
         <AssociationConnector Association="invidiadbModel.UsersInRoles" >
           <ConnectorPoint PointX="4.5" PointY="16.875" />
-          <ConnectorPoint PointX="5" PointY="16.441793619791667" />
+          <ConnectorPoint PointX="5" PointY="16.634095052083335" />
         </AssociationConnector>
         <EntityTypeShape EntityType="invidiadbModel.Preview" Width="1.5" PointX="0.75" PointY="3.75" Height="1.7879850260416674" />
+        <AssociationConnector Association="invidiadbModel.FavoriteCandidates" >
+          <ConnectorPoint PointX="7.25" PointY="13.771479492187499" />
+          <ConnectorPoint PointX="6.75" PointY="13.771479492187499" />
+        </AssociationConnector>
       </Diagram>
     </Diagrams>
   </Designer>

@@ -43,14 +43,19 @@
             this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.loginWorker = new System.ComponentModel.BackgroundWorker();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.logoPictureBox = new System.Windows.Forms.PictureBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panelWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(211, 142);
+            this.btnOK.Location = new System.Drawing.Point(216, 224);
             this.btnOK.Margin = new System.Windows.Forms.Padding(4);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(100, 32);
@@ -62,7 +67,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(52, 29);
+            this.label1.Location = new System.Drawing.Point(19, 29);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 18);
@@ -74,7 +79,7 @@
             this.cbRemember.AutoSize = true;
             this.cbRemember.Checked = true;
             this.cbRemember.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbRemember.Location = new System.Drawing.Point(147, 112);
+            this.cbRemember.Location = new System.Drawing.Point(110, 113);
             this.cbRemember.Margin = new System.Windows.Forms.Padding(4);
             this.cbRemember.Name = "cbRemember";
             this.cbRemember.Size = new System.Drawing.Size(161, 22);
@@ -84,18 +89,19 @@
             // 
             // tbUsername
             // 
-            this.tbUsername.Location = new System.Drawing.Point(147, 25);
+            this.tbUsername.Location = new System.Drawing.Point(110, 26);
             this.tbUsername.Margin = new System.Windows.Forms.Padding(4);
             this.tbUsername.MaxLength = 50;
             this.tbUsername.Name = "tbUsername";
-            this.tbUsername.Size = new System.Drawing.Size(217, 26);
+            this.tbUsername.Size = new System.Drawing.Size(198, 26);
             this.tbUsername.TabIndex = 0;
+            this.tbUsername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbUsername_KeyPress);
             this.tbUsername.Validating += new System.ComponentModel.CancelEventHandler(this.tbUsername_Validating);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(52, 81);
+            this.label2.Location = new System.Drawing.Point(19, 77);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 18);
@@ -104,18 +110,19 @@
             // 
             // tbPassword
             // 
-            this.tbPassword.Location = new System.Drawing.Point(147, 73);
+            this.tbPassword.Location = new System.Drawing.Point(110, 74);
             this.tbPassword.Margin = new System.Windows.Forms.Padding(4);
             this.tbPassword.MaxLength = 50;
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
-            this.tbPassword.Size = new System.Drawing.Size(217, 26);
+            this.tbPassword.Size = new System.Drawing.Size(198, 26);
             this.tbPassword.TabIndex = 1;
+            this.tbPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbPassword_KeyPress);
             this.tbPassword.Validating += new System.ComponentModel.CancelEventHandler(this.tbPassword_Validating);
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(319, 142);
+            this.btnCancel.Location = new System.Drawing.Point(324, 224);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 32);
@@ -127,7 +134,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(9, 215);
+            this.linkLabel1.Location = new System.Drawing.Point(15, 279);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(191, 18);
@@ -138,7 +145,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Location = new System.Drawing.Point(12, 197);
+            this.groupBox1.Location = new System.Drawing.Point(18, 272);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
@@ -149,7 +156,7 @@
             // panelWait
             // 
             this.panelWait.Controls.Add(this.ajaxLoading);
-            this.panelWait.Location = new System.Drawing.Point(208, 208);
+            this.panelWait.Location = new System.Drawing.Point(214, 283);
             this.panelWait.Margin = new System.Windows.Forms.Padding(4);
             this.panelWait.Name = "panelWait";
             this.panelWait.Size = new System.Drawing.Size(221, 33);
@@ -178,20 +185,53 @@
             this.errorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProvider1.ContainerControl = this;
             // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(15, 300);
+            this.linkLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(87, 18);
+            this.linkLabel2.TabIndex = 25;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "Sign-up here";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
+            // logoPictureBox
+            // 
+            this.logoPictureBox.Image = global::HunterCV.AddIn.Properties.Resources.logo;
+            this.logoPictureBox.Location = new System.Drawing.Point(-1, 8);
+            this.logoPictureBox.Margin = new System.Windows.Forms.Padding(4);
+            this.logoPictureBox.Name = "logoPictureBox";
+            this.logoPictureBox.Size = new System.Drawing.Size(207, 59);
+            this.logoPictureBox.TabIndex = 26;
+            this.logoPictureBox.TabStop = false;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.tbUsername);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.cbRemember);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.tbPassword);
+            this.groupBox2.Location = new System.Drawing.Point(18, 74);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(406, 143);
+            this.groupBox2.TabIndex = 27;
+            this.groupBox2.TabStop = false;
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(432, 252);
+            this.ClientSize = new System.Drawing.Size(444, 332);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.logoPictureBox);
+            this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.panelWait);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.tbPassword);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.tbUsername);
-            this.Controls.Add(this.cbRemember);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOK);
             this.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -208,6 +248,9 @@
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -228,5 +271,8 @@
         private System.ComponentModel.BackgroundWorker loginWorker;
         private System.Windows.Forms.PictureBox ajaxLoading;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.PictureBox logoPictureBox;
     }
 }

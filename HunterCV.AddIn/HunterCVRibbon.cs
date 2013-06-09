@@ -234,5 +234,20 @@ namespace HunterCV.AddIn
 
         }
 
+        private void toggleButtonFavorites_Click(object sender, RibbonControlEventArgs e)
+        {
+            WindowFormRegionCollection formRegions =
+       Globals.FormRegions
+           [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
+            {
+                return;
+            }
+
+            formRegions.MainRegion.FilterFavorites = toggleButtonFavorites.Checked;
+            formRegions.MainRegion.DoSearch(-1);
+        }
+
     }
 }

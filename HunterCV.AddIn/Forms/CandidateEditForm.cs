@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.Drawing.Imaging;
+using System.Configuration;
 
 namespace HunterCV.AddIn
 {
@@ -29,6 +30,12 @@ namespace HunterCV.AddIn
         private bool m_skipEvents = false;
         private BindingList<HunterCV.Common.Resume> m_bind_documents = null;
         private Candidate m_Candidate;
+        BackgroundWorker googleDocWorker = null;
+        BackgroundWorker uploadPreviewWorker = null;
+        bool m_previewIsDragging = false;
+
+        int m_previewCurrentX = 0;
+        int m_previewCurrentY = 0;
 
         public Candidate Candidate
         {
@@ -123,6 +130,8 @@ namespace HunterCV.AddIn
 
         public void SetFormValues()
         {
+            picFavorite.Image = favoritesImagesList.Images[m_Candidate.IsFavorite ? 0 : 1];
+
             tbUsername.Text = m_Candidate.Username;
             tbFirstName.Text = m_Candidate.FirstName;
             tbLastName.Text = m_Candidate.LastName;
@@ -266,8 +275,6 @@ namespace HunterCV.AddIn
                 //finish saving process - close form
                 CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
 
-                Globals.ThisAddIn.Application.ActiveExplorer().Activate();
-
             };
 
             uploadWorker.DoWork += (senders, es) =>
@@ -337,7 +344,7 @@ namespace HunterCV.AddIn
         // This event handler is where the time-consuming work is done. 
         private void insertWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            ServiceHelper.Add(m_Candidate);
+            e.Result = ServiceHelper.Add(m_Candidate);
         }
 
         private void insertWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -382,6 +389,9 @@ namespace HunterCV.AddIn
             }
             else
             {
+                //get new candidate number
+                m_Candidate.CandidateNumber = (int)e.Result;
+
                 if (m_mailItem != null)
                 {
                     m_mailItem.Categories = string.Concat(!string.IsNullOrEmpty(m_mailItem.Categories) ? m_mailItem.Categories : string.Empty, "< < < <  HunterCV Candidate Number : " + m_Candidate.CandidateNumber.Value + " Import Date : " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "   > > > > ");
@@ -538,7 +548,7 @@ namespace HunterCV.AddIn
 
         private void updateWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
+            //CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
 
             if (e.Cancelled == true)
             {
@@ -606,7 +616,6 @@ namespace HunterCV.AddIn
             }
 
             this.Close();
-            Globals.ThisAddIn.Application.ActiveExplorer().Activate();
 
         }
 
@@ -891,7 +900,7 @@ namespace HunterCV.AddIn
         {
             if (MessageBox.Show("Are You sure to permanently delete this candidate from database ?", "HunterCV", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
             {
-                button1.Enabled = false;
+                btnSave.Enabled = false;
                 button2.Enabled = false;
                 button4.Enabled = false;
                 button5.Enabled = false;
@@ -911,7 +920,6 @@ namespace HunterCV.AddIn
                             });
 
                         CrossThreadUtility.InvokeControlAction<Form>(this, f => f.Close());
-                        Globals.ThisAddIn.Application.ActiveExplorer().Activate();
                     };
 
                     removeWorker.DoWork += (senders, es) =>
@@ -950,14 +958,6 @@ namespace HunterCV.AddIn
                 frm.ShowDialog(this);
 
                 btnShowHide_Click(null, new EventArgs());
-                //if (frm.ReadingResult.ContainsKey("Content"))
-                //{
-                //    btnShowHide.Enabled = true;
-                //    btnShowHide.Text = "Hide Preview <<";
-                //    this.Width = 1200;
-                //    //rtbPreview.AppendText(frm.ReadingResult["Content"]);
-                //}
-
 
                 if (frm.ReadingResult.ContainsKey("MSWordMobile1WildCards") &&
                        !string.IsNullOrEmpty(frm.ReadingResult["MSWordMobile1WildCards"]))
@@ -997,11 +997,6 @@ namespace HunterCV.AddIn
                 this.Width = PREVIEW_OPEN;
                 btnShowHide.Text = "Hide Preview <<";
 
-                if (picPreview.Image != null)
-                {
-                    picPreview = null;
-                }
-
                 panelPreviewWait.Visible = true;
 
                 ShowPreview();
@@ -1017,14 +1012,24 @@ namespace HunterCV.AddIn
         {
             if (m_bind_documents != null && m_bind_documents.Count > 0)
             {
+                //clear image
+                if (picPreview != null && picPreview.Image != null)
+                {
+                    picPreview.Image = null;
+                    picPreview.Refresh();
+                }
+
+                //get resume
                 Resume item = m_bind_documents.First();
 
                 FileInfo fi = null;
 
-                //in case cached
-                string fileCached = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.InternetCache), string.Format("huntercv.resume.{0}.jpg", item.ResumeID));
+                string width = "800", page = "1";
 
-                if (File.Exists(fileCached))
+                //in case cached
+                string fileCached = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.InternetCache), string.Format("huntercv.resume.{0}.{1}.{2}.jpg", item.ResumeID, page, width));
+
+                if (!m_isNew && item.ResumeID != 0 && File.Exists(fileCached))
                 {
                     CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
                     {
@@ -1035,22 +1040,29 @@ namespace HunterCV.AddIn
                 }
                 else
                 {
-
                     //cloudy document
                     if (item.IsCloudy)
                     {
                         CrossThreadUtility.InvokeControlAction<Panel>(panel1, p =>
                         {
-                            var googleDoc = new BackgroundWorker();
+                            googleDocWorker = new BackgroundWorker();
+                            googleDocWorker.WorkerSupportsCancellation = true;
 
-                            googleDoc.DoWork += (senders, es) =>
+                            googleDocWorker.DoWork += (senders, es) =>
                             {
-                                es.Result = ServiceHelper.GetGoogleDocStream(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2Fwww.positionsbox.com%2Fapi%2Fresumeservices%2Fcontent%2F{0}&a=bi&pagenumber=1&w=800", item.ResumeID));
+                                if (!es.Cancel)
+                                {
+                                    es.Result = ServiceHelper.GetGoogleDocStream(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2F{1}%2Fapi%2Fresumeservices%2Fcontent%2F{0}&a=bi&pagenumber={2}&w={3}", item.ResumeID, ConfigurationManager.AppSettings["ServiceBaseHost"], page, width));
+                                }
                             };
 
-                            googleDoc.RunWorkerCompleted += (senders, es) =>
+                            googleDocWorker.RunWorkerCompleted += (senders, es) =>
                             {
-                                if (es.Error == null)
+                                if (es.Cancelled)
+                                {
+
+                                }
+                                else if (es.Error == null)
                                 {
                                     Stream sr = es.Result as Stream;
 
@@ -1073,7 +1085,7 @@ namespace HunterCV.AddIn
                                 }
                             };
 
-                            googleDoc.RunWorkerAsync();
+                            googleDocWorker.RunWorkerAsync();
                         });
                     }
                     else
@@ -1083,37 +1095,45 @@ namespace HunterCV.AddIn
                         // open exists documents
                         fi = new FileInfo(item.FileName);
 
-                        var uploadPreviewWorker = new BackgroundWorker();
+                        uploadPreviewWorker = new BackgroundWorker();
+                        uploadPreviewWorker.WorkerSupportsCancellation = true;
 
                         uploadPreviewWorker.RunWorkerCompleted += (senders, es) =>
                         {
-                            Stream sr = es.Result as Stream;
-
-                            if (sr != null)
+                            if (es.Cancelled)
                             {
-                                CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
-                                {
-                                    picPreview.Image = Bitmap.FromStream((Stream)es.Result);
-                                    picPreview.Image.Save(fileCached, ImageFormat.Jpeg);
-                                });
+
                             }
-
-
-                            //delete preview
-                            var deletePreviewWorker = new BackgroundWorker();
-                            deletePreviewWorker.DoWork += (senderss, ess) =>
+                            else if (es.Error == null)
                             {
-                                Thread.Sleep(3000);
+                                Stream sr = es.Result as Stream;
 
-                                ServiceHelper.DeletePreview(new Preview
+                                if (sr != null)
                                 {
-                                    PreviewID = previewId
-                                });
+                                    CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
+                                    {
+                                        picPreview.Image = Bitmap.FromStream((Stream)es.Result);
+                                        picPreview.Image.Save(fileCached, ImageFormat.Jpeg);
+                                    });
+                                }
 
-                            };
-                            deletePreviewWorker.RunWorkerAsync();
 
-                            FinishLoadingPreview();
+                                //delete preview
+                                var deletePreviewWorker = new BackgroundWorker();
+                                deletePreviewWorker.DoWork += (senderss, ess) =>
+                                {
+                                    Thread.Sleep(3000);
+
+                                    ServiceHelper.DeletePreview(new Preview
+                                    {
+                                        PreviewID = previewId
+                                    });
+
+                                };
+                                deletePreviewWorker.RunWorkerAsync();
+
+                                FinishLoadingPreview();
+                            }
                         };
 
                         uploadPreviewWorker.DoWork += (senders, es) =>
@@ -1128,7 +1148,9 @@ namespace HunterCV.AddIn
                                         FileName = fi.FullName
                                     });
 
-                                    es.Result = ServiceHelper.GetGoogleDocStream(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2Fwww.positionsbox.com%2Fapi%2Fpreviews%2Fcontent%3fid={0}&a=bi&pagenumber=1&w=800", previewId.ToString()));
+                                    Thread.Sleep(100);
+
+                                    es.Result = ServiceHelper.GetGoogleDocStream(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2F{1}%2Fapi%2Fpreviews%2Fcontent%3fid={0}&a=bi&pagenumber={2}&w={3}", previewId.ToString(), ConfigurationManager.AppSettings["ServiceBaseHost"], page, width));
                                 }
                             }
                             finally
@@ -1315,6 +1337,11 @@ namespace HunterCV.AddIn
             if (retrieveCVWorker.IsBusy)
             {
                 retrieveCVWorker.CancelAsync();
+            }
+
+            if (googleDocWorker != null && googleDocWorker.IsBusy)
+            {
+                googleDocWorker.CancelAsync();
             }
         }
 
@@ -1621,6 +1648,11 @@ namespace HunterCV.AddIn
                 return;
             }
 
+            if (googleDocWorker != null && googleDocWorker.IsBusy)
+            {
+                googleDocWorker.CancelAsync();
+            }
+
             if (m_region.DataGrid.SelectedRows.Count > 0)
             {
                 Candidate item = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
@@ -1663,6 +1695,11 @@ namespace HunterCV.AddIn
             if (retrieveCVWorker.IsBusy || m_region.IsCandidatesWorkerBusy)
             {
                 return;
+            }
+
+            if (googleDocWorker != null && googleDocWorker.IsBusy)
+            {
+                googleDocWorker.CancelAsync();
             }
 
             if (m_region.DataGrid.SelectedRows.Count > 0)
@@ -1709,6 +1746,75 @@ namespace HunterCV.AddIn
             {
                 p.Visible = true;
             });
+
+            CrossThreadUtility.InvokeControlAction<Panel>(panel1, p =>
+            {
+                p.HorizontalScroll.Value = p.HorizontalScroll.Maximum;
+                p.Refresh();
+            });
+
+        }
+
+        private void CandidateEditForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Globals.ThisAddIn.Application.ActiveExplorer().Activate();
+
+        }
+
+        private void picPreview_MouseDown(object sender, MouseEventArgs e)
+        {
+            m_previewIsDragging = true;
+
+            m_previewCurrentX = e.X;
+            m_previewCurrentY = e.Y;
+        }
+
+        private void picPreview_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (m_previewIsDragging && picPreview != null)
+            {
+                picPreview.Top = picPreview.Top + (e.Y - m_previewCurrentY);
+                picPreview.Left = picPreview.Left + (e.X - m_previewCurrentX);
+            }
+        }
+
+        private void picPreview_MouseUp(object sender, MouseEventArgs e)
+        {
+            m_previewIsDragging = false;
+        }
+
+        private void cbPreviewPage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (m_skipEvents)
+                return;
+
+            if (googleDocWorker != null && googleDocWorker.IsBusy)
+            {
+                googleDocWorker.CancelAsync();
+            }
+
+            ShowPreview();
+
+        }
+
+        private void cbPreviewZoom_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (m_skipEvents)
+                return;
+
+            if (googleDocWorker != null && googleDocWorker.IsBusy)
+            {
+                googleDocWorker.CancelAsync();
+            }
+
+            ShowPreview();
+
+        }
+
+        private void picFavorite_Click(object sender, EventArgs e)
+        {
+            m_Candidate.IsFavorite = !m_Candidate.IsFavorite;
+            picFavorite.Image = favoritesImagesList.Images[m_Candidate.IsFavorite ? 0 : 1];
 
         }
 

@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<sitemanifest>
-  <IisApp path="C:\AWSDeploy.eb5cdc57" managedRuntimeVersion="v4.0" />
-  <setAcl path="C:\AWSDeploy.eb5cdc57" setAclResourceType="Directory" />
-  <setAcl path="C:\AWSDeploy.eb5cdc57" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
-</sitemanifest>

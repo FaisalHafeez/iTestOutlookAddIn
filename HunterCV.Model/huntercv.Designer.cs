@@ -29,6 +29,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("invidiadbModel", "UserProfile", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HunterCV.Model.User), "Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(HunterCV.Model.Profile), true)]
 [assembly: EdmRelationshipAttribute("invidiadbModel", "FK_ResumeContents_Resumes", "Resume", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HunterCV.Model.Resume), "ResumeContent", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(HunterCV.Model.ResumeContent), true)]
 [assembly: EdmRelationshipAttribute("invidiadbModel", "UsersInRoles", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HunterCV.Model.Role), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HunterCV.Model.User))]
+[assembly: EdmRelationshipAttribute("invidiadbModel", "FavoriteCandidates", "Candidate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HunterCV.Model.Candidate), "User", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HunterCV.Model.User))]
 
 #endregion
 
@@ -1176,6 +1177,28 @@ namespace HunterCV.Model
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<User>("invidiadbModel.FK_Candidates_Users", "User", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("invidiadbModel", "FavoriteCandidates", "User")]
+        public EntityCollection<User> FavoriteUsers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<User>("invidiadbModel.FavoriteCandidates", "User");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<User>("invidiadbModel.FavoriteCandidates", "User", value);
                 }
             }
         }
@@ -3307,6 +3330,28 @@ namespace HunterCV.Model
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Role>("invidiadbModel.UsersInRoles", "Role", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("invidiadbModel", "FavoriteCandidates", "Candidate")]
+        public EntityCollection<Candidate> FavoriteCandidates
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Candidate>("invidiadbModel.FavoriteCandidates", "Candidate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Candidate>("invidiadbModel.FavoriteCandidates", "Candidate", value);
                 }
             }
         }

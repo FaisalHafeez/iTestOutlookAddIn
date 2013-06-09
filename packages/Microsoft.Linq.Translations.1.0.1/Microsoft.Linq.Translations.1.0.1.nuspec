@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Linq.Translations</id>
+    <version>1.0.1</version>
+    <title>Microsoft.Linq.Translations</title>
+    <authors>David Fowler,  Damien Guard</authors>
+    <owners>David Fowler,  Damien Guard</owners>
+    <licenseUrl>http://www.microsoft.com/opensource/licenses.mspx</licenseUrl>
+    <projectUrl>http://damieng.com/blog/2009/06/24/client-side-properties-and-any-remote-linq-provider</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Provides a LINQ provider independent way of translating computed properties into complex expressions.</description>
+    <summary>Provides a LINQ provider independent way of translating computed properties into complex expressions.</summary>
+    <tags>linq computedproperties</tags>
+    <references>
+      <reference file="Microsoft.Linq.Translations.dll" />
+    </references>
+  </metadata>
+</package>

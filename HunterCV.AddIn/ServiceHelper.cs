@@ -26,6 +26,7 @@ namespace HunterCV.AddIn
         private static string m_aspxauthCookie;
         private static bool m_canceledLogin;
         private static LoginDetails m_lastLogin;
+        private static bool m_isDevelopingServer;
 
         public static LoginDetails LastLogin
         {
@@ -33,9 +34,12 @@ namespace HunterCV.AddIn
             set { ServiceHelper.m_lastLogin = value; }
         }
 
+        public static bool IsDevelopingMachine { get { return m_isDevelopingServer; } }
+
         static ServiceHelper()
         {
             m_canceledLogin = false;
+            m_isDevelopingServer = System.Environment.MachineName == "ARIEL8804";
         }
 
         /// <summary>
@@ -120,7 +124,7 @@ namespace HunterCV.AddIn
         /// 
         /// </summary>
         /// <param name="candidate"></param>
-        public static void Add(Candidate candidate)
+        public static int Add(Candidate candidate)
         {
             try
             {
@@ -152,34 +156,94 @@ namespace HunterCV.AddIn
 
                     response.EnsureSuccessStatusCode();
 
-                    IEnumerable<Candidate> duplicates = response.Content.ReadAsAsync<IEnumerable<Candidate>>().Result;
+                    PostCandidateApiResponse result = response.Content.ReadAsAsync<PostCandidateApiResponse>().Result;
 
-                    if (duplicates != null && duplicates.Any())
+                    if (result.Duplicates != null && result.Duplicates.Any())
                     {
                         throw new DuplicateCandidatesException
                         {
-                            Duplicates = duplicates
+                            Duplicates = result.Duplicates
                         };
+                    }
+                    else
+                    {
+                        return result.NewCandidate.CandidateNumber.Value;
                     }
                 }
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="candidate"></param>
+        public static void AddFavorite(Candidate candidate)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+                cookie.Secure = false;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.FavoriteCandidatesUrl"]).Host;
+                cookieContainer.Add(cookie);
+
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
+                {
+                    var response = httpClient.PostAsJsonAsync(
+                        ConfigurationManager.AppSettings["HunterCV.Service.FavoriteCandidatesUrl"],
+                        candidate,
+                        CancellationToken.None
+                    ).Result;
+
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (LicenseException)
+            {
+                throw;
+            }
+            catch (HttpRequestException hre)
+            {
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                throw ex;
+            }
+
+        }
+
 
 
         /// <summary>
@@ -230,17 +294,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
@@ -286,17 +347,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -340,17 +398,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -395,17 +450,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -449,17 +501,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -504,17 +553,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -559,17 +605,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -613,17 +656,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -667,17 +707,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -722,17 +759,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -777,17 +811,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -833,17 +864,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -885,21 +913,72 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="candidate"></param>
+        public static void DeleteFavorite(Guid id)
+        {
+            try
+            {
+                var cookieContainer = new CookieContainer();
+                Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
+                cookie.Secure = false;
+                cookie.Domain = new Uri(ConfigurationManager.AppSettings["HunterCV.Service.FavoriteCandidatesUrl"]).Host;
+                cookieContainer.Add(cookie);
+
+                WebProxy proxy = null;
+
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.ProxyAddress))
+                {
+                    proxy = new WebProxy(Properties.Settings.Default.ProxyAddress, Properties.Settings.Default.ProxyPort);
+                }
+
+                using (var httpClient = new HttpClient(new HttpClientHandler()
+                {
+                    CookieContainer = cookieContainer,
+                    UseProxy = Properties.Settings.Default.UseProxy,
+                    Proxy = proxy
+                }))
+                {
+                    var response = httpClient.DeleteAsync(
+                        new Uri(string.Concat(ConfigurationManager.AppSettings["HunterCV.Service.FavoriteCandidatesUrl"], "/?id=" + id.ToString())),
+                        CancellationToken.None
+                    ).Result;
+
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch (HttpRequestException hre)
+            {
+                throw hre;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex;
+            }
+            catch (WebException ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
 
         /// <summary>
         /// 
@@ -939,17 +1018,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
@@ -988,17 +1064,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
@@ -1044,17 +1117,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
@@ -1088,17 +1158,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
@@ -1151,17 +1218,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
@@ -1363,17 +1427,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 
@@ -1414,17 +1475,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
         }
@@ -1466,17 +1524,14 @@ namespace HunterCV.AddIn
             }
             catch (HttpRequestException hre)
             {
-                m_isLoggedIn = false;
                 throw hre;
             }
             catch (AggregateException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
             catch (WebException ex)
             {
-                m_isLoggedIn = false;
                 throw ex;
             }
 

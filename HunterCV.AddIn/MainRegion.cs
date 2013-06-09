@@ -149,6 +149,8 @@ namespace HunterCV.AddIn
 
         public GridRowSelectionTypes GridRowSelectionType { get; set; }
 
+        public bool FilterFavorites { get; set; }
+
         public CandidateEditForm CurrentCandidateForm
         {
             get
@@ -390,29 +392,25 @@ namespace HunterCV.AddIn
                 }
                 else if (e.Data.GetDataPresent("FileGroupDescriptor"))
                 {
-                    //
-                    // the first step here is to get the filename
-                    // of the attachment and
-                    // build a full-path name so we can store it 
-                    // in the temporary folder
-                    //
+                    Stream fileStream = (Stream)e.Data.GetData("FileGroupDescriptor");
+                    byte[] fileGroupDescriptor = new byte[fileStream.Length];
+                    fileStream.Read(fileGroupDescriptor, 0, fileGroupDescriptor.Length);
+                    fileStream.Close();
+                    System.Text.StringBuilder fileName = new System.Text.StringBuilder("");
+                    for (int i = 76; i < fileGroupDescriptor.Length; i++)
+                    {
+                        if (fileGroupDescriptor[i] != 0)
+                        {
+                            fileName.Append(Convert.ToChar(fileGroupDescriptor[i]));
+                        }
+                    }
 
-                    // set up to obtain the FileGroupDescriptor 
-                    // and extract the file name
-                    Stream theStream = (Stream)e.Data.GetData("FileGroupDescriptor");
-                    byte[] fileGroupDescriptor = new byte[512];
-                    theStream.Read(fileGroupDescriptor, 0, 512);
-                    // used to build the filename from the FileGroupDescriptor block
-                    StringBuilder fileName = new StringBuilder("");
-                    // this trick gets the filename of the passed attached file
-                    for (int i = 76; fileGroupDescriptor[i] != 0; i++)
-                    { fileName.Append(Convert.ToChar(fileGroupDescriptor[i])); }
-                    theStream.Close();
-
+                    fileName = fileName.Replace("?", "_");
+                    
                     string tempPath = System.IO.Path.GetTempPath();
 
                     // put the zip file into the temp directory
-                    string theFile = Path.Combine(tempPath, fileName.ToString());
+                    string theFile = Path.Combine(tempPath, "resume." + fileName.ToString().Split('.')[fileName.ToString().Split('.').Length - 1]);
 
                     FileInfo fi = new FileInfo(theFile);
 
@@ -420,17 +418,10 @@ namespace HunterCV.AddIn
 
                     while (fi.Exists)
                     {
-                        theFile = Path.Combine(tempPath, fi.Name, "(" + file_rescue + ")", fi.Extension );
-                        fi = new FileInfo(theFile);
+                        theFile = Path.Combine(tempPath, string.Format("resume({0}).",file_rescue) + fileName.ToString().Split('.')[fileName.ToString().Split('.').Length - 1]);
+                        fi = new FileInfo(theFile );
+                        file_rescue++;
                     }
-
-                    // create the full-path name
-
-                    //
-                    // Second step:  we have the file name.  
-                    // Now we need to get the actual raw
-                    // data for the attached file and copy it to disk so we work on it.
-                    //
 
                     // get the actual raw file into memory
                     MemoryStream ms = (MemoryStream)e.Data.GetData(
@@ -734,7 +725,7 @@ namespace HunterCV.AddIn
             {
                 m_mainGridBindingSource = new BindingSource();
                 m_mainGridBindingSource.DataSource = new List<Candidate>(m_candidates);
-
+                dg.Columns.Clear();
                 dg.DataSource = m_mainGridBindingSource;
                 if (m_candidates.Count() > 0 && dg.Columns.Count > 0)
                 {
@@ -752,6 +743,14 @@ namespace HunterCV.AddIn
                     dg.Columns[22].Visible = false;
                     dg.Columns[23].Visible = false;
                     dg.Columns[24].Visible = false;
+                    dg.Columns[25].Visible = false;
+                    dg.Columns[26].Visible = false;
+
+                    DataGridViewImageColumn iconColumn = new DataGridViewImageColumn();
+                    iconColumn.Name = "FavoriteIcon";
+                    iconColumn.HeaderText = "";
+                    iconColumn.Width = 35;
+                    dg.Columns.Insert(0, iconColumn);
                 }
             });
 
@@ -929,7 +928,39 @@ namespace HunterCV.AddIn
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.ColumnIndex == 0)
+            {
+                bool value = !(bool)dataGridView1.Rows[e.RowIndex].Cells["IsFavorite"].Value;
 
+                var worker = new BackgroundWorker();
+
+                panelWait.Visible = true;
+
+                worker.DoWork += (ssender, es) =>
+                {
+                    if (!value)
+                    {
+                        ServiceHelper.DeleteFavorite((Guid)dataGridView1.Rows[e.RowIndex].Cells["CandidateID"].Value);
+                    }
+                    else
+                    {
+                        ServiceHelper.AddFavorite((Candidate)dataGridView1.Rows[e.RowIndex].DataBoundItem);
+                    }
+                };
+
+                worker.RunWorkerCompleted += (ssender, es) =>
+                {
+                    CrossThreadUtility.InvokeControlAction<DataGridView>(dataGridView1, dg =>
+                    {
+                        dg.Rows[e.RowIndex].Cells["IsFavorite"].Value = value;
+                        m_mainGridBindingSource.ResetBindings(true);
+                    });
+
+                    CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
+                };
+
+                worker.RunWorkerAsync();
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -1003,6 +1034,8 @@ namespace HunterCV.AddIn
             {
                 areas = GetCheckedAreas(tree.Nodes, false).ToArray<string>();
             });
+
+            request.FilterFavorites = this.FilterFavorites;
 
             if (areas.Count() > 0)
             {
@@ -1138,6 +1171,51 @@ namespace HunterCV.AddIn
 
             }
 
+        }
+
+        private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+        }
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "FavoriteIcon")
+            {
+                e.Value = (bool)dataGridView1.Rows[e.RowIndex].Cells["IsFavorite"].Value ? Properties.Resources.gold16_star : Properties.Resources.silver16_star;
+            } 
+        }
+
+        private void tbNumber_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                button1_Click(null, new EventArgs());
+            }
+
+        }
+
+        private void tbName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                button1_Click(null, new EventArgs());
+            }
+        }
+
+        private void cbStatus_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                button1_Click(null, new EventArgs());
+            }
+        }
+
+        private void cbRole_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                button1_Click(null, new EventArgs());
+            }
         }
 
     }

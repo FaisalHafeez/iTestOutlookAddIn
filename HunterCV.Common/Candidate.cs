@@ -47,8 +47,9 @@ namespace HunterCV.Common
         public String Reference { get; set; }
         public Nullable<DateTime> SigningDate { get; set; }
         public Nullable<DateTime> WorkStartDate { get; set; }
-        public IList<CandidatePosition> CandidatePositions {get; set; }
+        public IList<CandidatePosition> CandidatePositions { get; set; }
         public bool SkipDuplicatesCheck { get; set; }
+        public bool IsFavorite { get; set; }
 
     }
 }

@@ -36,26 +36,27 @@
         {
             this.InvidiaTab = this.Factory.CreateRibbonTab();
             this.group4 = this.Factory.CreateRibbonGroup();
-            this.group2 = this.Factory.CreateRibbonGroup();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.group3 = this.Factory.CreateRibbonGroup();
-            this.group5 = this.Factory.CreateRibbonGroup();
             this.button7 = this.Factory.CreateRibbonButton();
             this.button8 = this.Factory.CreateRibbonButton();
+            this.group5 = this.Factory.CreateRibbonGroup();
             this.button4 = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
             this.button2 = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
             this.button6 = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.btnManageAreas = this.Factory.CreateRibbonButton();
             this.button3 = this.Factory.CreateRibbonButton();
+            this.group3 = this.Factory.CreateRibbonGroup();
             this.button5 = this.Factory.CreateRibbonButton();
             this.button10 = this.Factory.CreateRibbonButton();
+            this.toggleButtonFavorites = this.Factory.CreateRibbonToggleButton();
             this.InvidiaTab.SuspendLayout();
             this.group4.SuspendLayout();
+            this.group5.SuspendLayout();
             this.group2.SuspendLayout();
             this.group1.SuspendLayout();
             this.group3.SuspendLayout();
-            this.group5.SuspendLayout();
             // 
             // InvidiaTab
             // 
@@ -73,34 +74,6 @@
             this.group4.Items.Add(this.button8);
             this.group4.Label = "Openings";
             this.group4.Name = "group4";
-            // 
-            // group2
-            // 
-            this.group2.Items.Add(this.button2);
-            this.group2.Label = "Data";
-            this.group2.Name = "group2";
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.button6);
-            this.group1.Items.Add(this.button1);
-            this.group1.Items.Add(this.btnManageAreas);
-            this.group1.Items.Add(this.button3);
-            this.group1.Label = "Management";
-            this.group1.Name = "group1";
-            // 
-            // group3
-            // 
-            this.group3.Items.Add(this.button5);
-            this.group3.Items.Add(this.button10);
-            this.group3.Label = "HunterCV";
-            this.group3.Name = "group3";
-            // 
-            // group5
-            // 
-            this.group5.Items.Add(this.button4);
-            this.group5.Label = "Candidates";
-            this.group5.Name = "group5";
             // 
             // button7
             // 
@@ -122,6 +95,13 @@
             this.button8.ShowImage = true;
             this.button8.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button8_Click);
             // 
+            // group5
+            // 
+            this.group5.Items.Add(this.button4);
+            this.group5.Items.Add(this.toggleButtonFavorites);
+            this.group5.Label = "Candidates";
+            this.group5.Name = "group5";
+            // 
             // button4
             // 
             this.button4.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -131,9 +111,16 @@
             this.button4.ShowImage = true;
             this.button4.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button4_Click_1);
             // 
+            // group2
+            // 
+            this.group2.Items.Add(this.button2);
+            this.group2.Label = "Data";
+            this.group2.Name = "group2";
+            // 
             // button2
             // 
             this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button2.Image = global::HunterCV.AddIn.Properties.Resources._1370557420_system_software_update;
             this.button2.Label = "ReCloud";
             this.button2.Name = "button2";
             this.button2.OfficeImageId = "RecurrenceEdit";
@@ -141,9 +128,18 @@
             this.button2.ShowImage = true;
             this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
             // 
+            // group1
+            // 
+            this.group1.Items.Add(this.button6);
+            this.group1.Items.Add(this.button1);
+            this.group1.Items.Add(this.btnManageAreas);
+            this.group1.Items.Add(this.button3);
+            this.group1.Label = "Management";
+            this.group1.Name = "group1";
+            // 
             // button6
             // 
-            this.button6.Image = global::HunterCV.AddIn.Properties.Resources.bullet;
+            this.button6.Image = global::HunterCV.AddIn.Properties.Resources._1370557497_bullet_black;
             this.button6.Label = "Mail Templates";
             this.button6.Name = "button6";
             this.button6.OfficeImageId = "FilePrepareMenu";
@@ -152,7 +148,7 @@
             // 
             // button1
             // 
-            this.button1.Image = global::HunterCV.AddIn.Properties.Resources.bullet;
+            this.button1.Image = global::HunterCV.AddIn.Properties.Resources._1370557497_bullet_black;
             this.button1.Label = "Companies";
             this.button1.Name = "button1";
             this.button1.OfficeImageId = "CreateTableTemplatesGallery";
@@ -163,7 +159,7 @@
             // btnManageAreas
             // 
             this.btnManageAreas.Description = "Manage Areas";
-            this.btnManageAreas.Image = global::HunterCV.AddIn.Properties.Resources.bullet;
+            this.btnManageAreas.Image = global::HunterCV.AddIn.Properties.Resources._1370557497_bullet_black;
             this.btnManageAreas.Label = "Areas";
             this.btnManageAreas.Name = "btnManageAreas";
             this.btnManageAreas.OfficeImageId = "ReviewAcceptChange";
@@ -173,7 +169,7 @@
             // 
             // button3
             // 
-            this.button3.Image = global::HunterCV.AddIn.Properties.Resources.bullet;
+            this.button3.Image = global::HunterCV.AddIn.Properties.Resources._1370557497_bullet_black;
             this.button3.Label = "Roles";
             this.button3.Name = "button3";
             this.button3.OfficeImageId = "AccessTableContacts";
@@ -181,10 +177,17 @@
             this.button3.ShowImage = true;
             this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button3_Click);
             // 
+            // group3
+            // 
+            this.group3.Items.Add(this.button5);
+            this.group3.Items.Add(this.button10);
+            this.group3.Label = "HunterCV";
+            this.group3.Name = "group3";
+            // 
             // button5
             // 
             this.button5.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button5.Image = global::HunterCV.AddIn.Properties.Resources.about2;
+            this.button5.Image = global::HunterCV.AddIn.Properties.Resources._1370557385_onebit_47;
             this.button5.Label = "About";
             this.button5.Name = "button5";
             this.button5.OfficeImageId = "CustomActionsMenu";
@@ -194,12 +197,21 @@
             // button10
             // 
             this.button10.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button10.Image = global::HunterCV.AddIn.Properties.Resources.settings;
+            this.button10.Image = global::HunterCV.AddIn.Properties.Resources._1370557093_advancedsettings;
             this.button10.Label = "Settings";
             this.button10.Name = "button10";
             this.button10.OfficeImageId = "DefinePrintStyles";
             this.button10.ShowImage = true;
             this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button10_Click);
+            // 
+            // toggleButtonFavorites
+            // 
+            this.toggleButtonFavorites.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButtonFavorites.Image = global::HunterCV.AddIn.Properties.Resources._1370556717_star1;
+            this.toggleButtonFavorites.Label = "Favorites";
+            this.toggleButtonFavorites.Name = "toggleButtonFavorites";
+            this.toggleButtonFavorites.ShowImage = true;
+            this.toggleButtonFavorites.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonFavorites_Click);
             // 
             // HunterCVRibbon
             // 
@@ -211,14 +223,14 @@
             this.InvidiaTab.PerformLayout();
             this.group4.ResumeLayout(false);
             this.group4.PerformLayout();
+            this.group5.ResumeLayout(false);
+            this.group5.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
-            this.group5.ResumeLayout(false);
-            this.group5.PerformLayout();
 
         }
 
@@ -240,6 +252,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button10;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group5;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button4;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonFavorites;
     }
 
     partial class ThisRibbonCollection

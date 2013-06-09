@@ -51,7 +51,7 @@ namespace HunterCV.AddIn
 
             if (e.Cancelled == true)
             {
-                this.Close();
+                
             }
             else if (e.Error != null)
             {
@@ -112,10 +112,14 @@ namespace HunterCV.AddIn
             if (loginWorker.IsBusy)
             {
                 loginWorker.CancelAsync();
+                ServiceHelper.CanceledLogin = true;
+                btnOK.Enabled = true;
+            }
+            else
+            {
+                this.Close();
             }
 
-            ServiceHelper.CanceledLogin = true;
-            this.Close();
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -126,7 +130,7 @@ namespace HunterCV.AddIn
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["iTest.Site.ForgotPasswordUrl"]);
+            System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["HunterCV.Site.ForgotPasswordUrl"]);
         }
 
         private void tbUsername_Validating(object sender, CancelEventArgs e)
@@ -167,6 +171,27 @@ namespace HunterCV.AddIn
         private void tbPassword_Validating(object sender, CancelEventArgs e)
         {
             ValidatePassword();
+        }
+
+        private void tbUsername_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                btnOK_Click(null, new EventArgs());
+            }
+        }
+
+        private void tbPassword_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                btnOK_Click(null, new EventArgs());
+            }
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(ConfigurationManager.AppSettings["HunterCV.Site.SignUpUrl"]);
         }
 
     }

@@ -4,6 +4,7 @@
     <EntitySet Name="Applications" EntityType="invidiadbModel.Store.Applications" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CandidatePositions" EntityType="invidiadbModel.Store.CandidatePositions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Candidates" EntityType="invidiadbModel.Store.Candidates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FavoriteCandidates" EntityType="invidiadbModel.Store.FavoriteCandidates" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="MailTemplates" EntityType="invidiadbModel.Store.MailTemplates" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Positions" EntityType="invidiadbModel.Store.Positions" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Previews" EntityType="invidiadbModel.Store.Previews" store:Type="Tables" Schema="dbo" />
@@ -24,6 +25,14 @@
     <AssociationSet Name="FK_Candidates_Users" Association="invidiadbModel.Store.FK_Candidates_Users">
       <End Role="Users" EntitySet="Users" />
       <End Role="Candidates" EntitySet="Candidates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FavoriteCandidates_Candidates" Association="invidiadbModel.Store.FK_FavoriteCandidates_Candidates">
+      <End Role="Candidates" EntitySet="Candidates" />
+      <End Role="FavoriteCandidates" EntitySet="FavoriteCandidates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FavoriteCandidates_Users" Association="invidiadbModel.Store.FK_FavoriteCandidates_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="FavoriteCandidates" EntitySet="FavoriteCandidates" />
     </AssociationSet>
     <AssociationSet Name="FK_MailTemplates_Roles" Association="invidiadbModel.Store.FK_MailTemplates_Roles">
       <End Role="Roles" EntitySet="Roles" />
@@ -104,6 +113,14 @@
     <Property Name="UserId" Type="uniqueidentifier" />
     <Property Name="SigningDate" Type="datetime" />
     <Property Name="WorkStartDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="FavoriteCandidates">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="CandidateID" />
+    </Key>
+    <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CandidateID" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="MailTemplates">
     <Key>
@@ -234,6 +251,30 @@
         <PropertyRef Name="UserId" />
       </Principal>
       <Dependent Role="Candidates">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FavoriteCandidates_Candidates">
+    <End Role="Candidates" Type="invidiadbModel.Store.Candidates" Multiplicity="1" />
+    <End Role="FavoriteCandidates" Type="invidiadbModel.Store.FavoriteCandidates" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Candidates">
+        <PropertyRef Name="CandidateID" />
+      </Principal>
+      <Dependent Role="FavoriteCandidates">
+        <PropertyRef Name="CandidateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FavoriteCandidates_Users">
+    <End Role="Users" Type="invidiadbModel.Store.Users" Multiplicity="1" />
+    <End Role="FavoriteCandidates" Type="invidiadbModel.Store.FavoriteCandidates" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="FavoriteCandidates">
         <PropertyRef Name="UserId" />
       </Dependent>
     </ReferentialConstraint>

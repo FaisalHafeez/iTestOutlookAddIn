@@ -52,6 +52,10 @@
       <End Role="User" EntitySet="Users" />
     </AssociationSet>
     <EntitySet Name="Previews" EntityType="invidiadbModel.Preview" />
+    <AssociationSet Name="FavoriteCandidates" Association="invidiadbModel.FavoriteCandidates">
+      <End Role="Candidate" EntitySet="Candidates" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Application">
     <Key>
@@ -105,6 +109,7 @@
     <NavigationProperty Name="User" Relationship="invidiadbModel.FK_Candidates_Users" FromRole="Candidate" ToRole="User" />
     <Property Type="DateTime" Name="SigningDate" />
     <Property Type="DateTime" Name="WorkStartDate" />
+    <NavigationProperty Name="FavoriteUsers" Relationship="invidiadbModel.FavoriteCandidates" FromRole="Candidate" ToRole="User" />
   </EntityType>
   <EntityType Name="MailTemplate">
     <Key>
@@ -199,6 +204,7 @@
     <NavigationProperty Name="Positions" Relationship="invidiadbModel.FK_Positions_Users" FromRole="User" ToRole="Position" />
     <NavigationProperty Name="Profile" Relationship="invidiadbModel.UserProfile" FromRole="User" ToRole="Profile" />
     <NavigationProperty Name="Roles" Relationship="invidiadbModel.UsersInRoles" FromRole="User" ToRole="Role" />
+    <NavigationProperty Name="FavoriteCandidates" Relationship="invidiadbModel.FavoriteCandidates" FromRole="User" ToRole="Candidate" />
   </EntityType>
   <Association Name="RoleApplication">
     <End Type="invidiadbModel.Application" Role="Application" Multiplicity="1" />
@@ -321,4 +327,8 @@
     <Property Type="String" Name="ContentType" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Type="Binary" Name="FileContent" MaxLength="Max" FixedLength="false" />
   </EntityType>
+  <Association Name="FavoriteCandidates">
+    <End Type="invidiadbModel.Candidate" Role="Candidate" Multiplicity="*" />
+    <End Type="invidiadbModel.User" Role="User" Multiplicity="*" />
+  </Association>
 </Schema>

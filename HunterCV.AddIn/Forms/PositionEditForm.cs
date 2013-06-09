@@ -243,7 +243,7 @@ namespace HunterCV.AddIn
             
             dgvCandidates.DataSource = m_candidatesBindingSource;
 
-            if (m_candidatesBindingSource.Count > 0)
+            if (m_candidatesBindingSource != null )
             {
                 dgvCandidates.Columns[0].Visible = false;
                 dgvCandidates.Columns[7].Visible = false;
@@ -257,6 +257,9 @@ namespace HunterCV.AddIn
                 dgvCandidates.Columns[20].Visible = false;
                 dgvCandidates.Columns[21].Visible = false;
                 dgvCandidates.Columns[22].Visible = false;
+                dgvCandidates.Columns[23].Visible = false;
+                dgvCandidates.Columns[24].Visible = false;
+                dgvCandidates.Columns[25].Visible = false;
             }
 
         }

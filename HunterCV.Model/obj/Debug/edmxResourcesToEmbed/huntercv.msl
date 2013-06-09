@@ -154,5 +154,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <AssociationSetMapping Name="FavoriteCandidates" TypeName="invidiadbModel.FavoriteCandidates" StoreEntitySet="FavoriteCandidates">
+      <EndProperty Name="User">
+        <ScalarProperty Name="UserId" ColumnName="UserId" />
+      </EndProperty>
+      <EndProperty Name="Candidate">
+        <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

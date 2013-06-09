@@ -126,3 +126,4 @@ C:\Projects\HunterCV\HunterCV.FrontSite\bin\DotNetOpenAuth.OpenId.RelyingParty.x
 C:\Projects\HunterCV\HunterCV.FrontSite\obj\Debug\HunterCV.FrontSite.csprojResolveAssemblyReference.cache
 C:\Projects\HunterCV\HunterCV.FrontSite\obj\Debug\HunterCV.FrontSite.dll
 C:\Projects\HunterCV\HunterCV.FrontSite\obj\Debug\HunterCV.FrontSite.pdb
+C:\Projects\HunterCV\HunterCV.FrontSite\bin\Microsoft.Linq.Translations.dll

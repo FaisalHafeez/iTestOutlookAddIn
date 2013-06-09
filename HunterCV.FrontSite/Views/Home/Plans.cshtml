@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Plans";
+}
+@*
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+
+<input type="hidden" name="cbt" value="Back to Kosher-Browser site & finishing Your purchase" />
+<input type="hidden" name="return" value="http://localhost:2052/subscription/success?role=@(Url.Encode(System.Web.Security.Roles.GetRolesForUser()[0]))" />
+<input type="hidden" name="cancel_return" value="http://localhost:2052/subscription/cancel?role=@(Url.Encode(System.Web.Security.Roles.GetRolesForUser()[0]))" />
+<input type="hidden" name="custom" value="@(System.Web.Security.Roles.GetRolesForUser()[0])" />
+<input type="hidden" name="lc" value="US" />
+<input type="hidden" name="image_url" value="http://www.kosher-browser.com/images/paypal-150x50.png" />
+<input type="hidden" name="cpp_header_image" value="http://www.kosher-browser.com/images/paypal-750x60.png" />
+
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="VEXBD4R4PBF8J">
+<input type="image" src="https://www.paypalobjects.com/en_US/IL/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+*@
+
+
+<div>
+    <div class="plan">
+        <h1>Premium</h1>
+        <h2>49.99$</h2>
+        <h3>1000 candidates/month</h3>
+        <h3>100 openings/month</h3>
+        <h3>Up to 5 users</h3>
+        <h3>10 mail templates</h3>
+    </div>
+    <div class="plan">
+        <h1>Standard</h1>
+        <h2>19.99$</h2>
+        <h3>100 candidates/month</h3>
+        <h3>20 openings/month</h3>
+        <h3>2 users</h3>
+        <h3>5 mail templates</h3>
+    </div>
+    <div class="plan">
+        <h1>Basic</h1>
+        <h2>Free</h2>
+        <h3>10 candidates/month</h3>
+        <h3>1 openings/month</h3>
+        <h3>Single user</h3>
+        <h3>1 mail templates</h3>
+    </div>
+</div>

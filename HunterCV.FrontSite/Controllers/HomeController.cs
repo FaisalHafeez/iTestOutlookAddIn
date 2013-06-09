@@ -15,6 +15,16 @@ namespace HunterCV.FrontSite.Controllers
             return View();
         }
 
+        public ActionResult Features()
+        {
+            return View();
+        }
+
+        public ActionResult Plans()
+        {
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your app description page.";

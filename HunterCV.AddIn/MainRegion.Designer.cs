@@ -68,6 +68,7 @@
             this.showFormTimer = new System.Windows.Forms.Timer(this.components);
             this.candidatesWorker = new System.ComponentModel.BackgroundWorker();
             this.roleWorker = new System.ComponentModel.BackgroundWorker();
+            this.favoritesImageList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -97,7 +98,9 @@
             this.dataGridView1.Size = new System.Drawing.Size(889, 164);
             this.dataGridView1.TabIndex = 7;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
+            this.dataGridView1.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridView1_DataBindingComplete);
             this.dataGridView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragDrop);
             this.dataGridView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragEnter);
             this.dataGridView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
@@ -133,6 +136,7 @@
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(132, 27);
             this.tbName.TabIndex = 4;
+            this.tbName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbName_KeyPress);
             // 
             // label2
             // 
@@ -154,6 +158,7 @@
             this.cbRole.Name = "cbRole";
             this.cbRole.Size = new System.Drawing.Size(143, 27);
             this.cbRole.TabIndex = 37;
+            this.cbRole.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbRole_KeyPress);
             // 
             // button2
             // 
@@ -308,6 +313,7 @@
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.Size = new System.Drawing.Size(143, 27);
             this.cbStatus.TabIndex = 51;
+            this.cbStatus.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbStatus_KeyPress);
             // 
             // label5
             // 
@@ -328,6 +334,7 @@
             this.tbNumber.Name = "tbNumber";
             this.tbNumber.Size = new System.Drawing.Size(77, 27);
             this.tbNumber.TabIndex = 49;
+            this.tbNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbNumber_KeyPress);
             // 
             // label4
             // 
@@ -448,6 +455,13 @@
             this.roleWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.m_retrieveWorker_DoWork);
             this.roleWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.m_retrieveWorker_RunWorkerCompleted);
             // 
+            // favoritesImageList
+            // 
+            this.favoritesImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("favoritesImageList.ImageStream")));
+            this.favoritesImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.favoritesImageList.Images.SetKeyName(0, "1370566886_59105.ico");
+            this.favoritesImageList.Images.SetKeyName(1, "1370566891_65779.ico");
+            // 
             // MainRegion
             // 
             this.AllowDrop = true;
@@ -530,6 +544,7 @@
 
         private System.ComponentModel.BackgroundWorker candidatesWorker;
         private System.ComponentModel.BackgroundWorker roleWorker;
+        private System.Windows.Forms.ImageList favoritesImageList;
 
         public partial class MainRegionFactory : Microsoft.Office.Tools.Outlook.IFormRegionFactory
         {

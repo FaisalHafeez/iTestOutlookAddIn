@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <setParameter name="IIS Web Application Name" value="Default Web Site/HunterCV.FrontSite_deploy" />
-  <setParameter name="DefaultConnection-Web.config Connection String" value="data source=invidia2.cq4vyxk9ulpx.eu-west-1.rds.amazonaws.com,1433;initial catalog=invidiadb;user id=sa;password=031943889" />
-  <setParameter name="hunterCVEntities-Web.config Connection String" value="metadata=res://*/huntercv.csdl|res://*/huntercv.ssdl|res://*/huntercv.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=invidia2.cq4vyxk9ulpx.eu-west-1.rds.amazonaws.com,1433;initial catalog=invidiadb;persist security info=True;user id=sa;password=031943889;multipleactiveresultsets=True;App=EntityFramework&quot;" />
-</parameters>

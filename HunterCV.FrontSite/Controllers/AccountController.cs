@@ -9,6 +9,7 @@ using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using HunterCV.FrontSite.Models;
+using HunterCV.Model;
 
 namespace HunterCV.FrontSite.Controllers
 {
@@ -36,6 +37,16 @@ namespace HunterCV.FrontSite.Controllers
             if (ModelState.IsValid && Membership.ValidateUser(model.UserName, model.Password))
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, false);
+
+                using (hunterCVEntities context = new hunterCVEntities())
+                {
+                    var role = context.Users.Where(u => u.UserName == model.UserName).Single().Roles.Single();
+
+                    if (role.LicenseType == "Free")
+                    {
+                        return RedirectToAction("Manage", "Account");
+                    }
+                }
                 return RedirectToLocal(returnUrl);
             }
 
@@ -75,18 +86,57 @@ namespace HunterCV.FrontSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Attempt to register the user
-                MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
-
-                if (createStatus == MembershipCreateStatus.Success)
+                if (Roles.RoleExists(model.Company))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-                    return RedirectToAction("Index", "Home");
+                    ModelState.AddModelError("", "Company name allready exists");
                 }
                 else
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    // Attempt to register the user
+                    MembershipCreateStatus createStatus;
+                    Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+
+                    if (createStatus == MembershipCreateStatus.Success)
+                    {
+                        Roles.CreateRole(model.Company);
+                        Roles.AddUserToRole(model.UserName, model.Company);
+
+                        using (hunterCVEntities context = new hunterCVEntities())
+                        {
+                            var role = context.Roles.Single(r => r.RoleName == model.Company);
+
+                            role.CandidatesCompanies = @"<?xml version=""1.0"" encoding=""utf-8""?><companies><company title=""Coca-Cola, Inc.""></company></companies>";
+                            role.CandidatesAreas = @"<?xml version=""1.0"" encoding=""utf-8"" ?><areas><area title=""Security""></area><area title=""Management""></area><area title=""System""></area><area title=""BI""></area><area title=""Hardware""></area><area title=""QA""><area title=""Automation""></area><area title=""Manual""></area><area title=""Mobile""></area><area title=""Security""></area><area title=""Finance""></area></area><area title=""Developing""><area title=""JAVA""></area><area title=""WEB""></area><area title=""C""></area><area title=""C++""></area></area><area title=""Sales""></area><area title=""Administrator""></area><area title=""IT""></area><area title=""ERP""></area><area title=""Product""></area><area title=""Algorithem""></area><area title=""Embedded""></area><area title=""Electricity Engeneering""></area><area title=""Industrial Management""></area><area title=""Support""></area><area title=""Media""></area><area title=""Analist""></area><area title=""Internet""></area><area title=""UX/UI""></area><area title=""Marketing""></area><area title=""PMO""></area></areas>";
+                            role.CandidatesStatuses = @"<?xml version=""1.0"" encoding=""utf-8""?><statuses>  <status title=""Classification""></status>  <status title=""Interview Process"">  </status>  <status title=""Before Contract Signing"">  </status>  <status title=""Signed""></status></statuses>";
+                            role.CandidatesRoles = @"<?xml version=""1.0"" encoding=""utf-8""?>" +
+                                                                           @"<roles>" +
+                                                                             @"<role title=""Team Leader""/>" +
+                                                                             @"<role title=""Manager""/>" +
+                                                                             @"<role title=""Director""/>" +
+                                                                             @"<role title=""VP""/>" +
+                                                                             @"<role title=""Programmer""/>" +
+                                                                             @"<role title=""Junior Programmer""/>" +
+                                                                             @"<role title=""Junior QA""/>" +
+                                                                             @"<role title=""Student""/>" +
+                                                                             @"<role title=""QA""/>" +
+                                                                             @"</roles>";
+
+
+                            role.PositionsStatuses = @"<?xml version=""1.0"" encoding=""utf-8"" ?><statuses><status title=""Open""></status><status title=""Before Contract Signing""></status><status title=""Manned""></status></statuses>";
+                            role.Settings = @"<?xml version=""1.0"" encoding=""utf-8"" ?><settings><setting title=""PositionsStartIndex"" value=""100"" /><setting title=""CandidatesStartIndex"" value=""1600"" /><setting title=""PhoneFormat"" value=""(999) 000-0000"" /><setting title=""MobileFormat"" value=""(999) 000-0000"" /><setting title=""MSWordPhone2WildCards"" value=""[0-9]{3}-[0-9]{7}"" /><setting title=""MSWordPhone1WildCards"" value=""[0-9]{2}-[0-9]{7}"" /><setting title=""MSWordMobile2WildCards"" value=""[0-9][5][0-9][0-9]{7}"" /><setting title=""MSWordMobile1WildCards"" value=""[0-9][5][0-9]-[0-9]{7}"" /></settings>";
+                            role.LicenseType = "Free";
+
+                            context.SaveChanges();
+                        }
+
+
+                        FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+                        return RedirectToAction("Download", "Subscription");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    }
                 }
             }
 
