@@ -59,7 +59,9 @@ namespace HunterCV.AddIn
             XmlConfigurator.Configure();
 
             Logger.InfoFormat("Starts logger...");
-        } 
+        }
+
+        public static Microsoft.Office.Interop.Word.Application WordApplication { get; set; }
 
         public void RefreshRoles()
         {

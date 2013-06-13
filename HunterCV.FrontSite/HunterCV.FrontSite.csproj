@@ -46,6 +46,30 @@
     <Reference Include="Bootstrapper.AutoMapper">
       <HintPath>..\packages\Bootstrapper.AutoMapper.2.0.3.7\lib\Net40\Bootstrapper.AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.3.0.13117\lib\net40-full\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.3.0.13117\lib\net40-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.3.0.13117\lib\net40-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.3.0.13117\lib\net40-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.3.0.13117\lib\net40-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.3.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.3.0.13117\lib\net40-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -56,10 +80,39 @@
     <Reference Include="Microsoft.Linq.Translations, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Linq.Translations.1.0.1\lib\net40\Microsoft.Linq.Translations.dll</HintPath>
     </Reference>
+    <Reference Include="MvcSiteMapProvider">
+      <HintPath>..\packages\MvcSiteMapProvider.3.3.6.0\lib\net40\MvcSiteMapProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http, Version=2.1.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.1.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\packages\Microsoft.Bcl.1.0.19\lib\net40\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.1.0.19\lib\net40\System.Threading.Tasks.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -68,6 +121,10 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Providers">
       <HintPath>..\packages\Microsoft.AspNet.Providers.Core.1.2\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -86,20 +143,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -116,10 +159,6 @@
     </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -144,30 +183,6 @@
     <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.20710.0\lib\net40\WebMatrix.WebData.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.AspNet, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.0.3.12153\lib\net40-full\DotNetOpenAuth.AspNet.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OpenId, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OpenId.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.0.3.12153\lib\net40-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -198,6 +213,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\RemoteHttpsRequireAttribute.cs" />
     <Compile Include="AutoMap\FavoritesUserResolver.cs" />
     <Compile Include="AutoMap\MappingCreator.cs" />
     <Compile Include="AutoMap\CandidateUserResolver.cs" />
@@ -205,6 +221,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="ExtensionMethods\HelpersExtensionsMethods.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -212,67 +229,293 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\jquery-ui.css" />
-    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
-    <Content Include="Content\themes\base\jquery.ui.all.css" />
-    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
-    <Content Include="Content\themes\base\jquery.ui.base.css" />
-    <Content Include="Content\themes\base\jquery.ui.button.css" />
-    <Content Include="Content\themes\base\jquery.ui.core.css" />
-    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
-    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
-    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
-    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
-    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
-    <Content Include="Content\themes\base\jquery.ui.slider.css" />
-    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
-    <Content Include="Content\themes\base\jquery.ui.theme.css" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\animate.min.css" />
+    <Content Include="Content\base.css" />
+    <Content Include="Content\flexslider.css" />
+    <Content Include="Content\fonts.css" />
+    <Content Include="Content\ie\ie8.css" />
+    <Content Include="Content\images\arrows-ffffff.png" />
+    <Content Include="Content\images\shadow.png" />
+    <Content Include="Content\jquery.onebyone.css" />
+    <Content Include="Content\layout.css" />
+    <Content Include="Content\normalize.css" />
+    <Content Include="Content\prettyPhoto.css" />
+    <Content Include="Content\skeleton.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="Content\superfish-navbar.css" />
+    <Content Include="Content\superfish-vertical.css" />
+    <Content Include="Content\superfish.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\MuseoSans_500-webfont.svg" />
+    <Content Include="fonts\MuseoSans_500_Italic-webfont.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.7.1.js" />
-    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Images\404numb-hor.jpg" />
+    <Content Include="Images\404numb.jpg" />
+    <Content Include="Images\ajax-loader.gif" />
+    <Content Include="Images\apple-touch-icon-114x114.png" />
+    <Content Include="Images\apple-touch-icon-72x72.png" />
+    <Content Include="Images\apple-touch-icon.png" />
+    <Content Include="Images\arrow-left.gif" />
+    <Content Include="Images\black-opacity-10.png" />
+    <Content Include="Images\black-opacity-30.png" />
+    <Content Include="Images\border-image.gif" />
+    <Content Include="Images\bq-bg.gif" />
+    <Content Include="Images\btn-bg.gif" />
+    <Content Include="Images\btn-large-bg.gif" />
+    <Content Include="Images\btn-marker-alt.png" />
+    <Content Include="Images\btn-marker-large.png" />
+    <Content Include="Images\btn-marker-small.png" />
+    <Content Include="Images\btn-marker.png" />
+    <Content Include="Images\captcha.png" />
+    <Content Include="Images\checkbox.png" />
+    <Content Include="Images\checkbox1.png" />
+    <Content Include="Images\checkbox2.png" />
+    <Content Include="Images\checkbox3.png" />
+    <Content Include="Images\checkbox4.png" />
+    <Content Include="Images\checkbox5.png" />
+    <Content Include="Images\checkbox6.png" />
+    <Content Include="Images\colborder.gif" />
+    <Content Include="Images\coming-soon\coming-soon-divider.png" />
+    <Content Include="Images\coming-soon\home-icon.png" />
+    <Content Include="Images\coming-soon\light.png" />
+    <Content Include="Images\coming-soon\logo-alt.png" />
+    <Content Include="Images\coming-soon\number.png" />
+    <Content Include="Images\comment-children.gif" />
+    <Content Include="Images\content-arrow-alt.gif" />
+    <Content Include="Images\content-arrow.gif" />
+    <Content Include="Images\date-bg.png" />
+    <Content Include="Images\divider.png" />
+    <Content Include="Images\dotted-window.png" />
+    <Content Include="Images\extra-bg.jpg" />
+    <Content Include="Images\favicon.ico" />
+    <Content Include="Images\footer-gr.gif" />
+    <Content Include="Images\form-select1.png" />
+    <Content Include="Images\form-select2.png" />
+    <Content Include="Images\form-select3.png" />
+    <Content Include="Images\form-select4.png" />
+    <Content Include="Images\form-select5.png" />
+    <Content Include="Images\form-select6.png" />
+    <Content Include="Images\gallery\2cols\gallery-img1.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img10.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img11.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img12.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img2.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img3.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img4.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img5.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img6.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img7.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img8.jpg" />
+    <Content Include="Images\gallery\2cols\gallery-img9.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img1.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img10.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img11.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img12.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img13.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img14.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img15.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img16.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img17.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img18.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img19.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img2.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img20.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img21.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img3.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img4.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img5.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img6.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img7.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img8.jpg" />
+    <Content Include="Images\gallery\3cols\gallery-img9.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img1.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img10.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img11.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img12.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img13.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img14.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img15.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img16.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img17.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img18.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img19.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img2.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img20.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img21.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img3.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img4.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img5.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img6.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img7.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img8.jpg" />
+    <Content Include="Images\gallery\4cols\gallery-img9.jpg" />
+    <Content Include="Images\gravatar.gif" />
+    <Content Include="Images\heading-bg.jpg" />
+    <Content Include="Images\hr-dotted.gif" />
+    <Content Include="Images\hr-dotted.png" />
+    <Content Include="Images\hr-double.gif" />
+    <Content Include="Images\ico-alert-error.png" />
+    <Content Include="Images\ico-alert-info.png" />
+    <Content Include="Images\ico-alert-success.png" />
+    <Content Include="Images\ico-alert-warning.png" />
+    <Content Include="Images\icons-sprite.png" />
+    <Content Include="Images\indication.jpg" />
+    <Content Include="Images\l-tab-shadow.png" />
+    <Content Include="Images\lang-bg.png" />
+    <Content Include="Images\lang-sub-bot.png" />
+    <Content Include="Images\li-marker-10.png" />
+    <Content Include="Images\li-marker-2.png" />
+    <Content Include="Images\li-marker-3.png" />
+    <Content Include="Images\li-marker-4.png" />
+    <Content Include="Images\li-marker-5.png" />
+    <Content Include="Images\li-marker-6.png" />
+    <Content Include="Images\li-marker-7.png" />
+    <Content Include="Images\li-marker-8.png" />
+    <Content Include="Images\li-marker-9.png" />
+    <Content Include="Images\li-marker-act.png" />
+    <Content Include="Images\li-marker-dark.png" />
+    <Content Include="Images\li-marker-default.png" />
+    <Content Include="Images\li-marker.png" />
+    <Content Include="Images\loader-twitter.gif" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\logo_microsoft_outlook.png" />
+    <Content Include="Images\magnify.png" />
+    <Content Include="Images\media-holder-bg.png" />
+    <Content Include="Images\meta-comment.png" />
+    <Content Include="Images\meta-user.png" />
+    <Content Include="Images\nav-slider.png" />
+    <Content Include="Images\nav.gif" />
+    <Content Include="Images\newsletter-submit.png" />
+    <Content Include="Images\number-tile.gif" />
+    <Content Include="Images\overlay.png" />
+    <Content Include="Images\pagnav.gif" />
+    <Content Include="Images\pattern.gif" />
+    <Content Include="Images\pill-pattern-alt2.png" />
+    <Content Include="Images\pill-pattern-alt3.png" />
+    <Content Include="Images\post-img1.jpg" />
+    <Content Include="Images\post-img2.jpg" />
+    <Content Include="Images\preloader.gif" />
+    <Content Include="Images\prettyPhoto\dark_rounded\btnNext.png" />
+    <Content Include="Images\prettyPhoto\dark_rounded\btnPrevious.png" />
+    <Content Include="Images\prettyPhoto\dark_rounded\contentPattern.png" />
+    <Content Include="Images\prettyPhoto\dark_rounded\default_thumbnail.gif" />
+    <Content Include="Images\prettyPhoto\dark_rounded\loader.gif" />
+    <Content Include="Images\prettyPhoto\dark_rounded\sprite.png" />
+    <Content Include="Images\prettyPhoto\dark_square\btnNext.png" />
+    <Content Include="Images\prettyPhoto\dark_square\btnPrevious.png" />
+    <Content Include="Images\prettyPhoto\dark_square\contentPattern.png" />
+    <Content Include="Images\prettyPhoto\dark_square\default_thumbnail.gif" />
+    <Content Include="Images\prettyPhoto\dark_square\loader.gif" />
+    <Content Include="Images\prettyPhoto\dark_square\sprite.png" />
+    <Content Include="Images\prettyPhoto\default\default_thumb.png" />
+    <Content Include="Images\prettyPhoto\default\loader.gif" />
+    <Content Include="Images\prettyPhoto\default\sprite.png" />
+    <Content Include="Images\prettyPhoto\default\sprite_next.png" />
+    <Content Include="Images\prettyPhoto\default\sprite_prev.png" />
+    <Content Include="Images\prettyPhoto\default\sprite_x.png" />
+    <Content Include="Images\prettyPhoto\default\sprite_y.png" />
+    <Content Include="Images\prettyPhoto\facebook\btnNext.png" />
+    <Content Include="Images\prettyPhoto\facebook\btnPrevious.png" />
+    <Content Include="Images\prettyPhoto\facebook\contentPatternBottom.png" />
+    <Content Include="Images\prettyPhoto\facebook\contentPatternLeft.png" />
+    <Content Include="Images\prettyPhoto\facebook\contentPatternRight.png" />
+    <Content Include="Images\prettyPhoto\facebook\contentPatternTop.png" />
+    <Content Include="Images\prettyPhoto\facebook\default_thumbnail.gif" />
+    <Content Include="Images\prettyPhoto\facebook\loader.gif" />
+    <Content Include="Images\prettyPhoto\facebook\sprite.png" />
+    <Content Include="Images\prettyPhoto\light_rounded\btnNext.png" />
+    <Content Include="Images\prettyPhoto\light_rounded\btnPrevious.png" />
+    <Content Include="Images\prettyPhoto\light_rounded\default_thumbnail.gif" />
+    <Content Include="Images\prettyPhoto\light_rounded\loader.gif" />
+    <Content Include="Images\prettyPhoto\light_rounded\sprite.png" />
+    <Content Include="Images\prettyPhoto\light_square\btnNext.png" />
+    <Content Include="Images\prettyPhoto\light_square\btnPrevious.png" />
+    <Content Include="Images\prettyPhoto\light_square\default_thumbnail.gif" />
+    <Content Include="Images\prettyPhoto\light_square\loader.gif" />
+    <Content Include="Images\prettyPhoto\light_square\sprite.png" />
+    <Content Include="Images\pricing-table-bg.gif" />
+    <Content Include="Images\pricing-table-bg.png" />
+    <Content Include="Images\pricing-texture.png" />
+    <Content Include="Images\r-tab-shadow.png" />
+    <Content Include="Images\radio1.png" />
+    <Content Include="Images\radio2.png" />
+    <Content Include="Images\radio3.png" />
+    <Content Include="Images\radio4.png" />
+    <Content Include="Images\radio5.png" />
+    <Content Include="Images\radio6.png" />
+    <Content Include="Images\ribbon-button.png" />
+    <Content Include="Images\sample\slide1.png" />
+    <Content Include="Images\sample\slide2.png" />
+    <Content Include="Images\sample\slide3.png" />
+    <Content Include="Images\search-button.gif" />
+    <Content Include="Images\search-button2.png" />
+    <Content Include="Images\service-img1.png" />
+    <Content Include="Images\service-img2.png" />
+    <Content Include="Images\service-img3.png" />
+    <Content Include="Images\sf-arrow-main.png" />
+    <Content Include="Images\sf-arrow.png" />
+    <Content Include="Images\sf-sub-arrow.gif" />
+    <Content Include="Images\sf-sub-bg.gif" />
+    <Content Include="Images\sf-sub-bot.png" />
+    <Content Include="Images\shadow.png" />
+    <Content Include="Images\single-service-img1.png" />
+    <Content Include="Images\single-service-img2.png" />
+    <Content Include="Images\sm-logo1.png" />
+    <Content Include="Images\sm-logo2.png" />
+    <Content Include="Images\sm-logo3.png" />
+    <Content Include="Images\sm-logo4.png" />
+    <Content Include="Images\social-icons-alt.png" />
+    <Content Include="Images\social-icons.png" />
+    <Content Include="Images\sprite.png" />
+    <Content Include="Images\style-ico-dark.png" />
+    <Content Include="Images\style-ico-fresh.png" />
+    <Content Include="Images\style-ico-main.png" />
+    <Content Include="Images\switch-arrow.gif" />
+    <Content Include="Images\tag1-arrow.png" />
+    <Content Include="Images\tag1-bg.png" />
+    <Content Include="Images\tag1-left.png" />
+    <Content Include="Images\tag2-arrow.png" />
+    <Content Include="Images\tag2-bg.png" />
+    <Content Include="Images\tag2-left.png" />
+    <Content Include="Images\tag3-arrow.png" />
+    <Content Include="Images\tag3-bg.png" />
+    <Content Include="Images\tag3-left.png" />
+    <Content Include="Images\tag4-arrow.png" />
+    <Content Include="Images\tag4-bg.png" />
+    <Content Include="Images\tag4-left.png" />
+    <Content Include="Images\tag5-arrow.png" />
+    <Content Include="Images\tag5-bg.png" />
+    <Content Include="Images\tag5-left.png" />
+    <Content Include="Images\tag6-arrow.png" />
+    <Content Include="Images\tag6-bg.png" />
+    <Content Include="Images\tag6-left.png" />
+    <Content Include="Images\team-img1.jpg" />
+    <Content Include="Images\team-img2.jpg" />
+    <Content Include="Images\team-img3.jpg" />
+    <Content Include="Images\team-img4.jpg" />
+    <Content Include="Images\title-bg.png" />
+    <Content Include="Images\title-left.png" />
+    <Content Include="Images\tooltip1-arrow.png" />
+    <Content Include="Images\tooltip2-arrow.png" />
+    <Content Include="Images\tooltip3-arrow.png" />
+    <Content Include="Images\tooltip4-arrow.png" />
+    <Content Include="Images\tooltip5-arrow.png" />
+    <Content Include="Images\tooltip6-arrow.png" />
+    <Content Include="Images\top-gradient.gif" />
+    <Content Include="Images\top-gradient.png" />
+    <Content Include="Images\top-header-bg.png" />
+    <Content Include="Images\white-opacity-50.png" />
+    <Content Include="Images\widget-bg.gif" />
+    <Content Include="Images\widget-top-bg.gif" />
+    <Content Include="Scripts\hoverIntent.js" />
+    <Content Include="Scripts\jquery-2.0.2-vsdoc.js" />
+    <Content Include="Scripts\jquery-2.0.2.js" />
+    <Content Include="Scripts\jquery-2.0.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
+    <Content Include="Scripts\jquery.bgiframe.min.js" />
+    <Content Include="Scripts\jquery.easing.1.3.js" />
+    <Content Include="Scripts\jquery.tipsy.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -280,9 +523,11 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\knockout-2.1.0.debug.js" />
-    <Content Include="Scripts\knockout-2.1.0.js" />
-    <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\knockout-2.2.1.debug.js" />
+    <Content Include="Scripts\knockout-2.2.1.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\superfish.js" />
+    <Content Include="Scripts\supersubs.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -290,21 +535,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Images\accent.png" />
-    <Content Include="Images\bullet.png" />
-    <Content Include="Images\heroAccent.png" />
-    <Content Include="Images\orderedList0.png" />
-    <Content Include="Images\orderedList1.png" />
-    <Content Include="Images\orderedList2.png" />
-    <Content Include="Images\orderedList3.png" />
-    <Content Include="Images\orderedList4.png" />
-    <Content Include="Images\orderedList5.png" />
-    <Content Include="Images\orderedList6.png" />
-    <Content Include="Images\orderedList7.png" />
-    <Content Include="Images\orderedList8.png" />
-    <Content Include="Images\orderedList9.png" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
@@ -315,7 +546,16 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="XMLFile1.xml" />
+    <Content Include="Scripts\custom.js" />
+    <Content Include="Scripts\dropkick.js" />
+    <Content Include="Scripts\jquery.checkbox.js" />
+    <Content Include="Scripts\jquery.custom-radio-checkbox.js" />
+    <Content Include="Scripts\jquery.elastislide.js" />
+    <Content Include="Scripts\jquery.flexslider.js" />
+    <Content Include="Scripts\jquery.mobilemenu.js" />
+    <Content Include="Scripts\jquery.prettyPhoto.js" />
+    <Content Include="Scripts\jquery.reveal.js" />
+    <Content Include="Scripts\jquery.twitter.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -341,6 +581,25 @@
     <Content Include="Views\Subscription\Cancel.cshtml" />
     <Content Include="Views\Subscription\Download.cshtml" />
     <Content Include="Views\Home\Features.cshtml" />
+    <Content Include="Views\Shared\Copy of _Layout.cshtml" />
+    <None Include="fonts\MuseoSans_500-webfont.eot" />
+    <None Include="fonts\MuseoSans_500-webfont.ttf" />
+    <None Include="fonts\MuseoSans_500-webfont.woff" />
+    <None Include="fonts\MuseoSans_500_Italic-webfont.eot" />
+    <None Include="fonts\MuseoSans_500_Italic-webfont.ttf" />
+    <None Include="fonts\MuseoSans_500_Italic-webfont.woff" />
+    <None Include="Images\logo.pdn" />
+    <Content Include="Mvc.sitemap" />
+    <None Include="MvcSiteMapSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Scripts\jquery-2.0.2.min.map" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModelList.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\SiteMapHelperModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
     <None Include="_MSBuild\NuGetPackageAndPublish.targets" />
   </ItemGroup>
   <PropertyGroup>
@@ -359,7 +618,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2052</DevelopmentServerPort>
+          <DevelopmentServerPort>32782</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
@@ -373,6 +632,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.7\tools\Microsoft.Bcl.Build.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -43,7 +43,7 @@
     <PublishUrl>C:\Projects\HunterCV\HunterCV.FrontSite\Install\</PublishUrl>
     <InstallUrl>http://www.positionsbox.com/install/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.10</ApplicationVersion>
+    <ApplicationVersion>1.0.0.13</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>

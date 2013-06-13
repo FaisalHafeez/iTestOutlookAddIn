@@ -79,6 +79,15 @@ namespace HunterCV.AddIn
 
                 if (result)
                 {
+                    try
+                    {
+                        MainRegion.WordApplication = new Microsoft.Office.Interop.Word.Application();
+                    }
+                    catch
+                    {
+
+                    }
+
                     CrossThreadUtility.InvokeControlAction<Form>(this, f =>
                     {
                         ServiceHelper.LastLogin = new LoginDetails

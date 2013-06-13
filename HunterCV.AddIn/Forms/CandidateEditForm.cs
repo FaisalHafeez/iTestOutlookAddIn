@@ -19,23 +19,39 @@ using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.Drawing.Imaging;
 using System.Configuration;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace HunterCV.AddIn
 {
     public partial class CandidateEditForm : Form
     {
+        private const int FEATURE_DISABLE_NAVIGATION_SOUNDS = 21;
+        private const int SET_FEATURE_ON_THREAD = 0x00000001;
+        private const int SET_FEATURE_ON_PROCESS = 0x00000002;
+        private const int SET_FEATURE_IN_REGISTRY = 0x00000004;
+        private const int SET_FEATURE_ON_THREAD_LOCALMACHINE = 0x00000008;
+        private const int SET_FEATURE_ON_THREAD_INTRANET = 0x00000010;
+        private const int SET_FEATURE_ON_THREAD_TRUSTED = 0x00000020;
+        private const int SET_FEATURE_ON_THREAD_INTERNET = 0x00000040;
+        private const int SET_FEATURE_ON_THREAD_RESTRICTED = 0x00000080;
+
+
+        [DllImport("urlmon.dll")]
+        [PreserveSig]
+        [return: MarshalAs(UnmanagedType.Error)]
+        static extern int CoInternetSetFeatureEnabled(
+        int FeatureEntry,
+        [MarshalAs(UnmanagedType.U4)] int dwFlags,
+        bool fEnable);
+
         private const int PREVIEW_OPEN = 1200;
         private const int PREVIEW_CLOSE = 673;
 
         private bool m_skipEvents = false;
         private BindingList<HunterCV.Common.Resume> m_bind_documents = null;
         private Candidate m_Candidate;
-        BackgroundWorker googleDocWorker = null;
-        BackgroundWorker uploadPreviewWorker = null;
-        bool m_previewIsDragging = false;
 
-        int m_previewCurrentX = 0;
-        int m_previewCurrentY = 0;
 
         public Candidate Candidate
         {
@@ -110,20 +126,6 @@ namespace HunterCV.AddIn
 
         public void LoadResumes()
         {
-            CrossThreadUtility.InvokeControlAction<PictureBox>(picPreview, p =>
-            {
-                if (p.Image != null)
-                {
-                    p.Image.Dispose();
-                    p.Image = null;
-                }
-            });
-
-            if (this.Width == PREVIEW_OPEN)
-            {
-                CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p => p.Visible = true);
-            }
-
             //load documents
             retrieveCVWorker.RunWorkerAsync(m_Candidate.CandidateID);
         }
@@ -170,7 +172,8 @@ namespace HunterCV.AddIn
                 }
             }
 
-
+            int feature = FEATURE_DISABLE_NAVIGATION_SOUNDS;
+            CoInternetSetFeatureEnabled(feature, SET_FEATURE_ON_PROCESS, true);
 
             try
             {
@@ -447,7 +450,7 @@ namespace HunterCV.AddIn
                     m_documents.Add(new Resume
                     {
                         CandidateID = m_Candidate.CandidateID,
-                        Description = new FileInfo(m_Candidate.ResumePath).Name,
+                        //Description = new FileInfo(m_Candidate.ResumePath).Name,
                         FileName = m_Candidate.ResumePath
                     });
                 }
@@ -470,7 +473,7 @@ namespace HunterCV.AddIn
 
                 if (this.Width == PREVIEW_OPEN)
                 {
-                    ShowPreview();
+                    ShowPreview(m_documents[0]);
                 }
 
             }
@@ -495,6 +498,10 @@ namespace HunterCV.AddIn
                     dg.Columns[6].Visible = false;
                 });
 
+                if (m_isNew)
+                {
+                    ShowPreview(m_documents[0]);
+                }
             }
 
         }
@@ -640,8 +647,6 @@ namespace HunterCV.AddIn
 
             mtbMobile.Mask = m_region.Settings.Where(p => p.Key == "MobileFormat").Single().Value;
             mtbPhone.Mask = m_region.Settings.Where(p => p.Key == "PhoneFormat").Single().Value;
-
-            panelPreviewWait.Top = 300;
 
             BindPositionsGrid();
         }
@@ -941,65 +946,40 @@ namespace HunterCV.AddIn
 
         private void CandidateEditForm_Shown(object sender, EventArgs e)
         {
-            readingResumeTimer.Enabled = true;
             if (tbFirstName.CanFocus)
             {
                 tbFirstName.Focus();
             }
         }
 
-        private void readingResumeTimer_Tick(object sender, EventArgs e)
-        {
-            readingResumeTimer.Enabled = false;
-
-            if (m_isNew && m_Candidate.ResumePath != null)
-            {
-                ReadingResumeForm frm = new ReadingResumeForm(m_region, m_Candidate.ResumePath);
-                frm.ShowDialog(this);
-
-                btnShowHide_Click(null, new EventArgs());
-
-                if (frm.ReadingResult.ContainsKey("MSWordMobile1WildCards") &&
-                       !string.IsNullOrEmpty(frm.ReadingResult["MSWordMobile1WildCards"]))
-                {
-                    mtbMobile.Text = frm.ReadingResult["MSWordMobile1WildCards"];
-                }
-                else
-                {
-                    if (frm.ReadingResult.ContainsKey("MSWordMobile2WildCards") &&
-                           !string.IsNullOrEmpty(frm.ReadingResult["MSWordMobile2WildCards"]))
-                    {
-                        mtbMobile.Text = frm.ReadingResult["MSWordMobile2WildCards"];
-                    }
-                }
-
-                if (frm.ReadingResult.ContainsKey("MSWordPhone1WildCards") &&
-                       !string.IsNullOrEmpty(frm.ReadingResult["MSWordPhone1WildCards"]))
-                {
-                    mtbPhone.Text = frm.ReadingResult["MSWordPhone1WildCards"];
-                }
-                else
-                {
-                    if (frm.ReadingResult.ContainsKey("MSWordPhone2WildCards") &&
-                           !string.IsNullOrEmpty(frm.ReadingResult["MSWordPhone2WildCards"]))
-                    {
-                        mtbPhone.Text = frm.ReadingResult["MSWordPhone2WildCards"];
-                    }
-                }
-            }
-
-        }
 
         private void btnShowHide_Click(object sender, EventArgs e)
         {
             if (this.Width == PREVIEW_CLOSE)
             {
+                Resume item = null;
+
+                if (dataGridViewCV.SelectedRows.Count == 0)
+                {
+                    if (m_documents.Count() > 0)
+                    {
+                        item = m_documents[0];
+                    }
+                    else
+                    {
+                        MessageBox.Show(this, "No documents exists for preview", "HunterCV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                }
+                else
+                {
+                    item = dataGridViewCV.SelectedRows[0].DataBoundItem as Resume;
+                }
+
                 this.Width = PREVIEW_OPEN;
                 btnShowHide.Text = "Hide Preview <<";
 
-                panelPreviewWait.Visible = true;
-
-                ShowPreview();
+                ShowPreview(item);
             }
             else
             {
@@ -1008,176 +988,49 @@ namespace HunterCV.AddIn
             }
         }
 
-        private void ShowPreview()
+        private void ShowPreview(Resume item)
         {
-            if (m_bind_documents != null && m_bind_documents.Count > 0)
+            CrossThreadUtility.InvokeControlAction<CandidateEditForm>(this, f =>
             {
-                //clear image
-                if (picPreview != null && picPreview.Image != null)
+                ReadingResumeForm frm = new ReadingResumeForm(m_region, item, !m_isNew);
+                frm.ShowDialog(f);
+
+                if (m_isNew)
                 {
-                    picPreview.Image = null;
-                    picPreview.Refresh();
-                }
-
-                //get resume
-                Resume item = m_bind_documents.First();
-
-                FileInfo fi = null;
-
-                string width = "800", page = "1";
-
-                //in case cached
-                string fileCached = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.InternetCache), string.Format("huntercv.resume.{0}.{1}.{2}.jpg", item.ResumeID, page, width));
-
-                if (!m_isNew && item.ResumeID != 0 && File.Exists(fileCached))
-                {
-                    CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
+                    if (frm.ReadingResult.ContainsKey("MSWordMobile1WildCards") &&
+                           !string.IsNullOrEmpty(frm.ReadingResult["MSWordMobile1WildCards"]))
                     {
-                        picPreview.Image = new Bitmap(fileCached);
-                    });
-
-                    FinishLoadingPreview();
-                }
-                else
-                {
-                    //cloudy document
-                    if (item.IsCloudy)
-                    {
-                        CrossThreadUtility.InvokeControlAction<Panel>(panel1, p =>
-                        {
-                            googleDocWorker = new BackgroundWorker();
-                            googleDocWorker.WorkerSupportsCancellation = true;
-
-                            googleDocWorker.DoWork += (senders, es) =>
-                            {
-                                if (!es.Cancel)
-                                {
-                                    es.Result = ServiceHelper.GetGoogleDocStream(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2F{1}%2Fapi%2Fresumeservices%2Fcontent%2F{0}&a=bi&pagenumber={2}&w={3}", item.ResumeID, ConfigurationManager.AppSettings["ServiceBaseHost"], page, width));
-                                }
-                            };
-
-                            googleDocWorker.RunWorkerCompleted += (senders, es) =>
-                            {
-                                if (es.Cancelled)
-                                {
-
-                                }
-                                else if (es.Error == null)
-                                {
-                                    Stream sr = es.Result as Stream;
-
-                                    if (sr != null)
-                                    {
-                                        CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
-                                            {
-                                                picPreview.Image = Bitmap.FromStream((Stream)es.Result);
-                                                picPreview.Image.Save(fileCached, ImageFormat.Jpeg);
-                                            });
-
-                                    }
-
-                                    FinishLoadingPreview();
-                                }
-                                else
-                                {
-                                    //somw error
-                                    CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p2 => p2.Visible = false);
-                                }
-                            };
-
-                            googleDocWorker.RunWorkerAsync();
-                        });
+                        mtbMobile.Text = frm.ReadingResult["MSWordMobile1WildCards"];
                     }
                     else
                     {
-                        Guid previewId = Guid.NewGuid();
-
-                        // open exists documents
-                        fi = new FileInfo(item.FileName);
-
-                        uploadPreviewWorker = new BackgroundWorker();
-                        uploadPreviewWorker.WorkerSupportsCancellation = true;
-
-                        uploadPreviewWorker.RunWorkerCompleted += (senders, es) =>
+                        if (frm.ReadingResult.ContainsKey("MSWordMobile2WildCards") &&
+                               !string.IsNullOrEmpty(frm.ReadingResult["MSWordMobile2WildCards"]))
                         {
-                            if (es.Cancelled)
-                            {
-
-                            }
-                            else if (es.Error == null)
-                            {
-                                Stream sr = es.Result as Stream;
-
-                                if (sr != null)
-                                {
-                                    CrossThreadUtility.InvokeControlAction<Panel>(panel1, p2 =>
-                                    {
-                                        picPreview.Image = Bitmap.FromStream((Stream)es.Result);
-                                        picPreview.Image.Save(fileCached, ImageFormat.Jpeg);
-                                    });
-                                }
-
-
-                                //delete preview
-                                var deletePreviewWorker = new BackgroundWorker();
-                                deletePreviewWorker.DoWork += (senderss, ess) =>
-                                {
-                                    Thread.Sleep(3000);
-
-                                    ServiceHelper.DeletePreview(new Preview
-                                    {
-                                        PreviewID = previewId
-                                    });
-
-                                };
-                                deletePreviewWorker.RunWorkerAsync();
-
-                                FinishLoadingPreview();
-                            }
-                        };
-
-                        uploadPreviewWorker.DoWork += (senders, es) =>
-                        {
-                            try
-                            {
-                                if (!es.Cancel)
-                                {
-                                    ServiceHelper.Upload(new Preview
-                                    {
-                                        PreviewID = previewId,
-                                        FileName = fi.FullName
-                                    });
-
-                                    Thread.Sleep(100);
-
-                                    es.Result = ServiceHelper.GetGoogleDocStream(string.Format("https://docs.google.com/viewer?url=http%3A%2F%2F{1}%2Fapi%2Fpreviews%2Fcontent%3fid={0}&a=bi&pagenumber={2}&w={3}", previewId.ToString(), ConfigurationManager.AppSettings["ServiceBaseHost"], page, width));
-                                }
-                            }
-                            finally
-                            {
-
-                            }
-                        };
-
-                        if (fi.Exists)
-                        {
-                            uploadPreviewWorker.RunWorkerAsync();
+                            mtbMobile.Text = frm.ReadingResult["MSWordMobile2WildCards"];
                         }
-                        else
+                    }
+
+                    if (frm.ReadingResult.ContainsKey("MSWordPhone1WildCards") &&
+                           !string.IsNullOrEmpty(frm.ReadingResult["MSWordPhone1WildCards"]))
+                    {
+                        mtbPhone.Text = frm.ReadingResult["MSWordPhone1WildCards"];
+                    }
+                    else
+                    {
+                        if (frm.ReadingResult.ContainsKey("MSWordPhone2WildCards") &&
+                               !string.IsNullOrEmpty(frm.ReadingResult["MSWordPhone2WildCards"]))
                         {
-                            CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p => p.Visible = false);
+                            mtbPhone.Text = frm.ReadingResult["MSWordPhone2WildCards"];
                         }
                     }
                 }
 
-            }
-            else
-            {
-                //no documents 
-
-                CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p => p.Visible = false);
-            }
-
+                if (frm.ReadingResult.ContainsKey("HtmlPreviewFileName"))
+                {
+                    webBrowser1.Navigate(frm.ReadingResult["HtmlPreviewFileName"]);
+                }
+            });
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1264,6 +1117,10 @@ namespace HunterCV.AddIn
 
         private void dataGridViewCV_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (dataGridViewCV.SelectedRows.Count > 0 && this.Width == PREVIEW_OPEN)
+            {
+                ShowPreview(dataGridViewCV.SelectedRows[0].DataBoundItem as Resume);
+            }
         }
 
         private void dataGridViewCV_MouseClick(object sender, MouseEventArgs e)
@@ -1337,11 +1194,6 @@ namespace HunterCV.AddIn
             if (retrieveCVWorker.IsBusy)
             {
                 retrieveCVWorker.CancelAsync();
-            }
-
-            if (googleDocWorker != null && googleDocWorker.IsBusy)
-            {
-                googleDocWorker.CancelAsync();
             }
         }
 
@@ -1648,11 +1500,6 @@ namespace HunterCV.AddIn
                 return;
             }
 
-            if (googleDocWorker != null && googleDocWorker.IsBusy)
-            {
-                googleDocWorker.CancelAsync();
-            }
-
             if (m_region.DataGrid.SelectedRows.Count > 0)
             {
                 Candidate item = m_region.DataGrid.SelectedRows[0].DataBoundItem as Candidate;
@@ -1683,7 +1530,6 @@ namespace HunterCV.AddIn
 
                         SetFormValues();
                         SetFormTitle();
-
                         LoadResumes();
                     }
                 }
@@ -1695,11 +1541,6 @@ namespace HunterCV.AddIn
             if (retrieveCVWorker.IsBusy || m_region.IsCandidatesWorkerBusy)
             {
                 return;
-            }
-
-            if (googleDocWorker != null && googleDocWorker.IsBusy)
-            {
-                googleDocWorker.CancelAsync();
             }
 
             if (m_region.DataGrid.SelectedRows.Count > 0)
@@ -1738,84 +1579,132 @@ namespace HunterCV.AddIn
             }
         }
 
-        private void FinishLoadingPreview()
-        {
-            CrossThreadUtility.InvokeControlAction<Panel>(panelPreviewWait, p => p.Visible = false);
-
-            CrossThreadUtility.InvokeControlAction<PictureBox>(picPreview, p =>
-            {
-                p.Visible = true;
-            });
-
-            CrossThreadUtility.InvokeControlAction<Panel>(panel1, p =>
-            {
-                p.HorizontalScroll.Value = p.HorizontalScroll.Maximum;
-                p.Refresh();
-            });
-
-        }
-
         private void CandidateEditForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Globals.ThisAddIn.Application.ActiveExplorer().Activate();
 
         }
 
-        private void picPreview_MouseDown(object sender, MouseEventArgs e)
-        {
-            m_previewIsDragging = true;
 
-            m_previewCurrentX = e.X;
-            m_previewCurrentY = e.Y;
-        }
-
-        private void picPreview_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (m_previewIsDragging && picPreview != null)
-            {
-                picPreview.Top = picPreview.Top + (e.Y - m_previewCurrentY);
-                picPreview.Left = picPreview.Left + (e.X - m_previewCurrentX);
-            }
-        }
-
-        private void picPreview_MouseUp(object sender, MouseEventArgs e)
-        {
-            m_previewIsDragging = false;
-        }
-
-        private void cbPreviewPage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (m_skipEvents)
-                return;
-
-            if (googleDocWorker != null && googleDocWorker.IsBusy)
-            {
-                googleDocWorker.CancelAsync();
-            }
-
-            ShowPreview();
-
-        }
-
-        private void cbPreviewZoom_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (m_skipEvents)
-                return;
-
-            if (googleDocWorker != null && googleDocWorker.IsBusy)
-            {
-                googleDocWorker.CancelAsync();
-            }
-
-            ShowPreview();
-
-        }
 
         private void picFavorite_Click(object sender, EventArgs e)
         {
             m_Candidate.IsFavorite = !m_Candidate.IsFavorite;
             picFavorite.Image = favoritesImagesList.Images[m_Candidate.IsFavorite ? 0 : 1];
 
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            if (this.Width == PREVIEW_CLOSE)
+            {
+                this.Width = PREVIEW_OPEN;
+                btnShowHide.Text = "Hide Preview <<";
+            }
+        }
+
+        private void dataGridViewCV_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] fileNames = null;
+
+            try
+            {
+                if (e.Data.GetDataPresent(DataFormats.FileDrop, false) == true)
+                {
+                    fileNames = (string[])e.Data.GetData(DataFormats.FileDrop);
+                    // handle each file passed as needed
+                    foreach (string fileName in fileNames)
+                    {
+                        // do what you are going to do with each filename
+                    }
+                }
+                else if (e.Data.GetDataPresent("FileGroupDescriptor"))
+                {
+                    Stream fileStream = (Stream)e.Data.GetData("FileGroupDescriptor");
+                    byte[] fileGroupDescriptor = new byte[fileStream.Length];
+                    fileStream.Read(fileGroupDescriptor, 0, fileGroupDescriptor.Length);
+                    fileStream.Close();
+                    System.Text.StringBuilder fileName = new System.Text.StringBuilder("");
+                    for (int i = 76; i < fileGroupDescriptor.Length; i++)
+                    {
+                        if (fileGroupDescriptor[i] != 0)
+                        {
+                            fileName.Append(Convert.ToChar(fileGroupDescriptor[i]));
+                        }
+                    }
+
+                    fileName = fileName.Replace("?", "_");
+
+                    string tempPath = System.IO.Path.GetTempPath();
+
+                    // put the zip file into the temp directory
+                    string theFile = Path.Combine(tempPath, "resume." + fileName.ToString().Split('.')[fileName.ToString().Split('.').Length - 1]);
+
+                    FileInfo fi = new FileInfo(theFile);
+
+                    int file_rescue = 1;
+
+                    while (fi.Exists)
+                    {
+                        theFile = Path.Combine(tempPath, string.Format("resume({0}).", file_rescue) + fileName.ToString().Split('.')[fileName.ToString().Split('.').Length - 1]);
+                        fi = new FileInfo(theFile);
+                        file_rescue++;
+                    }
+
+                    // get the actual raw file into memory
+                    MemoryStream ms = (MemoryStream)e.Data.GetData(
+                        "FileContents", true);
+                    // allocate enough bytes to hold the raw data
+                    byte[] fileBytes = new byte[ms.Length];
+                    // set starting position at first byte and read in the raw data
+                    ms.Position = 0;
+                    ms.Read(fileBytes, 0, (int)ms.Length);
+                    // create a file and save the raw zip file to it
+                    FileStream fs = new FileStream(theFile, FileMode.Create);
+                    fs.Write(fileBytes, 0, (int)fileBytes.Length);
+
+                    fs.Close();  // close the file
+
+                    FileInfo tempFile = new FileInfo(theFile);
+
+                    // always good to make sure we actually created the file
+                    if (tempFile.Exists == true)
+                    {
+                        Resume resume = new Resume();
+                        resume.CandidateID = m_Candidate.CandidateID;
+                        resume.FileName = tempFile.FullName;
+                        resume.IsCloudy = false;
+
+                        m_documents.Add(resume);
+
+                        RefreshResumeGrid();
+
+                    }
+                    else
+                    { Trace.WriteLine("File was not created!"); }
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                Trace.WriteLine("Error in DragDrop function: " + ex.Message);
+
+                // don't use MessageBox here - Outlook or Explorer is waiting !
+            }
+
+        }
+
+        private void dataGridViewCV_DragEnter(object sender, DragEventArgs e)
+        {
+            // for this program, we allow a file to be dropped from Explorer
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            { e.Effect = DragDropEffects.Copy; }
+            //    or this tells us if it is an Outlook attachment drop
+            else if (e.Data.GetDataPresent("FileGroupDescriptor"))
+            { e.Effect = DragDropEffects.Copy; }
+            //    or none of the above
+            else
+            { e.Effect = DragDropEffects.None; }
         }
 
     }

@@ -10,9 +10,11 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using HunterCV.FrontSite.Models;
 using HunterCV.Model;
+using HunterCV.FrontSite.Attributes;
 
 namespace HunterCV.FrontSite.Controllers
 {
+    [RemoteHttpsRequire]
     [Authorize]
     public class AccountController : Controller
     {

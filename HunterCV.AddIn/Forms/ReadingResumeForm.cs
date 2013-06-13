@@ -8,37 +8,90 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
+using HunterCV.Common;
+using log4net;
 
 
 namespace HunterCV.AddIn
 {
     public partial class ReadingResumeForm : Form
     {
-        private string m_filePath;
+        public static readonly ILog Logger =
+                LogManager.GetLogger(typeof(MainRegion));
 
         public Dictionary<String,String> ReadingResult { get; set; }
         private MainRegion m_region;
+        private bool m_previewOnly = false;
+        private Resume m_resume = null;
 
-        public ReadingResumeForm(MainRegion region, string filePath)
+        public ReadingResumeForm(MainRegion region, Resume resume)
         {
             InitializeComponent();
             m_region = region;
             ReadingResult = new Dictionary<string, string>();
 
-            m_filePath = filePath;
+            m_resume = resume;
+        }
+
+
+        public ReadingResumeForm(MainRegion region, Resume resume, bool previewOnly)
+        {
+            InitializeComponent();
+            m_region = region;
+            ReadingResult = new Dictionary<string, string>();
+
+            m_previewOnly = previewOnly;
+            m_resume = resume;
         }
 
         private void readingWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.Close();
         }
 
         private void readingWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                FileInfo fi = new FileInfo(m_filePath);
+                string fileName = null;
 
+                //cloudy document
+                if (m_resume.IsCloudy)
+                {
+                    var getBytesWorker = new BackgroundWorker();
+
+                    getBytesWorker.RunWorkerCompleted += (senders, es) =>
+                    {
+                        fileName = Path.Combine(System.IO.Path.GetTempPath(), m_resume.FileName);
+                        System.IO.File.WriteAllBytes(fileName, (byte[])es.Result);
+
+                        ScreeningDocument(fileName);
+                    };
+
+                    getBytesWorker.DoWork += (senders, es) =>
+                    {
+                        es.Result = ServiceHelper.GetResumeContent(m_resume.ResumeID);
+                    };
+
+                    getBytesWorker.RunWorkerAsync();
+
+                }
+                else
+                {
+                    ScreeningDocument(m_resume.FileName);
+                }
+            }
+            catch
+            {
+                CrossThreadUtility.InvokeControlAction<ReadingResumeForm>(this, f => f.Close());
+            }
+        }
+
+        private void ScreeningDocument(string fileName)
+        {
+            FileInfo fi = new FileInfo(fileName);
+
+            try
+            {
                 if (fi.Exists)
                 {
                     switch (fi.Extension)
@@ -65,56 +118,79 @@ namespace HunterCV.AddIn
                             Object objTrue = true;
                             Object objFalse = true;
 
-                            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-
-                            Object name = m_filePath;
-                            Object confirmConversions = false;
-
-                            Microsoft.Office.Interop.Word.Document doc = app.Documents.Open(
-                                ref name, ref confirmConversions,
-                                ref objMissing, ref objMissing, ref objMissing, ref objMissing,
-                                ref objMissing, ref objMissing, ref objMissing, ref objMissing,
-                                ref objMissing, ref objMissing, ref objMissing, ref objMissing,
-                                ref objMissing, ref objMissing
-                            );
-
-                            this.ReadingResult.Add("Content", doc.Content.Text);
-
-                            if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value))
+                            //Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+                            if (MainRegion.WordApplication != null)
                             {
-                                this.ReadingResult.Add("MSWordMobile1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value + ">"));
+
+                                Object name = fileName;
+                                Object confirmConversions = false;
+
+                                Microsoft.Office.Interop.Word.Document doc = MainRegion.WordApplication.Documents.Open(
+                                    ref name, ref confirmConversions,
+                                    ref objMissing, ref objMissing, ref objMissing, ref objMissing,
+                                    ref objMissing, ref objMissing, ref objMissing, ref objMissing,
+                                    ref objMissing, ref objMissing, ref objMissing, ref objMissing,
+                                    ref objMissing, ref objMissing
+                                );
+
+                                if (!m_previewOnly)
+                                {
+
+                                    this.ReadingResult.Add("Content", doc.Content.Text);
+
+                                    if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value))
+                                    {
+                                        this.ReadingResult.Add("MSWordMobile1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile1WildCards").Single().Value + ">"));
+                                    }
+
+                                    if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value))
+                                    {
+                                        this.ReadingResult.Add("MSWordMobile2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value + ">"));
+                                    }
+
+                                    if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value))
+                                    {
+                                        this.ReadingResult.Add("MSWordPhone1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value + ">"));
+                                    }
+
+                                    if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value))
+                                    {
+                                        this.ReadingResult.Add("MSWordPhone2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value + ">"));
+                                    }
+                                }
+
+                                FileInfo htmlFile = new FileInfo(fileName.ToLower().Replace(new FileInfo(fileName).Extension, ".html"));
+
+                                object oFileName = (object)htmlFile.FullName;
+
+                                object oFormat = Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatHTML;
+                                doc.SaveAs2(ref oFileName, ref oFormat, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing,
+                                ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing);
+
+                                doc.Close(objMissing, objMissing, objMissing);
+                                //app.Quit(ref objMissing, ref objMissing, ref objMissing);
+
+                                this.ReadingResult.Add("HtmlPreviewFileName", htmlFile.FullName);
+
+                                doc = null;
+                                //GC.Collect(); // force final cleanup!
+                                //GC.WaitForPendingFinalizers();
                             }
 
-                            if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value))
-                            {
-                                this.ReadingResult.Add("MSWordMobile2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordMobile2WildCards").Single().Value + ">"));
-                            }
-
-                            if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value))
-                            {
-                                this.ReadingResult.Add("MSWordPhone1WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone1WildCards").Single().Value + ">"));
-                            }
-
-                            if (!string.IsNullOrEmpty(m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value))
-                            {
-                                this.ReadingResult.Add("MSWordPhone2WildCards", GetMSWordWildCard(doc, "<" + m_region.Settings.Where(p => p.Key == "MSWordPhone2WildCards").Single().Value + ">"));
-                            }
-
-                            doc.Close(objMissing, objMissing, objMissing);
-                            app.Quit(ref objMissing, ref objMissing, ref objMissing);
-
-                            doc = null;
-                            GC.Collect(); // force final cleanup!
-                            GC.WaitForPendingFinalizers();
                             break;
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                Logger.Fatal(m_resume, ex);
+            }
+            finally
+            {
+                CrossThreadUtility.InvokeControlAction<ReadingResumeForm>(this, f => f.Close());
             }
         }
+
 
         private string GetPDFRegularExpression(string pdfContent, string regex)
         {

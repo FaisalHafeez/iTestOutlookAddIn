@@ -16,6 +16,16 @@ namespace HunterCV.AddIn
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+            try
+            {
+                Object objMissing = Type.Missing;
+                MainRegion.WordApplication.Quit(ref objMissing, ref objMissing, ref objMissing);
+                GC.WaitForPendingFinalizers();
+            }
+            catch
+            {
+
+            }
         }
 
         #region VSTO generated code

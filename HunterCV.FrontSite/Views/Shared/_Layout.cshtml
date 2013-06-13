@@ -1,49 +1,226 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - HunterCV</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body class="p_packages p_packages_show  user_logged_in">
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("HunterCV", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Features", "Features", "Home")</li>
-                            <li>@Html.ActionLink("Pricing", "Plans", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
-        </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - KnowledgeMagicians, Inc.</p>
-                </div>
-            </div>
-        </footer>
+<!--[if IE 7]>                  <html class="ie7 no-js" lang="en">     <![endif]-->
+<!--[if lte IE 8]>              <html class="ie8 no-js" lang="en">     <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="not-ie no-js" lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - HunterCV</title>
+    <meta name="description" content="HunterCV Resume Management System">
+    <meta name="author" content="">
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    @Styles.Render("~/Content/css")
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+    <!--[if lt IE 9]>
+		<link rel="stylesheet" href="@Url.Content("~/Content/ie/ie8.css")" media="screen" />
+	<![endif]-->
+	
+	
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	
+	
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="@Url.Content("~/Content/images/favicon.ico")">
+	<link rel="apple-touch-icon" href="@Url.Content("~/Content/images/apple-touch-icon.png")">
+	<link rel="apple-touch-icon" sizes="72x72" href="@Url.Content("~/Content/images/apple-touch-icon-72x72.png")">
+	<link rel="apple-touch-icon" sizes="114x114" href="@Url.Content("~/Content/images/apple-touch-icon-114x114.png")">
+	
+	
+	<!-- For Old Browsers
+	================================================== -->
+	<!--[if lt IE 8]>
+	<div style=' clear: both; text-align:center; position: relative;'>
+		<a href="http://www.microsoft.com/windows/internet-explorer/default.aspx?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" alt="" /></a>
+	</div>
+	<![endif]-->
+
+</head>
+<body class="page home-page">
+
+	<!-- Primary Page Layout
+	================================================== -->
+	
+	<!-- BEGIN WRAPPER -->
+	<div id="wrapper">
+			
+			<!-- BEGIN HEADER -->
+			<header id="header">
+				
+				<!--Top Header-->
+				<div id="top-header">
+					<div class="container">
+						<div class="grid_12">
+							
+							<div class="login-holder fright">
+								<a href="@Url.Action("Login", "Account")" class="signin">sign in</a><a href="#" class="signin" data-reveal-id="signup">sign up</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!--Main Header-->
+				<div id="main-header">
+					<div class="container">
+						<div class="grid_12">
+						
+							<!-- BEGIN LOGO -->
+							<div id="logo">
+								<!-- Image based Logo-->
+								<a href="@Url.Action("Index", "Home")"><img src="@Url.Content("~/Images/logo.png")" alt=""/></a>
+								
+								
+								<!-- Text based Logo
+								<h1><a href="index.html"><span>Hunter</span>CV</a></h1>
+								<p class="tagline">optimize head-hunting</p>
+								-->
+								
+							</div>
+							<!-- END LOGO -->
+							
+							<!-- BEGIN NAVIGATION -->
+							<nav class="primary">
+
+                                @Html.MvcSiteMap().SiteMap()
+
+							</nav>
+							<!-- END NAVIGATION -->
+							
+						</div>
+					</div>
+				</div>
+				
+			</header>
+			<!-- END HEADER -->
+
+            @RenderSection("slider", required: false)
+
+            @RenderBody()			
+			
+			<!-- BEGIN FOOTER -->
+			<footer id="footer">
+				<div class="container">
+					<div class="grid_12">
+						<small>&copy;2012 OptinaSales. All rights reserved.</small><a href="#">Privacy Policy</a> &nbsp; <a href="#">Security information</a>
+					</div>
+				</div>
+			</footer>
+			<!-- END FOOTER -->
+			
+		
+	</div>
+	<!-- END WRAPPER -->
+
+    <!-- BEGIN MODAL WINDOWS -->
+	
+	<div id="signin" class="reveal-modal">
+		<header class="reveal-modal-header">
+			Sign in
+		</header>
+		<div class="cont">
+			<div class="indication">
+				classic
+			</div>
+			<form action="#" class="signin">
+				<p class="clearfix">
+					<label>Email:</label>
+					<input type="text" value="" />
+				</p>
+				<p class="clearfix">
+					<label>Password:</label>
+					<input type="text" value="" />
+				</p>
+				<p class="checkboxes without-label clearfix">
+					<span class="niceCheck"><input type="checkbox" name="ch1" /></span>
+					Remember me
+					<a href="#">Forgot password?</a>
+				</p>
+				<p class="without-label clearfix"><input type="submit" value="" /></p>
+			</form>
+			<div class="indication">
+				socials
+			</div>
+			<ul class="socials-login">
+				<li><a href="#" class="fb"></a></li>
+				<li><a href="#" class="tw"></a></li>
+			</ul>
+		</div>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
+
+	<div id="signup" class="reveal-modal">
+		<header class="reveal-modal-header">
+			Sign up
+		</header>
+		<div class="cont">
+			<form action="#" class="signup">
+				<p class="clearfix">
+					<em>(<abbr>*</abbr>) All fields are required</em>
+				</p>
+				<p class="clearfix">
+					<label>Full name:<abbr>*</abbr></label>
+					<input type="text" value="" />
+				</p>
+				<p class="clearfix">
+					<label>Email:<abbr>*</abbr></label>
+					<input type="text" value="" />
+				</p>
+				<p class="clearfix">
+					<label>Password:<abbr>*</abbr></label>
+					<input type="text" value="" />
+				</p>
+				<p class="clearfix">
+					<label>Password (repeat):<abbr>*</abbr></label>
+					<input type="text" value="" />
+				</p>
+				<p class="clearfix">
+					<label>User verification:<abbr>*</abbr></label>
+					<span class="captcha">
+						<img src="images/captcha.png" alt="" />
+					</span>
+				</p>
+				<p class="checkboxes clearfix">
+					<span class="niceCheck"><input type="checkbox" name="ch1" /></span>
+					I agree with OptimaSales Terms &amp; Privacy Policy
+				</p>
+				<p class="without-label clearfix"><input type="submit" value="" /></p>
+			</form>
+		</div>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
+	<!-- END MODAL WINDOWS -->
+
+    	<!-- initialize jQuery Library -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script>	    window.jQuery || document.write('<script src="js/jquery-1.8.2.min.js"><\/script>')</script>
+
+    @Scripts.Render("~/bundles/jquery-plugins")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("scripts", required: false)
+
+	<!-- Flexslider Init -->
+	<script type="text/javascript">
+
+	    $(window).load(function () {
+	        $('.flexslider').flexslider({
+	            animation: "slide",
+	            controlNav: false,
+	            // Callback API
+	            before: function () { },
+	            after: function () { },
+	            start: function (slider) {
+	                $('#slider').removeClass('loading');
+	            }
+	        });
+	    });
+
+	</script>
+	
+	
+</body>
 </html>

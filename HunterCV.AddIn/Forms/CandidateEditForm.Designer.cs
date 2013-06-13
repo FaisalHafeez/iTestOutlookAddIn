@@ -38,6 +38,7 @@
             this.cbIsActive = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.picFavorite = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
@@ -113,7 +114,6 @@
             this.lblWaitStatus = new System.Windows.Forms.Label();
             this.updateWorker = new System.ComponentModel.BackgroundWorker();
             this.insertWorker = new System.ComponentModel.BackgroundWorker();
-            this.readingResumeTimer = new System.Windows.Forms.Timer(this.components);
             this.btnShowHide = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.retrieveCVWorker = new System.ComponentModel.BackgroundWorker();
@@ -123,15 +123,11 @@
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnPrevious = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
-            this.pictureBox7 = new System.Windows.Forms.PictureBox();
-            this.panelPreviewWait = new System.Windows.Forms.Panel();
-            this.label8 = new System.Windows.Forms.Label();
-            this.picPreview = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.picFavorite = new System.Windows.Forms.PictureBox();
             this.favoritesImagesList = new System.Windows.Forms.ImageList(this.components);
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picFavorite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
@@ -150,11 +146,6 @@
             this.panelWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
-            this.panelPreviewWait.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picFavorite)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -283,6 +274,16 @@
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // picFavorite
+            // 
+            this.picFavorite.Location = new System.Drawing.Point(564, 12);
+            this.picFavorite.Name = "picFavorite";
+            this.picFavorite.Size = new System.Drawing.Size(51, 50);
+            this.picFavorite.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.picFavorite.TabIndex = 65;
+            this.picFavorite.TabStop = false;
+            this.picFavorite.Click += new System.EventHandler(this.picFavorite_Click);
             // 
             // label1
             // 
@@ -719,10 +720,10 @@
             // btnRemoveResume
             // 
             this.btnRemoveResume.Enabled = false;
-            this.btnRemoveResume.Location = new System.Drawing.Point(161, 284);
+            this.btnRemoveResume.Location = new System.Drawing.Point(132, 284);
             this.btnRemoveResume.Margin = new System.Windows.Forms.Padding(4);
             this.btnRemoveResume.Name = "btnRemoveResume";
-            this.btnRemoveResume.Size = new System.Drawing.Size(100, 32);
+            this.btnRemoveResume.Size = new System.Drawing.Size(88, 32);
             this.btnRemoveResume.TabIndex = 61;
             this.btnRemoveResume.Text = "Remove";
             this.btnRemoveResume.UseVisualStyleBackColor = true;
@@ -742,7 +743,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(19, 338);
+            this.label16.Location = new System.Drawing.Point(24, 329);
             this.label16.Margin = new System.Windows.Forms.Padding(7, 9, 4, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(237, 18);
@@ -754,7 +755,7 @@
             this.btnUpload.Location = new System.Drawing.Point(19, 284);
             this.btnUpload.Margin = new System.Windows.Forms.Padding(4);
             this.btnUpload.Name = "btnUpload";
-            this.btnUpload.Size = new System.Drawing.Size(135, 32);
+            this.btnUpload.Size = new System.Drawing.Size(105, 32);
             this.btnUpload.TabIndex = 57;
             this.btnUpload.Text = "Add Resume";
             this.btnUpload.UseVisualStyleBackColor = true;
@@ -762,6 +763,7 @@
             // 
             // dataGridViewCV
             // 
+            this.dataGridViewCV.AllowDrop = true;
             this.dataGridViewCV.AllowUserToAddRows = false;
             this.dataGridViewCV.AllowUserToDeleteRows = false;
             this.dataGridViewCV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -775,6 +777,8 @@
             this.dataGridViewCV.TabIndex = 59;
             this.dataGridViewCV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCV_CellContentClick);
             this.dataGridViewCV.SelectionChanged += new System.EventHandler(this.dataGridViewCV_SelectionChanged);
+            this.dataGridViewCV.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridViewCV_DragDrop);
+            this.dataGridViewCV.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridViewCV_DragEnter);
             this.dataGridViewCV.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridViewCV_MouseClick);
             this.dataGridViewCV.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridViewCV_MouseDoubleClick);
             // 
@@ -1164,11 +1168,6 @@
             this.insertWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.insertWorker_DoWork);
             this.insertWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.insertWorker_RunWorkerCompleted);
             // 
-            // readingResumeTimer
-            // 
-            this.readingResumeTimer.Interval = 500;
-            this.readingResumeTimer.Tick += new System.EventHandler(this.readingResumeTimer_Tick);
-            // 
             // btnShowHide
             // 
             this.btnShowHide.Location = new System.Drawing.Point(501, 657);
@@ -1231,69 +1230,6 @@
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
-            // pictureBox7
-            // 
-            this.pictureBox7.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox7.Image")));
-            this.pictureBox7.Location = new System.Drawing.Point(4, 7);
-            this.pictureBox7.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox7.TabIndex = 59;
-            this.pictureBox7.TabStop = false;
-            // 
-            // panelPreviewWait
-            // 
-            this.panelPreviewWait.Controls.Add(this.label8);
-            this.panelPreviewWait.Controls.Add(this.pictureBox7);
-            this.panelPreviewWait.Location = new System.Drawing.Point(856, 8);
-            this.panelPreviewWait.Name = "panelPreviewWait";
-            this.panelPreviewWait.Size = new System.Drawing.Size(203, 58);
-            this.panelPreviewWait.TabIndex = 60;
-            this.panelPreviewWait.Visible = false;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(72, 21);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(121, 18);
-            this.label8.TabIndex = 60;
-            this.label8.Text = "Loading preview...";
-            // 
-            // picPreview
-            // 
-            this.picPreview.InitialImage = null;
-            this.picPreview.Location = new System.Drawing.Point(6, 3);
-            this.picPreview.Name = "picPreview";
-            this.picPreview.Size = new System.Drawing.Size(268, 242);
-            this.picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.picPreview.TabIndex = 61;
-            this.picPreview.TabStop = false;
-            this.picPreview.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picPreview_MouseDown);
-            this.picPreview.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picPreview_MouseMove);
-            this.picPreview.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picPreview_MouseUp);
-            // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.picPreview);
-            this.panel1.Location = new System.Drawing.Point(667, 69);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(521, 620);
-            this.panel1.TabIndex = 64;
-            // 
-            // picFavorite
-            // 
-            this.picFavorite.Location = new System.Drawing.Point(564, 12);
-            this.picFavorite.Name = "picFavorite";
-            this.picFavorite.Size = new System.Drawing.Size(51, 50);
-            this.picFavorite.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.picFavorite.TabIndex = 65;
-            this.picFavorite.TabStop = false;
-            this.picFavorite.Click += new System.EventHandler(this.picFavorite_Click);
-            // 
             // favoritesImagesList
             // 
             this.favoritesImagesList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("favoritesImagesList.ImageStream")));
@@ -1301,13 +1237,21 @@
             this.favoritesImagesList.Images.SetKeyName(0, "1370559919_star.png");
             this.favoritesImagesList.Images.SetKeyName(1, "1370559914_star_silver.png");
             // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Location = new System.Drawing.Point(684, 72);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(498, 609);
+            this.webBrowser1.TabIndex = 59;
+            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
+            // 
             // CandidateEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(667, 693);
-            this.Controls.Add(this.panelPreviewWait);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnPrevious);
             this.Controls.Add(this.groupBox1);
@@ -1334,6 +1278,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picFavorite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
@@ -1360,13 +1305,6 @@
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
-            this.panelPreviewWait.ResumeLayout(false);
-            this.panelPreviewWait.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picFavorite)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1416,7 +1354,6 @@
         private System.Windows.Forms.Label lblWaitStatus;
         private System.ComponentModel.BackgroundWorker updateWorker;
         private System.ComponentModel.BackgroundWorker insertWorker;
-        private System.Windows.Forms.Timer readingResumeTimer;
         private System.Windows.Forms.Button btnShowHide;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TabPage tabPageDocuments;
@@ -1467,12 +1404,8 @@
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnPrevious;
-        private System.Windows.Forms.PictureBox pictureBox7;
-        private System.Windows.Forms.Panel panelPreviewWait;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.PictureBox picPreview;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox picFavorite;
         private System.Windows.Forms.ImageList favoritesImagesList;
+        private System.Windows.Forms.WebBrowser webBrowser1;
     }
 }

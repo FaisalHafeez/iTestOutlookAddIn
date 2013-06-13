@@ -1,45 +1,131 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
-            </hgroup>
-            <p>
-                To learn more about ASP.NET MVC visit
-                <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
-                The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET MVC.
-                If you have any questions about ASP.NET MVC visit
-                <a href="http://forums.asp.net/1146.aspx/1?MVC" title="ASP.NET MVC Forum">our forums</a>.
-            </p>
+@section slider {
+    <!-- BEGIN SLIDER -->
+    <section id="slider" class="loading">
+        <div class="container">
+            <div class="grid_12">
+                <div class="flexslider">
+                    <ul class="slides">
+                        <!-- Begin Single Slide -->
+                        <li>
+                            <img src="@Url.Content("~/images/sample/slide1.png")" />
+                            <div class="slide-caption">
+                                <h2>
+                                    Save time and money</h2>
+                                <p>
+                                    Lorem ipsum dolor sit amet, con- sectetur adipiscing elit. Curabitur id ante nisi.
+                                    In imperdiet sem ante nisiac eros vestibulum facilisis.</p>
+                                <!-- .btn -->
+                                <a href="#" class="btn large"><span class="btn-inner">Buy theme<em>click here</em><i
+                                    class="marker"></i></span> </a>
+                                <!-- //.btn -->
+                            </div>
+                        </li>
+                        <!-- End Single Slide -->
+                        <li>
+                            <img src="@Url.Content("~/images/sample/slide2.png")" />
+                            <div class="slide-caption">
+                                <h2>
+                                    cloud computing</h2>
+                                <p>
+                                    Lorem ipsum dolor sit amet, con- sectetur adipiscing elit. Curabitur id ante nisi.
+                                    In imperdiet sem ante nisiac eros vestibulum facilisis.</p>
+                                <!-- .btn -->
+                                <a href="#" class="btn large"><span class="btn-inner">Buy theme<em>click here</em><i
+                                    class="marker"></i></span> </a>
+                                <!-- //.btn -->
+                            </div>
+                        </li>
+                        <li>
+                            <img src="@Url.Content("~/images/sample/slide3.png")" />
+                            <div class="slide-caption">
+                                <h2>
+                                    precise verification</h2>
+                                <p>
+                                    Lorem ipsum dolor sit amet, con- sectetur adipiscing elit. Curabitur id ante nisi.
+                                    In imperdiet sem ante nisiac eros vestibulum facilisis.</p>
+                                <!-- .btn -->
+                                <a href="#" class="btn large"><span class="btn-inner">Buy theme<em>click here</em><i
+                                    class="marker"></i></span> </a>
+                                <!-- //.btn -->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
+    <!-- END SLIDER -->
 }
-<h3>We suggest the following:</h3>
-<ol class="round">
-    <li class="one">
-        <h5>Getting Started</h5>
-        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-        enables a clean separation of concerns and that gives you full control over markup
-        for enjoyable, agile development. ASP.NET MVC includes many features that enable
-        fast, TDD-friendly development for creating sophisticated applications that use
-        the latest web standards.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Learn more…</a>
-    </li>
 
-    <li class="two">
-        <h5>Add NuGet packages and jump-start your coding</h5>
-        NuGet makes it easy to install and update free libraries and tools.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245153">Learn more…</a>
-    </li>
 
-    <li class="three">
-        <h5>Find Web Hosting</h5>
-        You can easily find a web hosting company that offers the right mix of features
-        and price for your applications.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Learn more…</a>
-    </li>
-</ol>
+<!-- BEGIN CONTENT HOLDER -->
+<div id="content-wrapper" class="large-text">
+    <!-- BEGIN PRIMARY AREA -->
+    <section id="primary-home-area" class="home-area indent">
+        <div class="container">
+            <div class="grid_12">
+                <div class="intro-widget">
+                    <h2>
+                        What is Hunter-CV?</h2>
+                   HunterCV is a Microsoft&copy; Outlook&copy; add-in for resume management software which provides an 
+                   efficient tool for “Head Hunters”. HunterCV is more efficient than any email out there 
+                   and simpler than any other spreadsheet or recruitment software.
+                </div>
+                <!-- //.intro-widget -->
+            </div>
+        </div>
+    </section>
+    <!-- END PRIMARY AREA -->
+    <!-- BEGIN SECONDARY AREA -->
+    <section id="secondary-home-area" class="home-area indent">
+        <div class="container">
+            <div class="grid_12">
+                <ul class="home-services">
+                    <li>
+                        <figure class="img-holder">
+                            <a href="#">
+                                <img src="@Url.Content("~/images/service-img1.png")" alt="" width="220" height="220" border="0" /></a>
+                        </figure>
+                        <h3>
+                            <a href="#">More efficient than any email client or spreadsheets</a></h3>
+                        If you have ever received job applications via your email, you know how tedious it 
+                        is to download & open each attached resume. Not to mention that searching through 
+                        attachments is impossible. Spreadsheets can help you structure data, but are far from
+                         being ideal for resume tracking. 
+                         <br />
+                         With HunterCV all applicant information is gathered and made searchable in one place.</li>
+                    <li>
+                        <figure class="img-holder">
+                            <a href="#">
+                                <img src="@Url.Content("~/images/service-img2.png")" alt="" width="220" height="220" border="0" /></a>
+                        </figure>
+                        <h3>
+                            <a href="#">Collect Resumes from Email Attachments</a></h3>
+                        Simply drag & drop emails to HunterCV drop spot, where we automatically create a 
+                        candidate profile from the email using screening technique and show you a brief 
+                        preview of his resume in front of his profile.</li>
+                    <li>
+                        <figure class="img-holder">
+                            <a href="#">
+                                <img src="@Url.Content("~/images/service-img3.png")" alt="" width="220" height="220" border="0" /></a>
+                        </figure>
+                        <h3>
+                            <a href="#">All your data is safe in the Cloud</a></h3>
+                        All of your data is stored securely in Amazon&copy; cloud services which provides
+                         you and us a safe and reliable platform, and also provides the ability to 
+                         scale up with yours and the rest of our customers’ needs.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- END SECONDARY AREA -->
+    <!-- BEGIN TERTIARY AREA -->
+    <section id="tertiary-home-area" class="home-area indent">
+
+    </section>
+    <!-- END TERTIARY AREA -->
+</div>
+<!-- END CONTENT HOLDER -->

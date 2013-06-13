@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using HunterCV.FrontSite.Attributes;
 
 namespace HunterCV.FrontSite.Controllers
 {
