@@ -1,0 +1,115 @@
+﻿@model HunterCV.FrontSite.Models.ManageAccountModel
+@{
+    ViewBag.Title = "Manage";
+}
+<div id="content-wrapper">
+    <section class="indent">
+        <div class="container">
+            <h2 class="bordered">
+                Your current Plan: @ViewBag.LicenseType
+            </h2>
+            @if (ViewBag.ApplicationRole == "A" && ViewBag.LicenseType == "None" || ViewBag.LicenseType == "Free")
+            {
+                <a href="@Url.Action("Plans", "Home")" class="pill pill-style8"><span class="pill-inner">
+                    Upgrade</span></a>
+            }
+            else if (ViewBag.ApplicationRole == "A" && ViewBag.LicenseType == "Standard")
+            {
+                <a href="@Url.Action("Plans", "Home")" class="pill pill-style8"><span class="pill-inner">
+                    Quit plan</span></a>
+                <a href="@Url.Action("Plans", "Home")" class="pill pill-style8"><span class="pill-inner">
+                    Upgrade</span></a>
+            }
+            else if (ViewBag.ApplicationRole == "A" && ViewBag.LicenseType == "Premium")
+            {
+                <a href="@Url.Action("Plans", "Home")" class="pill pill-style8"><span class="pill-inner">
+                    Quit plan</span></a>
+                <a href="@Url.Action("Plans", "Home")" class="pill pill-style8"><span class="pill-inner">
+                    Downgrade</span></a>
+            }
+            <p>
+                &nbsp;</p>
+            @if (ViewBag.ApplicationRole == "A")
+            {
+                <h2 class="bordered">
+                    Manage users</h2>
+                <table class="default-table users-table">
+                    <tbody>
+                        <tr>
+                            <th>
+                                Username
+                            </th>
+                            <th>
+                                Role
+                            </th>
+                            <th>
+                                &nbsp;
+                            </th>
+                            <th>
+                                &nbsp;
+                            </th>
+                        </tr>
+                        @foreach (HunterCV.Model.User user in Model.Users)
+                        {
+                            <tr>
+                                <td>
+                                    @user.UserName
+                                </td>
+                                <td>
+                                    @{
+                            if (user.ApplicationRole == "A")
+                            {
+                                        <text>Admin</text>
+                            }
+                            else
+                            {
+                                        <text>Recruiter</text>
+                            }    
+                                    }
+                                </td>
+                                <td>
+                                    @if (user.UserName != User.Identity.Name)
+                                    {
+                                        <a href="#" data-reveal-id="removeuser" data-reveal-argument-name="UserName" data-reveal-argument-val="@user.UserName" class="pill pill-small">
+                                            <span class="pill-inner">Remove</span></a>
+                                    }
+                                    else
+                                    {
+                                        <span class="pill-inner">N/A</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="#" class="pill pill-small"><span class="pill-inner">Update</span></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <a href="#" data-reveal-id="adduser" class="pill pill-style8"><span class="pill-inner">
+                    Add New User</span></a>
+            }
+        </div>
+    </section>
+</div>
+@section navigation {
+    <ul class="sf-menu">
+        <li class="">
+            @Html.ActionLink("home", "Index", "Home")
+        </li>
+        @if (Request.IsAuthenticated)
+        {
+            <li class="current-menu-item">
+                @Html.ActionLink("my account", "Manage", "Account")
+            </li>
+        }
+        <li class="">
+            @Html.ActionLink("features", "Features", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("plans", "Plans", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("contact us", "Contact", "Home")
+        </li>
+    </ul>
+}

@@ -1,34 +1,25 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>@ViewBag.Message</h2>
-</hgroup>
-
-<article>
-    <p>
-        Use this area to provide additional information.
-    </p>
-
-    <p>
-        Use this area to provide additional information.
-    </p>
-
-    <p>
-        Use this area to provide additional information.
-    </p>
-</article>
-
-<aside>
-    <h3>Aside Title</h3>
-    <p>
-        Use this area to provide additional information.
-    </p>
-    <ul>
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+@section navigation {
+    <ul class="sf-menu">
+        <li class="">
+            @Html.ActionLink("home", "Index", "Home")
+        </li>
+        @if (Request.IsAuthenticated)
+        {
+            <li class="">
+                @Html.ActionLink("my account", "Manage", "Account")
+            </li>
+        }
+        <li class="">
+            @Html.ActionLink("features", "Features", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("plans", "Plans", "Home")
+        </li>
+        <li class="current-menu-item">
+            @Html.ActionLink("contact us", "Contact", "Home")
+        </li>
     </ul>
-</aside>
+}

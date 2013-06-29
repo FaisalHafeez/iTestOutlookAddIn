@@ -91,10 +91,10 @@ namespace HunterCV.FrontSite.ApiControllers
                 context.Candidates.AddObject(target);
 
                 //check favorite
-                if (candidate.IsFavorite)
-                {
-                    target.FavoriteUsers.Add(user);
-                }
+                //if (candidate.IsFavorite)
+                //{
+                //    target.FavoriteUsers.Add(user);
+                //}
 
                 context.SaveChanges();
 
@@ -144,15 +144,11 @@ namespace HunterCV.FrontSite.ApiControllers
 
                 var entity = Mapper.Map<HunterCV.Common.Candidate, Candidate>(candidate);
 
-                var existsPositions = entity.CandidatePositions.Select(p => p.PositionId);
-
-                //delete positions
-                IEnumerable<Guid> guids = context.CandidatePositions.Where(c => c.CandidateId == candidate.CandidateID).Where(f => !existsPositions.Contains(f.PositionId)).Select(p => p.PositionId);
-
-                foreach (var guid in guids)
-                {
-                    context.CandidatePositions.DeleteObject(context.CandidatePositions.Where(c => c.CandidateId == candidate.CandidateID && c.PositionId == guid).Single());
-                }
+                //delete old positions
+                context.CandidatePositions.Where(c => c.CandidateId == candidate.CandidateID).Each( d =>
+                    {
+                        context.CandidatePositions.DeleteObject( d);
+                    });
 
                 entity.UserId = curruser.UserId;
 
@@ -161,34 +157,15 @@ namespace HunterCV.FrontSite.ApiControllers
 
                 foreach (HunterCV.Common.CandidatePosition position in candidate.CandidatePositions)
                 {
-                    var exists = context.CandidatePositions.Where(c => c.CandidateId == position.CandidateId && c.PositionId == position.PositionId).FirstOrDefault();
-
-                    if (exists != null)
-                    {
-                        context.ObjectStateManager.ChangeObjectState(entity.CandidatePositions.Where(p => p.PositionId == position.PositionId).Single(), EntityState.Modified);
-                    }
-                    else
-                    {
-                        context.ObjectStateManager.ChangeObjectState(entity.CandidatePositions.Where(p => p.PositionId == position.PositionId).Single(), EntityState.Added);
-                    }
+                        entity.CandidatePositions.Add(new CandidatePosition
+                        {
+                            CandidateId = candidate.CandidateID,
+                            PositionId = position.PositionId,
+                            CandidatePositionDate = position.CandidatePositionDate,
+                            CandidatePositionStatus = position.CandidatePositionStatus
+                        });
+                    
                 }
-
-                //check favorite
-                if (candidate.IsFavorite)
-                {
-                    if (!entity.FavoriteUsers.Contains(curruser))
-                    {
-                        entity.FavoriteUsers.Add(curruser);
-                    }
-                }
-                else
-                {
-                    if (entity.FavoriteUsers.Contains(curruser))
-                    {
-                        entity.FavoriteUsers.Remove(curruser);
-                    }
-                }
-
 
                 context.SaveChanges();
 
@@ -213,8 +190,7 @@ namespace HunterCV.FrontSite.ApiControllers
             {
                 var user = context.Users.Single(u => u.UserName == userName);
 
-                var candidates = request.FilterFavorites.HasValue && request.FilterFavorites.Value ? 
-                    user.FavoriteCandidates : user.Roles.Single().Users
+                var candidates = user.Roles.Single().Users
                                  .SelectMany(p => p.Candidates);
 
                 var m_filteredCandidates = (from l in candidates select l);
@@ -228,7 +204,33 @@ namespace HunterCV.FrontSite.ApiControllers
                     {
                         m_filteredCandidates = m_filteredCandidates.Where(a => a.FirstName.ToLower().Contains(request.FilterFullName.ToLower()) || a.LastName.ToLower().Contains(request.FilterFullName.ToLower()));
                     }
+                }
 
+                //starred
+                var selectedStarred = new List<string>();
+                if (request.FilterStarredGold)
+                {
+                    selectedStarred.Add("Gold");
+                }
+                if (request.FilterStarredRed)
+                {
+                    selectedStarred.Add("Red");
+                }
+                if (request.FilterStarredBlue)
+                {
+                    selectedStarred.Add("Blue");
+                }
+
+                if (selectedStarred.Count() > 0)
+                {
+                    m_filteredCandidates = m_filteredCandidates.Where(a => selectedStarred.Contains(a.Starred) );
+                }
+
+                //created by
+                if (!string.IsNullOrEmpty(request.FilterCreatedBy))
+                {
+                    Guid guid = new Guid(request.FilterCreatedBy);
+                    m_filteredCandidates = m_filteredCandidates.Where(a => a.UserId == guid);
                 }
 
                 //areas
@@ -252,6 +254,11 @@ namespace HunterCV.FrontSite.ApiControllers
                     m_filteredCandidates = m_filteredCandidates.Where(a => a.Status == request.FilterStatus);
                 }
 
+                if (!string.IsNullOrEmpty(request.FilterMailEntryId))
+                {
+                    m_filteredCandidates = m_filteredCandidates.Where(a => a.MailEntryID == request.FilterMailEntryId);
+                }
+
                 if (request.FilterCandidateNumber.HasValue)
                 {
                     m_filteredCandidates = m_filteredCandidates.Where(a => a.CandidateNumber.Value == request.FilterCandidateNumber);
@@ -259,7 +266,10 @@ namespace HunterCV.FrontSite.ApiControllers
 
                 if ( request.FilterRegistrationStartDate.HasValue && request.FilterRegistrationEndDate.HasValue)
                 {
-                    m_filteredCandidates = m_filteredCandidates.Where(a => a.RegistrationDate.Value >= request.FilterRegistrationStartDate && a.RegistrationDate.Value <= request.FilterRegistrationEndDate);
+                    DateTime start = new DateTime(request.FilterRegistrationStartDate.Value);
+                    DateTime end = new DateTime(request.FilterRegistrationEndDate.Value);
+
+                    m_filteredCandidates = m_filteredCandidates.Where(a => a.RegistrationDate.Value >= start && a.RegistrationDate.Value <= end );
                 }
 
                 response.TotalRows = m_filteredCandidates.Count();
@@ -268,15 +278,15 @@ namespace HunterCV.FrontSite.ApiControllers
 
                 //Sorting 
 
-                if (request.SortField == "IsFavorite")
+                if (request.SortField == "Starred")
                 {
                     if (request.SortType == 1)
                     {
-                        m_filteredCandidates = m_filteredCandidates.OrderByDescending(p => p.CandidateNumber);
+                        m_filteredCandidates = m_filteredCandidates.OrderByDescending(p => p.Starred);
                     }
                     else
                     {
-                        m_filteredCandidates = m_filteredCandidates.OrderBy(p => p.CandidateNumber);
+                        m_filteredCandidates = m_filteredCandidates.OrderBy(p => p.Starred);
                     }
                 }
 

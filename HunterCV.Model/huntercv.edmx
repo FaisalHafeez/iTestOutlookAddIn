@@ -118,6 +118,7 @@
           <Property Name="UserId" Type="uniqueidentifier" />
           <Property Name="SigningDate" Type="datetime" />
           <Property Name="WorkStartDate" Type="datetime" />
+          <Property Name="Starred" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="FavoriteCandidates">
           <Key>
@@ -138,6 +139,7 @@
           <Property Name="Subject" Type="nvarchar" MaxLength="150" />
           <Property Name="RtfBody" Type="nvarchar" MaxLength="2000" />
           <Property Name="IncludeAttachments" Type="bit" />
+          <Property Name="SetOpeningCompanyRecipient" Type="bit" />
         </EntityType>
         <EntityType Name="Positions">
           <Key>
@@ -215,6 +217,7 @@
           <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="IsAnonymous" Type="bit" Nullable="false" />
           <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+          <Property Name="ApplicationRole" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="UsersInRoles">
           <Key>
@@ -494,6 +497,7 @@
           <Property Type="DateTime" Name="SigningDate" />
           <Property Type="DateTime" Name="WorkStartDate" />
           <NavigationProperty Name="FavoriteUsers" Relationship="invidiadbModel.FavoriteCandidates" FromRole="Candidate" ToRole="User" />
+          <Property Type="String" Name="Starred" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MailTemplate">
           <Key>
@@ -507,6 +511,7 @@
           <Property Type="String" Name="RtfBody" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="IncludeAttachments" />
           <NavigationProperty Name="Role" Relationship="invidiadbModel.FK_MailTemplates_Roles" FromRole="MailTemplate" ToRole="Role" />
+          <Property Type="Boolean" Name="SetOpeningCompanyRecipient" />
         </EntityType>
         <EntityType Name="Position">
           <Key>
@@ -589,6 +594,7 @@
           <NavigationProperty Name="Profile" Relationship="invidiadbModel.UserProfile" FromRole="User" ToRole="Profile" />
           <NavigationProperty Name="Roles" Relationship="invidiadbModel.UsersInRoles" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="FavoriteCandidates" Relationship="invidiadbModel.FavoriteCandidates" FromRole="User" ToRole="Candidate" />
+          <Property Type="String" Name="ApplicationRole" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <Association Name="RoleApplication">
           <End Type="invidiadbModel.Application" Role="Application" Multiplicity="1" />
@@ -743,6 +749,7 @@
           <EntitySetMapping Name="Candidates">
             <EntityTypeMapping TypeName="invidiadbModel.Candidate">
               <MappingFragment StoreEntitySet="Candidates">
+                <ScalarProperty Name="Starred" ColumnName="Starred" />
                 <ScalarProperty Name="WorkStartDate" ColumnName="WorkStartDate" />
                 <ScalarProperty Name="SigningDate" ColumnName="SigningDate" />
                 <ScalarProperty Name="Reference" ColumnName="Reference" />
@@ -773,6 +780,7 @@
           <EntitySetMapping Name="MailTemplates">
             <EntityTypeMapping TypeName="invidiadbModel.MailTemplate">
               <MappingFragment StoreEntitySet="MailTemplates">
+                <ScalarProperty Name="SetOpeningCompanyRecipient" ColumnName="SetOpeningCompanyRecipient" />
                 <ScalarProperty Name="IncludeAttachments" ColumnName="IncludeAttachments" />
                 <ScalarProperty Name="RtfBody" ColumnName="RtfBody" />
                 <ScalarProperty Name="Subject" ColumnName="Subject" />
@@ -848,6 +856,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="invidiadbModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="ApplicationRole" ColumnName="ApplicationRole" />
                 <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
                 <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />

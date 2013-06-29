@@ -1,0 +1,48 @@
+﻿@model HunterCV.FrontSite.Models.AddUserModel
+<div id="adduser" class="reveal-modal">
+    <header class="reveal-modal-header">
+			Add User
+		</header>
+    <div class="cont">
+        @using (Html.BeginForm("AddUser", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "adduser" }))
+        {
+            @Html.AntiForgeryToken()
+           <p class="clearfix">
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </p>
+            <p class="clearfix">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email)
+                @Html.ValidationMessageFor(m => m.Email)
+            </p>
+            <p class="clearfix">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+            </p>
+            <p class="clearfix">
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword)
+                @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            </p>
+               <p class="clearfix" style="width: 100%">
+                <div class="alpha">
+                    <div class="field clearfix">
+                        <input type="radio" id="RoleC" name="ApplicationRole" value="C" class="radioclass" checked /><label
+                            for="RoleC">
+                            Standard Recruiter</label>
+                    </div>
+                    <div class="field clearfix">
+                        <input type="radio" id="RoleA" name="ApplicationRole" value="A" class="radioclass" /><label
+                            for="RoleA">
+                            Administrator</label>
+                    </div>
+                </div>
+            </p>
+          <p class="without-label clearfix">
+                <input type="submit" value="" /></p>
+        }
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>

@@ -70,7 +70,6 @@ namespace HunterCV.AddIn
         {
             InitializeComponent();
 
-            tvAreas.Nodes.AddRange(region.Areas.CloneNodes());
             cbStatus.Items.AddRange(region.CandidatesStatuses);
             cbRole.Items.AddRange(region.Roles);
 
@@ -88,7 +87,6 @@ namespace HunterCV.AddIn
         {
             InitializeComponent();
 
-            //tvAreas.Nodes.AddRange(region.Areas.CloneNodes());
             cbStatus.Items.AddRange(region.CandidatesStatuses);
             cbRole.Items.AddRange(region.Roles);
 
@@ -132,7 +130,8 @@ namespace HunterCV.AddIn
 
         public void SetFormValues()
         {
-            picFavorite.Image = favoritesImagesList.Images[m_Candidate.IsFavorite ? 0 : 1];
+            FavoritesIcons icn = (FavoritesIcons)Enum.Parse(typeof(FavoritesIcons), m_Candidate.Starred ?? "Silver", true);
+            picFavorite.Image = favoritesImagesList.Images[(int)icn];
 
             tbUsername.Text = m_Candidate.Username;
             tbFirstName.Text = m_Candidate.FirstName;
@@ -151,6 +150,7 @@ namespace HunterCV.AddIn
 
             tvAreas.Nodes.Clear();
             tvAreas.Nodes.AddRange(m_region.Areas.CloneNodes());
+            tvAreas.ExpandAll();
 
             if (m_Candidate.Status.ToLower() == "signed")
             {
@@ -708,6 +708,10 @@ namespace HunterCV.AddIn
                                         {
                                             //show message
                                             MailItem mail = (MailItem)m_region.Application.CreateItem(OlItemType.olMailItem);
+                                            if (m_region.MailTemplates[((MenuItem)menu).Index].SetOpeningCompanyRecipient)
+                                            {
+                                                mail.To = GrabConnectedCompanyEmail();
+                                            }
                                             mail.BodyFormat = OlBodyFormat.olFormatRichText;
                                             mail.Subject = m_region.MailTemplates[((MenuItem)menu).Index].Subject.ReplaceCandidateWildCards(m_Candidate);
 
@@ -777,6 +781,10 @@ namespace HunterCV.AddIn
                     {
                         //no attachments
                         MailItem mail = (MailItem)m_region.Application.CreateItem(OlItemType.olMailItem);
+                        if (m_region.MailTemplates[((MenuItem)menu).Index].SetOpeningCompanyRecipient)
+                        {
+                            mail.To = GrabConnectedCompanyEmail();
+                        }
                         mail.BodyFormat = OlBodyFormat.olFormatRichText;
                         mail.Subject = m_region.MailTemplates[((MenuItem)menu).Index].Subject.ReplaceCandidateWildCards(m_Candidate);
 
@@ -792,6 +800,29 @@ namespace HunterCV.AddIn
             }
 
 
+        }
+
+        private string GrabConnectedCompanyEmail()
+        {
+            string email = string.Empty;
+
+            if (dgvPositions.SelectedRows.Count > 0)
+            {
+                Position item = dgvPositions.SelectedRows[0].DataBoundItem as Position;
+                XElement element = m_region.Companies.FirstOrDefault(t => t.Attribute("title").Value == item.Company);
+
+                if (element != null)
+                {
+                    var details = element.Element("details");
+
+                    if (details != null)
+                    {
+                        email = details.Element("email").Value;
+                    }
+                }
+            }
+
+            return email;
         }
 
         private void AddNode(XmlNode inXmlNode, TreeNode inTreeNode)
@@ -1585,13 +1616,21 @@ namespace HunterCV.AddIn
 
         }
 
-
-
         private void picFavorite_Click(object sender, EventArgs e)
         {
-            m_Candidate.IsFavorite = !m_Candidate.IsFavorite;
-            picFavorite.Image = favoritesImagesList.Images[m_Candidate.IsFavorite ? 0 : 1];
+            FavoritesIcons icn = (FavoritesIcons)Enum.Parse(typeof(FavoritesIcons), m_Candidate.Starred ?? "Silver", true);
 
+            if (icn == FavoritesIcons.Red)
+            {
+                icn = FavoritesIcons.Silver;
+            }
+            else
+            {
+                icn = (FavoritesIcons)(((int)icn) + 1);
+            }
+
+            m_Candidate.Starred = icn.ToString();
+            picFavorite.Image = favoritesImagesList.Images[(int)icn];
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -1705,6 +1744,24 @@ namespace HunterCV.AddIn
             //    or none of the above
             else
             { e.Effect = DragDropEffects.None; }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (dgvPositions.SelectedRows.Count > 0)
+            {
+                Position item = dgvPositions.SelectedRows[0].DataBoundItem as Position;
+
+                if (item != null &&
+                        MessageBox.Show("Are You sure to delete this Opening for this candidate ?", "HunterCV",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    m_positionsBindingSource.Remove(item);
+
+                    m_Candidate.CandidatePositions.Remove(m_Candidate.CandidatePositions.Single(c => c.PositionId == item.PositionID));
+                }
+
+            }
         }
 
     }

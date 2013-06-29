@@ -1,3 +1,25 @@
 ﻿@{
     ViewBag.Title = "About";
 }
+@section navigation {
+    <ul class="sf-menu">
+        <li class="">
+            @Html.ActionLink("home", "Index", "Home")
+        </li>
+        @if (Request.IsAuthenticated)
+        {
+            <li class="">
+                @Html.ActionLink("my account", "Manage", "Account")
+            </li>
+        }
+        <li class="">
+            @Html.ActionLink("features", "Features", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("plans", "Plans", "Home")
+        </li>
+        <li class="current-menu-item">
+            @Html.ActionLink("contact us", "Contact", "Home")
+        </li>
+    </ul>
+}

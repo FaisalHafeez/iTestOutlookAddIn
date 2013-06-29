@@ -191,10 +191,12 @@ namespace HunterCV.AddIn
         /// 
         /// </summary>
         /// <param name="candidate"></param>
-        public static void AddFavorite(Candidate candidate)
+        public static void UpdateFavorite(Candidate candidate, string starType)
         {
             try
             {
+                candidate.Starred = starType;
+
                 var cookieContainer = new CookieContainer();
                 Cookie cookie = new Cookie(".ASPXAUTH", m_aspxauthCookie);
                 cookie.Secure = false;

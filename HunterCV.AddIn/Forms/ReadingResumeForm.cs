@@ -133,6 +133,19 @@ namespace HunterCV.AddIn
                                     ref objMissing, ref objMissing
                                 );
 
+                                if (Properties.Settings.Default.AddMSCompanyLogo &&
+                                    !string.IsNullOrEmpty(Properties.Settings.Default.MSLogoFilePath) &&
+                                    File.Exists(Properties.Settings.Default.MSLogoFilePath))
+                                {
+                                    foreach (Microsoft.Office.Interop.Word.Section wordSection in doc.Content.Sections)
+                                    {
+                                        wordSection.Headers[Microsoft.Office.Interop.Word.WdHeaderFooterIndex.wdHeaderFooterFirstPage]
+                                            .Range.InlineShapes.AddPicture(Properties.Settings.Default.MSLogoFilePath);
+                                    }
+                                }
+
+                                doc.Save();
+
                                 if (!m_previewOnly)
                                 {
 
@@ -164,6 +177,8 @@ namespace HunterCV.AddIn
                                 object oFileName = (object)htmlFile.FullName;
 
                                 object oFormat = Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatHTML;
+                                object oCompatibilityMode = Microsoft.Office.Interop.Word.WdCompatibilityMode.wdWord2007;//.wdFormatHTML;
+
                                 doc.SaveAs2(ref oFileName, ref oFormat, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing,
                                 ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing, ref objMissing);
 

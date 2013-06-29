@@ -205,7 +205,7 @@ namespace HunterCV.AddIn.Forms
                 tbSubject.Enabled = false;
                 tbTitle.Enabled = false;
                 cbIncludeAttachments.Enabled = false;
-
+                cbOpeningEmail.Enabled = false;
             }
 
             m_bindingList = new BindingList<MailTemplate>(m_templates);
@@ -275,11 +275,13 @@ namespace HunterCV.AddIn.Forms
                 tbSubject.Text = m_mailTemplate.Subject;
                 rtbDoc.Rtf = m_mailTemplate.RtfBody;
                 cbIncludeAttachments.Checked = m_mailTemplate.IncludeAttachments;
+                cbOpeningEmail.Checked = m_mailTemplate.SetOpeningCompanyRecipient;
 
                 rtbDoc.Enabled = true;
                 tbSubject.Enabled = true;
                 tbTitle.Enabled = true;
                 cbIncludeAttachments.Enabled = true;
+                cbOpeningEmail.Enabled = true;
 
             }
         }
@@ -343,6 +345,7 @@ namespace HunterCV.AddIn.Forms
             tbSubject.Enabled = true;
             tbTitle.Enabled = true;
             cbIncludeAttachments.Enabled = true;
+            cbOpeningEmail.Enabled = true;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -362,7 +365,7 @@ namespace HunterCV.AddIn.Forms
                 tbSubject.Enabled = false;
                 tbTitle.Enabled = false;
                 cbIncludeAttachments.Enabled = false;
-
+                cbOpeningEmail.Enabled = false;
             }
         }
 
@@ -371,6 +374,14 @@ namespace HunterCV.AddIn.Forms
             if (m_mailTemplate != null)
             {
                 m_mailTemplate.IncludeAttachments = cbIncludeAttachments.Checked;
+            }
+        }
+
+        private void cbOpeningEmail_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_mailTemplate != null)
+            {
+                m_mailTemplate.SetOpeningCompanyRecipient = cbOpeningEmail.Checked;
             }
         }
     }

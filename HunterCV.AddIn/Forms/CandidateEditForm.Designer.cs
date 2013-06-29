@@ -815,6 +815,7 @@
             this.tbResumeDescription.Margin = new System.Windows.Forms.Padding(4);
             this.tbResumeDescription.Multiline = true;
             this.tbResumeDescription.Name = "tbResumeDescription";
+            this.tbResumeDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbResumeDescription.Size = new System.Drawing.Size(213, 119);
             this.tbResumeDescription.TabIndex = 59;
             // 
@@ -1064,6 +1065,7 @@
             this.button7.TabIndex = 35;
             this.button7.Text = "Remove Opening";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button6
             // 
@@ -1234,8 +1236,10 @@
             // 
             this.favoritesImagesList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("favoritesImagesList.ImageStream")));
             this.favoritesImagesList.TransparentColor = System.Drawing.Color.Transparent;
-            this.favoritesImagesList.Images.SetKeyName(0, "1370559919_star.png");
-            this.favoritesImagesList.Images.SetKeyName(1, "1370559914_star_silver.png");
+            this.favoritesImagesList.Images.SetKeyName(0, "1370559914_star_silver.png");
+            this.favoritesImagesList.Images.SetKeyName(1, "1370559919_star.png");
+            this.favoritesImagesList.Images.SetKeyName(2, "blue_star.png");
+            this.favoritesImagesList.Images.SetKeyName(3, "red_star.png");
             // 
             // webBrowser1
             // 

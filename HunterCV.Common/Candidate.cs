@@ -16,6 +16,7 @@ namespace HunterCV.Common
         public IEnumerable<HunterCV.Common.MailTemplate> templates { get; set; }
         public IEnumerable<HunterCV.Common.Position> positions { get; set; }
         public string settings { get; set; }
+        public Dictionary<string, string> users { get; set; }
     }
 
     public class Candidate
@@ -49,7 +50,6 @@ namespace HunterCV.Common
         public Nullable<DateTime> WorkStartDate { get; set; }
         public IList<CandidatePosition> CandidatePositions { get; set; }
         public bool SkipDuplicatesCheck { get; set; }
-        public bool IsFavorite { get; set; }
-
+        public string Starred { get; set; }
     }
 }

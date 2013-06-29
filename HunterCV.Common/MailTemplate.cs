@@ -12,5 +12,6 @@ namespace HunterCV.Common
         public string Subject { get; set; }
         public string RtfBody { get; set; }
         public bool IncludeAttachments { get; set; }
+        public bool SetOpeningCompanyRecipient { get; set; }
     }
 }

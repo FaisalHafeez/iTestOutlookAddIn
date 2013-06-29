@@ -42,7 +42,8 @@ namespace HunterCV.AddIn.Forms
         {
             udPageSize.Value = Properties.Settings.Default.PageSize;
             cbUseProxy.Checked = Properties.Settings.Default.UseProxy;
-
+            cbAddMSCompanyLogo.Checked = Properties.Settings.Default.AddMSCompanyLogo;
+            tbMSLogoFilePath.Text = Properties.Settings.Default.MSLogoFilePath;
 
             tbProxyAddress.Text = Properties.Settings.Default.ProxyAddress;
             tbProxyPort.Text = Properties.Settings.Default.ProxyPort.ToString();
@@ -98,6 +99,10 @@ namespace HunterCV.AddIn.Forms
             Properties.Settings.Default.UseProxy = cbUseProxy.Checked;
             Properties.Settings.Default.ProxyAddress = tbProxyAddress.Text;
             Properties.Settings.Default.ProxyPort = int.Parse(tbProxyPort.Text);
+            Properties.Settings.Default.AddMSCompanyLogo = cbAddMSCompanyLogo.Checked;
+            Properties.Settings.Default.MSLogoFilePath = tbMSLogoFilePath.Text;
+
+            Properties.Settings.Default.Save();
 
             string xml = populateSettingsXml();
 
@@ -145,6 +150,17 @@ namespace HunterCV.AddIn.Forms
             tbProxyAddress.Enabled = cbUseProxy.Checked;
             tbProxyPort.Enabled = cbUseProxy.Checked;
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Multiselect = false;
+            openFileDialog1.Filter = "All files (*.*)|*.*|Bitmap Files (*.bmp)|*.bmp|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+
+            if (openFileDialog1.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            {
+                tbMSLogoFilePath.Text = openFileDialog1.FileName;
+            }
         }
     }
 }

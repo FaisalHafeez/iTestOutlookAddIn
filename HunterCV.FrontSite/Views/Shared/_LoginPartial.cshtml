@@ -1,14 +1,14 @@
-﻿@if (Request.IsAuthenticated) {
-    <text>
-        Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-            @Html.AntiForgeryToken()
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-        }
-    </text>
-} else {
-    <ul>
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
-}
+﻿<div class="login-holder fright">
+    @if (Request.IsAuthenticated) {
+        <text>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+                @Html.AntiForgeryToken()
+                @Html.ActionLink("Hello, " + User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "signup", title = "Manage" })
+                <a class="signout" href="javascript:document.getElementById('logoutForm').submit()">sign out</a>
+            }
+        </text>
+    } else {
+        <a href="#" class="signup" data-reveal-id="signup">sign up</a>
+        <a href="#" class="signin" data-reveal-id="signin">sign in</a>
+    }
+</div>

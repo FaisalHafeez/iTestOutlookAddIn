@@ -1,6 +1,28 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+@section navigation {
+    <ul class="sf-menu">
+        <li class="current-menu-item">
+            @Html.ActionLink("home", "Index", "Home")
+        </li>
+        @if (Request.IsAuthenticated)
+        {
+            <li class="">
+                @Html.ActionLink("my account", "Manage", "Account")
+            </li>
+        }
+        <li class="">
+            @Html.ActionLink("features", "Features", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("plans", "Plans", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("contact us", "Contact", "Home")
+        </li>
+    </ul>
+}
 @section slider {
     <!-- BEGIN SLIDER -->
     <section id="slider" class="loading">
@@ -18,7 +40,7 @@
                                     Lorem ipsum dolor sit amet, con- sectetur adipiscing elit. Curabitur id ante nisi.
                                     In imperdiet sem ante nisiac eros vestibulum facilisis.</p>
                                 <!-- .btn -->
-                                <a href="#" class="btn large"><span class="btn-inner">Buy theme<em>click here</em><i
+                                <a href="#" class="btn large"><span class="btn-inner">Download<em>trial for free</em><i
                                     class="marker"></i></span> </a>
                                 <!-- //.btn -->
                             </div>
@@ -33,7 +55,7 @@
                                     Lorem ipsum dolor sit amet, con- sectetur adipiscing elit. Curabitur id ante nisi.
                                     In imperdiet sem ante nisiac eros vestibulum facilisis.</p>
                                 <!-- .btn -->
-                                <a href="#" class="btn large"><span class="btn-inner">Buy theme<em>click here</em><i
+                                <a href="#" class="btn large"><span class="btn-inner">Download<em>trial for free</em><i
                                     class="marker"></i></span> </a>
                                 <!-- //.btn -->
                             </div>
@@ -59,8 +81,6 @@
     </section>
     <!-- END SLIDER -->
 }
-
-
 <!-- BEGIN CONTENT HOLDER -->
 <div id="content-wrapper" class="large-text">
     <!-- BEGIN PRIMARY AREA -->
@@ -70,9 +90,9 @@
                 <div class="intro-widget">
                     <h2>
                         What is Hunter-CV?</h2>
-                   HunterCV is a Microsoft&copy; Outlook&copy; add-in for resume management software which provides an 
-                   efficient tool for “Head Hunters”. HunterCV is more efficient than any email out there 
-                   and simpler than any other spreadsheet or recruitment software.
+                    HunterCV is a Microsoft&copy; Outlook&copy; add-in for resume management software
+                    which provides an efficient tool for “Head Hunters”. HunterCV is more efficient
+                    than any email out there and simpler than any other spreadsheet or recruitment software.
                 </div>
                 <!-- //.intro-widget -->
             </div>
@@ -91,12 +111,12 @@
                         </figure>
                         <h3>
                             <a href="#">More efficient than any email client or spreadsheets</a></h3>
-                        If you have ever received job applications via your email, you know how tedious it 
-                        is to download & open each attached resume. Not to mention that searching through 
-                        attachments is impossible. Spreadsheets can help you structure data, but are far from
-                         being ideal for resume tracking. 
-                         <br />
-                         With HunterCV all applicant information is gathered and made searchable in one place.</li>
+                        If you have ever received job applications via your email, you know how tedious
+                        it is to download & open each attached resume. Not to mention that searching through
+                        attachments is impossible. Spreadsheets can help you structure data, but are far
+                        from being ideal for resume tracking.
+                        <br />
+                        With HunterCV all applicant information is gathered and made searchable in one place.</li>
                     <li>
                         <figure class="img-holder">
                             <a href="#">
@@ -104,8 +124,8 @@
                         </figure>
                         <h3>
                             <a href="#">Collect Resumes from Email Attachments</a></h3>
-                        Simply drag & drop emails to HunterCV drop spot, where we automatically create a 
-                        candidate profile from the email using screening technique and show you a brief 
+                        Simply drag & drop emails to HunterCV drop spot, where we automatically create a
+                        candidate profile from the email using screening technique and show you a brief
                         preview of his resume in front of his profile.</li>
                     <li>
                         <figure class="img-holder">
@@ -115,8 +135,8 @@
                         <h3>
                             <a href="#">All your data is safe in the Cloud</a></h3>
                         All of your data is stored securely in Amazon&copy; cloud services which provides
-                         you and us a safe and reliable platform, and also provides the ability to 
-                         scale up with yours and the rest of our customers’ needs.</li>
+                        you and us a safe and reliable platform, and also provides the ability to scale
+                        up with yours and the rest of our customers’ needs.</li>
                 </ul>
             </div>
         </div>
@@ -124,8 +144,26 @@
     <!-- END SECONDARY AREA -->
     <!-- BEGIN TERTIARY AREA -->
     <section id="tertiary-home-area" class="home-area indent">
-
     </section>
     <!-- END TERTIARY AREA -->
 </div>
 <!-- END CONTENT HOLDER -->
+@section scripts {
+    <!-- Flexslider Init -->
+    <script type="text/javascript">
+
+        $(window).load(function () {
+            $('.flexslider').flexslider({
+                animation: "slide",
+                controlNav: false,
+                // Callback API
+                before: function () { },
+                after: function () { },
+                start: function (slider) {
+                    $('#slider').removeClass('loading');
+                }
+            });
+        });
+
+    </script>
+}

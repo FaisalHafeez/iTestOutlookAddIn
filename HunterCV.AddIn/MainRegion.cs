@@ -15,6 +15,8 @@ using HunterCV.AddIn.ExtensionMethods;
 using System.Threading;
 using log4net;
 using log4net.Config;
+using System.Drawing;
+using HunterCV.AddIn.Forms;
 
 namespace HunterCV.AddIn
 {
@@ -32,13 +34,24 @@ namespace HunterCV.AddIn
             private void MainRegionFactory_FormRegionInitializing(object sender, Microsoft.Office.Tools.Outlook.FormRegionInitializingEventArgs e)
             {
                 if (!ServiceHelper.IsLoggedIn && !ServiceHelper.CanceledLogin)
-                {
+                { 
                     LoginForm form = new LoginForm();
                     form.ShowDialog();
 
                     if (!ServiceHelper.IsLoggedIn)
                     {
                         e.Cancel = true;
+                    }
+                    else
+                    {
+                        if (Properties.Settings.Default.ShowPreviewPaneNote)
+                        {
+                            using (PreviewPaneForm f = new PreviewPaneForm())
+                            {
+                                f.ShowDialog();
+                                f.Close();
+                            }
+                        }
                     }
                 }
                 else if (ServiceHelper.CanceledLogin)
@@ -57,6 +70,14 @@ namespace HunterCV.AddIn
         static MainRegion() 
         { 
             XmlConfigurator.Configure();
+            
+            FilterFavorites = new Dictionary<string, bool>()
+            {
+                { "Gold" , false },
+                { "Blue" , false },
+                { "Red" , false }
+            };
+
 
             Logger.InfoFormat("Starts logger...");
         }
@@ -82,12 +103,23 @@ namespace HunterCV.AddIn
             });
         }
 
+        public void RefreshCreatedBy()
+        {
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbCreatedBy, cb =>
+            {
+                cb.DataSource = new BindingSource(m_users, null);
+                cb.DisplayMember = "Value";
+                cb.ValueMember = "Key";
+            });
+        }
+
         public void RefreshAreas()
         {
             CrossThreadUtility.InvokeControlAction<TreeView>(tvAreas, tv =>
             {
                 tv.Nodes.Clear();
                 tv.Nodes.AddRange(m_areas.CloneNodes());
+                tv.ExpandAll();
             });
         }
 
@@ -96,49 +128,49 @@ namespace HunterCV.AddIn
         // Use this.OutlookFormRegion to get a reference to the form region.
         private void MainRegion_FormRegionShowing(object sender, System.EventArgs e)
         {
-            pictureBox1.AllowDrop = true;
-
-            var worker = new BackgroundWorker();
-
-            worker.RunWorkerCompleted += (senders, es) =>
+            try
             {
-                //CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
-            };
+                var worker = new BackgroundWorker();
 
-            worker.DoWork += (senders, es) =>
-            {
-                if (m_candidates == null && !roleWorker.IsBusy)
+                worker.RunWorkerCompleted += (senders, es) =>
                 {
-                    CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
-                    roleWorker.RunWorkerAsync();
-                }
-                else if (!roleWorker.IsBusy)
+                    //CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = false);
+                };
+
+                worker.DoWork += (senders, es) =>
                 {
-                    RefreshAreas();
-                    RefreshRoles();
-                    RefreshCandidatesStatuses();
-
-                    Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
-
-                    if (mailItem != null && m_candidates != null)
+                    if (m_candidates == null && !roleWorker.IsBusy)
                     {
-                        var row = m_candidates.Where(p => p.MailEntryID == mailItem.EntryID).FirstOrDefault();
+                        CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
+                        roleWorker.RunWorkerAsync();
+                    }
+                    else if (!roleWorker.IsBusy)
+                    {
+                        RefreshAreas();
+                        RefreshRoles();
+                        RefreshCandidatesStatuses();
+                        RefreshCreatedBy();
 
-                        if (row != null)
+                        Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
+
+                        if (mailItem != null)
                         {
-                            CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, t => t.Text = row.CandidateNumber.Value.ToString());
-                            DoSearch(-1);
+                            DoSearch(-1, mailItem.EntryID);
                         }
                     }
-                }
-                else
-                {
-                    CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
-                }
+                    else
+                    {
+                        CrossThreadUtility.InvokeControlAction<Panel>(panelWait, p => p.Visible = true);
+                    }
 
-            };
+                };
 
-            worker.RunWorkerAsync();
+                worker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error:", ex);
+            }
         }
 
         public Outlook.Application Application
@@ -151,7 +183,7 @@ namespace HunterCV.AddIn
 
         public GridRowSelectionTypes GridRowSelectionType { get; set; }
 
-        public bool FilterFavorites { get; set; }
+        public static Dictionary<string,bool> FilterFavorites { get; set; }
 
         public CandidateEditForm CurrentCandidateForm
         {
@@ -273,7 +305,7 @@ namespace HunterCV.AddIn
             }
         }
 
-        public TreeNode[] Companies
+        public IEnumerable<XElement> Companies
         {
             get
             {
@@ -306,8 +338,9 @@ namespace HunterCV.AddIn
         private static TreeNode[] m_areas;
         private static string[] m_roles;
         private static string[] m_candidatesStatuses;
+        private static Dictionary<string, string> m_users;
         private static string[] m_positionsStatuses;
-        private static TreeNode[] m_companies;
+        private static IEnumerable<XElement> m_companies;
         private static Guid m_roleId;
         private static BindingSource m_mainGridBindingSource;
         private static List<KeyValuePair<string, string>> m_Settings = null;
@@ -514,7 +547,7 @@ namespace HunterCV.AddIn
 
         public void DoSearch(int columnIndex)
         {
-            DoSearch(columnIndex, false);
+            DoSearch(columnIndex,null);
         }
 
         // This event handler is where the time-consuming work is done. 
@@ -577,15 +610,16 @@ namespace HunterCV.AddIn
 
                 //parse companies
                 var docCompanies = XDocument.Parse(((UserData)e.Result).companies);
-                var elementsCompanies = docCompanies.Root.Elements();
-                List<TreeNode> xCompany = new List<TreeNode>();
+                m_companies = docCompanies.Root.Elements();
+                //var elementsCompanies = docCompanies.Root.Elements();
+                //List<TreeNode> xCompany = new List<TreeNode>();
 
-                foreach (XElement root in elementsCompanies)
-                {
-                    xCompany.AddRange(GetNodes(new TreeNode((string)root.Attribute("title")), root));
-                }
+                //foreach (XElement root in elementsCompanies)
+                //{
+                //    xCompany.AddRange(GetNodes(new TreeNode((string)root.Attribute("title")), root));
+                //}
 
-                m_companies = xCompany.ToArray();
+                //m_companies = xCompany.ToArray();
 
                 //parse roles
                 var docRoles = XDocument.Parse(((UserData)e.Result).roles);
@@ -637,6 +671,8 @@ namespace HunterCV.AddIn
                 //parse mail templates
                 m_templates = new List<MailTemplate>(((UserData)e.Result).templates);
 
+                m_users = ((UserData)e.Result).users;
+
                 foreach (Microsoft.Office.Tools.Outlook.IFormRegion formRegion
                     in Globals.FormRegions)
                 {
@@ -646,7 +682,8 @@ namespace HunterCV.AddIn
                         region.RefreshAreas();
                         region.RefreshRoles();
                         region.RefreshCandidatesStatuses();
-                        region.DoSearch(-1, false);
+                        region.RefreshCreatedBy();
+                        region.DoSearch(-1, null);
 
                         CrossThreadUtility.InvokeControlAction<Panel>(region.panelWait, panel =>
                         {
@@ -677,7 +714,7 @@ namespace HunterCV.AddIn
         }
 
 
-        public void DoSearch(int columnIndex, bool reload)
+        public void DoSearch(int columnIndex, string mailEntryId)
         {
             m_CurrentPage = 0;
 
@@ -695,29 +732,19 @@ namespace HunterCV.AddIn
                 m_oldSortingIndex = columnIndex;
             }
 
-            if (reload)
-            {
-                if (candidatesWorker.IsBusy != true)
-                {
-                    panelWait.Visible = true;
-                    candidatesWorker.RunWorkerAsync();
-                }
-                return;
-            }
-
-            FilterCandidates(columnIndex);
+            FilterCandidates(columnIndex, mailEntryId);
         }
 
         private void FilterCandidates()
         {
-            FilterCandidates(-1);
+            FilterCandidates(-1,null);
         }
 
-        private void FilterCandidates(int columnIndex)
+        private void FilterCandidates(int columnIndex, string mailEntryId)
         {
             if (!candidatesWorker.IsBusy)
             {
-                candidatesWorker.RunWorkerAsync();
+                candidatesWorker.RunWorkerAsync(mailEntryId);
             }
         }
 
@@ -732,6 +759,9 @@ namespace HunterCV.AddIn
                 if (m_candidates.Count() > 0 && dg.Columns.Count > 0)
                 {
                     dg.Columns[0].Visible = false;
+                    dg.Columns[1].HeaderText = "#";
+                    dg.Columns[1].Width = 65;
+                    dg.Columns[2].HeaderText = "Created by";
                     dg.Columns[7].Visible = false;
                     dg.Columns[8].Visible = false;
                     dg.Columns[9].Visible = false;
@@ -749,7 +779,7 @@ namespace HunterCV.AddIn
                     dg.Columns[26].Visible = false;
 
                     DataGridViewImageColumn iconColumn = new DataGridViewImageColumn();
-                    iconColumn.Name = "FavoriteIcon";
+                    iconColumn.Name = "StarredIcon";
                     iconColumn.HeaderText = "";
                     iconColumn.Width = 35;
                     dg.Columns.Insert(0, iconColumn);
@@ -894,6 +924,7 @@ namespace HunterCV.AddIn
             CrossThreadUtility.InvokeControlAction<TextBox>(tbName, cb => cb.Text = "");
             CrossThreadUtility.InvokeControlAction<CheckBox>(checkBox1, cb => cb.Checked = false);
             CrossThreadUtility.InvokeControlAction<ComboBox>(cbStatus, cb => cb.Text = "");
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbCreatedBy, cb => cb.Text = "");
             CrossThreadUtility.InvokeControlAction<TextBox>(tbNumber, cb =>
             {
                 cb.Text = "";
@@ -932,7 +963,16 @@ namespace HunterCV.AddIn
         {
             if (e.ColumnIndex == 0)
             {
-                bool value = !(bool)dataGridView1.Rows[e.RowIndex].Cells["IsFavorite"].Value;
+                FavoritesIcons icn = (FavoritesIcons)Enum.Parse(typeof(FavoritesIcons), (string)dataGridView1.Rows[e.RowIndex].Cells["Starred"].Value ?? "Silver", true);
+
+                if (icn == FavoritesIcons.Red)
+                {
+                    icn = FavoritesIcons.Silver;
+                }
+                else
+                {
+                    icn = (FavoritesIcons)(((int)icn) + 1);
+                }
 
                 var worker = new BackgroundWorker();
 
@@ -940,21 +980,14 @@ namespace HunterCV.AddIn
 
                 worker.DoWork += (ssender, es) =>
                 {
-                    if (!value)
-                    {
-                        ServiceHelper.DeleteFavorite((Guid)dataGridView1.Rows[e.RowIndex].Cells["CandidateID"].Value);
-                    }
-                    else
-                    {
-                        ServiceHelper.AddFavorite((Candidate)dataGridView1.Rows[e.RowIndex].DataBoundItem);
-                    }
+                    ServiceHelper.UpdateFavorite((Candidate)dataGridView1.Rows[e.RowIndex].DataBoundItem, icn.ToString() );
                 };
 
                 worker.RunWorkerCompleted += (ssender, es) =>
                 {
                     CrossThreadUtility.InvokeControlAction<DataGridView>(dataGridView1, dg =>
                     {
-                        dg.Rows[e.RowIndex].Cells["IsFavorite"].Value = value;
+                        dg.Rows[e.RowIndex].Cells["Starred"].Value = icn.ToString();
                         m_mainGridBindingSource.ResetBindings(true);
                     });
 
@@ -987,6 +1020,7 @@ namespace HunterCV.AddIn
                 RefreshAreas();
                 RefreshRoles();
                 RefreshCandidatesStatuses();
+                RefreshCreatedBy();
 
                 Outlook.MailItem mailItem = (this.OutlookItem as Outlook.MailItem);
 
@@ -1031,13 +1065,20 @@ namespace HunterCV.AddIn
             request.PageSize = Properties.Settings.Default.PageSize;
             request.PageNumber = m_CurrentPage;
 
+            if (e.Argument != null)
+            {
+                request.FilterMailEntryId = (string)e.Argument;
+            }
+
             IEnumerable<String> areas = null;
             CrossThreadUtility.InvokeControlAction<TreeView>(tvAreas, tree =>
             {
                 areas = GetCheckedAreas(tree.Nodes, false).ToArray<string>();
             });
 
-            request.FilterFavorites = this.FilterFavorites;
+            request.FilterStarredBlue = MainRegion.FilterFavorites["Blue"];
+            request.FilterStarredGold = MainRegion.FilterFavorites["Gold"];
+            request.FilterStarredRed = MainRegion.FilterFavorites["Red"];
 
             if (areas.Count() > 0)
             {
@@ -1048,6 +1089,14 @@ namespace HunterCV.AddIn
             {
                 request.FilterFullName = tbName.Text.Trim();
             }
+
+            CrossThreadUtility.InvokeControlAction<ComboBox>(cbCreatedBy, cb =>
+            {
+                if (!string.IsNullOrEmpty(cb.Text))
+                {
+                    request.FilterCreatedBy = (string)cb.SelectedValue;
+                }
+            });
 
             CrossThreadUtility.InvokeControlAction<ComboBox>(cbRole, cb =>
             {
@@ -1088,8 +1137,8 @@ namespace HunterCV.AddIn
                     DateTime start = new DateTime(dateTimePicker1.Value.Year, dateTimePicker1.Value.Month, dateTimePicker1.Value.Day, 0, 0, 0);
                     DateTime end = new DateTime(dateTimePicker2.Value.Year, dateTimePicker2.Value.Month, dateTimePicker2.Value.Day, 23, 59, 59);
 
-                    request.FilterRegistrationStartDate = start;
-                    request.FilterRegistrationEndDate = end;
+                    request.FilterRegistrationStartDate = start.Ticks;
+                    request.FilterRegistrationEndDate = end.Ticks;
                 }
             });
 
@@ -1097,7 +1146,7 @@ namespace HunterCV.AddIn
             {
                 if (m_oldSortingIndex > -1)
                 {
-                    request.SortField = dg.Columns[m_oldSortingIndex].Name;
+                    request.SortField = dg.Columns[m_oldSortingIndex].Name.Replace("Icon",string.Empty)  ;
                 }
                 else
                 {
@@ -1181,9 +1230,27 @@ namespace HunterCV.AddIn
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "FavoriteIcon")
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "StarredIcon")
             {
-                e.Value = (bool)dataGridView1.Rows[e.RowIndex].Cells["IsFavorite"].Value ? Properties.Resources.gold16_star : Properties.Resources.silver16_star;
+                FavoritesIcons icn = (FavoritesIcons)Enum.Parse(typeof(FavoritesIcons), (string)dataGridView1.Rows[e.RowIndex].Cells["Starred"].Value ?? "Silver", true);
+
+                switch (icn)
+                {
+                    case FavoritesIcons.Silver:
+                        e.Value = Properties.Resources.silver16_star;
+                        break;
+                    case FavoritesIcons.Gold:
+                        e.Value = Properties.Resources.gold16_star;
+                        break;
+                    case FavoritesIcons.Blue:
+                        e.Value = Properties.Resources.blue16_star;
+                        break;
+                    case FavoritesIcons.Red:
+                        e.Value = Properties.Resources.red16_star;
+                        break;
+                }
+
+                //e.Value = favoritesImageList.Images[(int)icn];// (string)dataGridView1.Rows[e.RowIndex].Cells["Starred"].Value == "Gold" ? Properties.Resources.gold16_star : Properties.Resources.silver16_star;
             } 
         }
 
@@ -1218,6 +1285,87 @@ namespace HunterCV.AddIn
             {
                 button1_Click(null, new EventArgs());
             }
+        }
+
+        private void cbStatus_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            float size = 0;
+            System.Drawing.Font myFont;
+            FontFamily family = null;
+
+            System.Drawing.Color animalColor = new System.Drawing.Color();
+            switch (e.Index)
+            {
+                case 0:
+                    size = 30;
+                    animalColor = System.Drawing.Color.Gray;
+                    family = FontFamily.GenericSansSerif;
+                    break;
+                case 1:
+                    size = 10;
+                    animalColor = System.Drawing.Color.LawnGreen;
+                    family = FontFamily.GenericMonospace;
+                    break;
+                case 2:
+                    size = 15;
+                    animalColor = System.Drawing.Color.Tan;
+                    family = FontFamily.GenericSansSerif;
+                    break;
+            }
+
+            // Draw the background of the item.
+            e.DrawBackground();
+
+            // Create a square filled with the animals color. Vary the size
+            // of the rectangle based on the length of the animals name.
+            Rectangle rectangle = new Rectangle(2, e.Bounds.Top + 2,
+                    e.Bounds.Height, e.Bounds.Height - 4);
+            e.Graphics.FillRectangle(new SolidBrush(animalColor), rectangle);
+
+            // Draw each string in the array, using a different size, color,
+            // and font for each item.
+            myFont = new Font(family, size, FontStyle.Bold);
+            e.Graphics.DrawString("kuku", myFont, System.Drawing.Brushes.Black, new RectangleF(e.Bounds.X + rectangle.Width, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
+
+            // Draw the focus rectangle if the mouse hovers over an item.
+            e.DrawFocusRectangle();
+        }
+
+        private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            DoSearch(-1);
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ClearFilter();
+            DoSearch(-1);
+
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            if (tableLayoutPanel1.RowStyles[0].Height == 76)
+            {
+                tableLayoutPanel1.RowStyles[0].Height = 45;
+                toolStripMenuItem2.Text = "Show Advanced Search";
+            }
+            else
+            {
+                tableLayoutPanel1.RowStyles[0].Height = 76;
+                toolStripMenuItem2.Text = "Hide Advanced Search";
+            }
+        }
+
+        private void cbStatus_KeyPress_1(object sender, KeyPressEventArgs e)
+        {
+
         }
 
     }

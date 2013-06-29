@@ -41,7 +41,7 @@ namespace HunterCV.AddIn
             tvAreas.Nodes.AddRange(region.Areas.CloneNodes());
             cbStatus.Items.AddRange(region.PositionsStatuses);
             cbRole.Items.AddRange(region.Roles);
-            cbCompany.Items.AddRange(region.Companies.Select(t => t.Text).ToArray());
+            cbCompany.Items.AddRange(region.Companies.Select(t => t.Attribute("title").Value).ToArray());
 
             m_openMode = mode;
 

@@ -9,7 +9,7 @@ using System.Web.Security;
 namespace HunterCV.FrontSite.Controllers
 {
     [Authorize]
-    public class SubscriptionController : Controller
+    public class SubscriptionController : BaseController
     {
         public ActionResult Cancel(string role)
         {

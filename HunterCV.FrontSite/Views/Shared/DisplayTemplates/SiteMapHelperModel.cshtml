@@ -1,7 +1,0 @@
-﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapHelperModel
-@using System.Web.Mvc.Html
-@using MvcSiteMapProvider.Web.Html.Models
-
-@foreach (var node in Model.Nodes) {
-    @Html.DisplayFor(m => node.Children)
-}

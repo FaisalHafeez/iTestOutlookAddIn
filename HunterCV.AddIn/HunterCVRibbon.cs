@@ -22,12 +22,21 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
             }
 
-            formRegions.MainRegion.DoSearch(-1, true);
+            formRegions.MainRegion.DoSearch(-1, null);
         }
 
         private void btnManageAreas_Click(object sender, RibbonControlEventArgs e)
@@ -35,6 +44,15 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
 
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
@@ -54,6 +72,15 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
@@ -72,6 +99,15 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
@@ -89,6 +125,15 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
 
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
@@ -114,6 +159,15 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
@@ -129,6 +183,15 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
@@ -143,6 +206,15 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
                     Globals.FormRegions
                     [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
 
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
@@ -181,6 +253,15 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
                 return;
@@ -199,6 +280,15 @@ namespace HunterCV.AddIn
         Globals.FormRegions
             [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
             if (formRegions.MainRegion.IsRoleWorkerBusy)
             {
                 return;
@@ -213,6 +303,15 @@ namespace HunterCV.AddIn
             WindowFormRegionCollection formRegions =
        Globals.FormRegions
            [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
 
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
@@ -240,12 +339,72 @@ namespace HunterCV.AddIn
        Globals.FormRegions
            [Globals.ThisAddIn.Application.ActiveExplorer()];
 
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
             if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
             {
+                toggleButtonFavorites.Checked = !toggleButtonFavorites.Checked;
                 return;
             }
 
-            formRegions.MainRegion.FilterFavorites = toggleButtonFavorites.Checked;
+            MainRegion.FilterFavorites["Gold"] = toggleButtonFavorites.Checked;
+            formRegions.MainRegion.DoSearch(-1);
+        }
+
+        private void toggleButton1_Click(object sender, RibbonControlEventArgs e)
+        {
+            WindowFormRegionCollection formRegions =
+       Globals.FormRegions
+           [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
+            {
+                toggleButton1.Checked = !toggleButton1.Checked;
+                return;
+            }
+
+            MainRegion.FilterFavorites["Blue"] = toggleButton1.Checked;
+            formRegions.MainRegion.DoSearch(-1);
+        }
+
+        private void toggleButton2_Click(object sender, RibbonControlEventArgs e)
+        {
+            WindowFormRegionCollection formRegions =
+       Globals.FormRegions
+           [Globals.ThisAddIn.Application.ActiveExplorer()];
+
+            if (!ServiceHelper.IsLoggedIn)
+            {
+                using (LoginForm frmLogin = new LoginForm())
+                {
+                    frmLogin.ShowDialog();
+                    return;
+                }
+            }
+
+            if (formRegions.MainRegion.IsRoleWorkerBusy || formRegions.MainRegion.IsCandidatesWorkerBusy)
+            {
+                toggleButton2.Checked = !toggleButton2.Checked;
+                return;
+            }
+
+            MainRegion.FilterFavorites["Red"] = toggleButton2.Checked;
             formRegions.MainRegion.DoSearch(-1);
         }
 

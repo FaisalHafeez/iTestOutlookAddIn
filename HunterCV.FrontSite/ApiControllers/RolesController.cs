@@ -32,6 +32,15 @@ namespace HunterCV.FrontSite.ApiControllers
                 var role = context.Users.Single(user => user.UserName == userName)
                                  .Roles.Single();
 
+                var users = new Dictionary<string, string>();
+                users.Add("","");
+                
+                role.Users.Each( (u) => 
+                {
+                    users.Add(u.UserId.ToString(), u.UserName);
+                });
+               
+
                 var templates = role.MailTemplates;
 
                 var areas = role.CandidatesAreas;
@@ -67,7 +76,8 @@ namespace HunterCV.FrontSite.ApiControllers
                     candidatesStatuses = candidateStatuses,
                     positionsStatuses = positionsStatuses,
                     templates = templates.Select(p => Mapper.Map<MailTemplate, HunterCV.Common.MailTemplate>(p)).ToList(),
-                    settings = settings
+                    settings = settings,
+                    users = users
                 };
             }
         }

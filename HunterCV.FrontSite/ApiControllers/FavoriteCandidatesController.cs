@@ -30,11 +30,7 @@ namespace HunterCV.FrontSite.ApiControllers
                 var user = context.Users.Single(u => u.UserName == userName);
                 var candidate = context.Candidates.Single(c => c.CandidateID == favorite.CandidateID);
 
-                //check favorite
-                if (!user.FavoriteCandidates.Contains(candidate))
-                {
-                    user.FavoriteCandidates.Add(candidate);
-                }
+                candidate.Starred = favorite.Starred;
 
                 context.SaveChanges();
             }
@@ -53,10 +49,7 @@ namespace HunterCV.FrontSite.ApiControllers
                 var user = context.Users.Single(u => u.UserName == userName);
                 var candidate = context.Candidates.Where(c => c.CandidateID == new Guid(id)).FirstOrDefault();
 
-                if (user.FavoriteCandidates.Contains(candidate))
-                {
-                    user.FavoriteCandidates.Remove(candidate);
-                }
+                candidate.Starred = null;
 
                 context.SaveChanges();
             }

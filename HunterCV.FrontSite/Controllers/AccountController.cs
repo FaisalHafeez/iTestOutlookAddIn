@@ -11,12 +11,16 @@ using WebMatrix.WebData;
 using HunterCV.FrontSite.Models;
 using HunterCV.Model;
 using HunterCV.FrontSite.Attributes;
+using PayPal;
+using System.Configuration;
+using PayPal.PayPalAPIInterfaceService.Model;
+using PayPal.PayPalAPIInterfaceService;
 
 namespace HunterCV.FrontSite.Controllers
 {
-    [RemoteHttpsRequire]
+    //[RemoteHttpsRequire]
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         //
         // GET: /Account/Login
@@ -24,6 +28,23 @@ namespace HunterCV.FrontSite.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            //// Create request object
+            //GetRecurringPaymentsProfileDetailsRequestType request = new GetRecurringPaymentsProfileDetailsRequestType();
+            //// Required) Recurring payments profile ID returned in the CreateRecurringPaymentsProfile response. 19-character profile IDs are supported for compatibility with previous versions of the PayPal API.
+            //request.ProfileID = "778786578678";
+
+
+            //// Invoke the API
+            //GetRecurringPaymentsProfileDetailsReq wrapper = new GetRecurringPaymentsProfileDetailsReq();
+            //wrapper.GetRecurringPaymentsProfileDetailsRequest = request;
+            //// Create the PayPalAPIInterfaceServiceService service object to make the API call
+            //PayPalAPIInterfaceServiceService service = new PayPalAPIInterfaceServiceService();
+            //// # API call 
+            //// Invoke the GetRecurringPaymentsProfileDetails method in service wrapper object 
+            //GetRecurringPaymentsProfileDetailsResponseType recurringPaymentsProfileDetailsResponse =
+            //        service.GetRecurringPaymentsProfileDetails(wrapper);
+
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -42,12 +63,14 @@ namespace HunterCV.FrontSite.Controllers
 
                 using (hunterCVEntities context = new hunterCVEntities())
                 {
-                    var role = context.Users.Where(u => u.UserName == model.UserName).Single().Roles.Single();
+                    var role = context.Users.Where(u => u.UserName == model.UserName).Single().Roles.SingleOrDefault();
 
-                    if (role.LicenseType == "Free")
+                    if (role != null)
                     {
                         return RedirectToAction("Manage", "Account");
                     }
+
+
                 }
                 return RedirectToLocal(returnUrl);
             }
@@ -105,7 +128,11 @@ namespace HunterCV.FrontSite.Controllers
 
                         using (hunterCVEntities context = new hunterCVEntities())
                         {
+                            var user = context.Users.Single(u => u.UserName == model.UserName);
                             var role = context.Roles.Single(r => r.RoleName == model.Company);
+
+                            //admin user
+                            user.ApplicationRole = "A";
 
                             role.CandidatesCompanies = @"<?xml version=""1.0"" encoding=""utf-8""?><companies><company title=""Coca-Cola, Inc.""></company></companies>";
                             role.CandidatesAreas = @"<?xml version=""1.0"" encoding=""utf-8"" ?><areas><area title=""Security""></area><area title=""Management""></area><area title=""System""></area><area title=""BI""></area><area title=""Hardware""></area><area title=""QA""><area title=""Automation""></area><area title=""Manual""></area><area title=""Mobile""></area><area title=""Security""></area><area title=""Finance""></area></area><area title=""Developing""><area title=""JAVA""></area><area title=""WEB""></area><area title=""C""></area><area title=""C++""></area></area><area title=""Sales""></area><area title=""Administrator""></area><area title=""IT""></area><area title=""ERP""></area><area title=""Product""></area><area title=""Algorithem""></area><area title=""Embedded""></area><area title=""Electricity Engeneering""></area><area title=""Industrial Management""></area><area title=""Support""></area><area title=""Media""></area><area title=""Analist""></area><area title=""Internet""></area><area title=""UX/UI""></area><area title=""Marketing""></area><area title=""PMO""></area></areas>";
@@ -146,10 +173,87 @@ namespace HunterCV.FrontSite.Controllers
             return View(model);
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveUser(RemoveUserModel model)
+        {
+            string userName = User.Identity.Name;
+
+            if (ModelState.IsValid)
+            {
+                Membership.DeleteUser(model.UserName, true);
+
+                return RedirectToAction("Manage", "Account");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("Manage", "Account");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddUser(AddUserModel model)
+        {
+            string userName = User.Identity.Name,
+                roleName = null;
+
+            if (ModelState.IsValid)
+            {
+                // Attempt to register the user
+                MembershipCreateStatus createStatus;
+                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+
+                if (createStatus == MembershipCreateStatus.Success)
+                {
+                    using (hunterCVEntities context = new hunterCVEntities())
+                    {
+                        roleName = context.Users.Where(u => u.UserName == userName).Single().Roles.Single().RoleName;
+
+                        var user = context.Users.Single(u => u.UserName == model.UserName);
+                        user.ApplicationRole = model.ApplicationRole;
+                        context.SaveChanges();
+                    }
+
+                    Roles.AddUserToRole(model.UserName, roleName);
+                    return RedirectToAction("Manage", "Account");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("Manage", "Account");
+        }
+
+
+
         [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
+        }
+
+        [Authorize]
+        public ActionResult Manage()
+        {
+            string userName = User.Identity.Name;
+
+            var vm = new ManageAccountModel();
+
+            using (hunterCVEntities context = new hunterCVEntities())
+            {
+                var user = context.Users.Where(u => u.UserName == userName).Single();
+                var role = user.Roles.SingleOrDefault();
+
+                ViewBag.ApplicationRole = user.ApplicationRole;
+
+                if (role != null)
+                {
+                    vm.Users = role.Users.ToList<User>();
+                }
+            }
+
+            return View(vm);
         }
 
         //
@@ -197,7 +301,7 @@ namespace HunterCV.FrontSite.Controllers
             return View();
         }
 
-   
+
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)

@@ -58,6 +58,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.cbOpeningEmail = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.ToolStrip1.SuspendLayout();
             this.panelWait.SuspendLayout();
@@ -67,6 +68,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbOpeningEmail);
             this.groupBox1.Controls.Add(this.cbIncludeAttachments);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
@@ -89,7 +91,7 @@
             // cbIncludeAttachments
             // 
             this.cbIncludeAttachments.AutoSize = true;
-            this.cbIncludeAttachments.Location = new System.Drawing.Point(128, 122);
+            this.cbIncludeAttachments.Location = new System.Drawing.Point(128, 110);
             this.cbIncludeAttachments.Margin = new System.Windows.Forms.Padding(4);
             this.cbIncludeAttachments.Name = "cbIncludeAttachments";
             this.cbIncludeAttachments.Size = new System.Drawing.Size(173, 22);
@@ -261,7 +263,7 @@
             this.rtbDoc.Location = new System.Drawing.Point(128, 201);
             this.rtbDoc.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDoc.Name = "rtbDoc";
-            this.rtbDoc.Size = new System.Drawing.Size(585, 262);
+            this.rtbDoc.Size = new System.Drawing.Size(585, 267);
             this.rtbDoc.TabIndex = 0;
             this.rtbDoc.Text = "";
             this.rtbDoc.TextChanged += new System.EventHandler(this.rtbDoc_TextChanged);
@@ -361,6 +363,18 @@
             this.listBox1.TabIndex = 0;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
+            // cbOpeningEmail
+            // 
+            this.cbOpeningEmail.AutoSize = true;
+            this.cbOpeningEmail.Location = new System.Drawing.Point(128, 140);
+            this.cbOpeningEmail.Margin = new System.Windows.Forms.Padding(4);
+            this.cbOpeningEmail.Name = "cbOpeningEmail";
+            this.cbOpeningEmail.Size = new System.Drawing.Size(330, 22);
+            this.cbOpeningEmail.TabIndex = 9;
+            this.cbOpeningEmail.Text = "Add opening\'s company email as e-mail recipient";
+            this.cbOpeningEmail.UseVisualStyleBackColor = true;
+            this.cbOpeningEmail.CheckedChanged += new System.EventHandler(this.cbOpeningEmail_CheckedChanged);
+            // 
             // MailTemplatesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -422,5 +436,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.PictureBox ajaxLoading;
+        private System.Windows.Forms.CheckBox cbOpeningEmail;
     }
 }

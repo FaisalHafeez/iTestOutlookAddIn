@@ -23,6 +23,7 @@
     <EntitySetMapping Name="Candidates">
       <EntityTypeMapping TypeName="invidiadbModel.Candidate">
         <MappingFragment StoreEntitySet="Candidates">
+          <ScalarProperty Name="Starred" ColumnName="Starred" />
           <ScalarProperty Name="WorkStartDate" ColumnName="WorkStartDate" />
           <ScalarProperty Name="SigningDate" ColumnName="SigningDate" />
           <ScalarProperty Name="Reference" ColumnName="Reference" />
@@ -53,6 +54,7 @@
     <EntitySetMapping Name="MailTemplates">
       <EntityTypeMapping TypeName="invidiadbModel.MailTemplate">
         <MappingFragment StoreEntitySet="MailTemplates">
+          <ScalarProperty Name="SetOpeningCompanyRecipient" ColumnName="SetOpeningCompanyRecipient" />
           <ScalarProperty Name="IncludeAttachments" ColumnName="IncludeAttachments" />
           <ScalarProperty Name="RtfBody" ColumnName="RtfBody" />
           <ScalarProperty Name="Subject" ColumnName="Subject" />
@@ -128,6 +130,7 @@
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="invidiadbModel.User">
         <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="ApplicationRole" ColumnName="ApplicationRole" />
           <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
           <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />

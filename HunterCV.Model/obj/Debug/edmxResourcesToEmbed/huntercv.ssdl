@@ -113,6 +113,7 @@
     <Property Name="UserId" Type="uniqueidentifier" />
     <Property Name="SigningDate" Type="datetime" />
     <Property Name="WorkStartDate" Type="datetime" />
+    <Property Name="Starred" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="FavoriteCandidates">
     <Key>
@@ -133,6 +134,7 @@
     <Property Name="Subject" Type="nvarchar" MaxLength="150" />
     <Property Name="RtfBody" Type="nvarchar" MaxLength="2000" />
     <Property Name="IncludeAttachments" Type="bit" />
+    <Property Name="SetOpeningCompanyRecipient" Type="bit" />
   </EntityType>
   <EntityType Name="Positions">
     <Key>
@@ -210,6 +212,7 @@
     <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="IsAnonymous" Type="bit" Nullable="false" />
     <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+    <Property Name="ApplicationRole" Type="char" MaxLength="1" />
   </EntityType>
   <EntityType Name="UsersInRoles">
     <Key>

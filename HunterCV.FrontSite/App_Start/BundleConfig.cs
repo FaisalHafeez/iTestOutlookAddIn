@@ -13,7 +13,6 @@ namespace HunterCV.FrontSite
                         "~/Scripts/jquery.easing.1.3.js",
                         "~/Scripts/jquery.prettyPhoto.js",
                         "~/Scripts/jquery.mobilemenu.js",
-                        "~/Scripts/jquery.twitter.js",
                         "~/Scripts/jquery.elastislide.js",
                         "~/Scripts/jquery.checkbox.js",
                         "~/Scripts/jquery.flexslider.js",

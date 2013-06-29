@@ -6,12 +6,28 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using HunterCV.Common;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace HunterCV.AddIn.ExtensionMethods
 {
     public static class Extensions
     {
         private static RichTextBox m_rtb = new RichTextBox();
+
+        public static TreeNode[] ToTreeNodes(this IEnumerable<XElement> elements)
+        {
+            List<TreeNode> nodes = new List<TreeNode>();
+
+            nodes.AddRange(elements.Select(elem =>
+            {
+                var node = new TreeNode(elem.Attribute("title").Value);
+                node.Tag = elem;
+                return node;
+            }
+                ));
+
+            return nodes.ToArray();
+        }
 
         public static string GetQueryString(this object obj)
         {
@@ -38,14 +54,14 @@ namespace HunterCV.AddIn.ExtensionMethods
             }
         }
 
-        public static string ReplaceCandidateWildCards(this string rtf, Candidate candidate,bool blEncodeRtf )
+        public static string ReplaceCandidateWildCards(this string rtf, Candidate candidate, bool blEncodeRtf)
         {
             CrossThreadUtility.InvokeControlAction<RichTextBox>(m_rtb, t =>
            {
                if (blEncodeRtf)
                {
                    t.Clear();
-                   
+
                    m_rtb.Rtf = rtf;
 
                    ReplaceWildCard(@"{FIRSTNAME}", candidate.FirstName);

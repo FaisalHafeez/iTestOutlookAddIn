@@ -13,8 +13,8 @@ namespace HunterCV.FrontSite.AutoMapper
         public void CreateMap(IProfileExpression mapper)
         {
             mapper.CreateMap<Candidate, HunterCV.Common.Candidate>()
-                      .ForMember(dest => dest.Username, opt => opt.ResolveUsing<CandidateUserResolver>())
-                      .ForMember(dest => dest.IsFavorite, opt => opt.ResolveUsing<FavoritesUserResolver>());
+                      .ForMember(dest => dest.Username, opt => opt.ResolveUsing<CandidateUserResolver>());
+                      //.ForMember(dest => dest.IsFavorite, opt => opt.ResolveUsing<FavoritesUserResolver>());
 
             mapper.CreateMap<HunterCV.Common.Candidate, Candidate>()
                 .ForMember(dest => dest.CandidatePositions, opt =>
@@ -27,9 +27,9 @@ namespace HunterCV.FrontSite.AutoMapper
             mapper.CreateMap<Position, HunterCV.Common.Position>()
                 .ForMember(dest => dest.Username, opt => opt.ResolveUsing<PositionUserResolver>()).ReverseMap();
 
-            mapper.CreateMap<CandidatePosition, HunterCV.Common.CandidatePosition>().ReverseMap();
+            mapper.CreateMap<CandidatePosition, HunterCV.Common.CandidatePosition>();
 
-            //mapper.CreateMap<HunterCV.Common.CandidatePosition, CandidatePosition>();
+            mapper.CreateMap<HunterCV.Common.CandidatePosition, CandidatePosition>();
 
             mapper.CreateMap<Resume, HunterCV.Common.Resume>().ReverseMap();
             mapper.CreateMap<Preview, HunterCV.Common.Preview>().ReverseMap();

@@ -173,6 +173,16 @@ namespace HunterCV.AddIn.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap blue16_star {
+            get {
+                object obj = ResourceManager.GetObject("blue16_star", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bullet {
             get {
                 object obj = ResourceManager.GetObject("bullet", resourceCulture);
@@ -286,6 +296,26 @@ namespace HunterCV.AddIn.Properties {
         internal static System.Drawing.Bitmap positions {
             get {
                 object obj = ResourceManager.GetObject("positions", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reading_pane_in_the_ribbon {
+            get {
+                object obj = ResourceManager.GetObject("reading-pane-in-the-ribbon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap red16_star {
+            get {
+                object obj = ResourceManager.GetObject("red16_star", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

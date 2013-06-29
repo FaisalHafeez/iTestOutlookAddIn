@@ -40,6 +40,10 @@
             this.button8 = this.Factory.CreateRibbonButton();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.button4 = this.Factory.CreateRibbonButton();
+            this.group6 = this.Factory.CreateRibbonGroup();
+            this.toggleButtonFavorites = this.Factory.CreateRibbonToggleButton();
+            this.toggleButton1 = this.Factory.CreateRibbonToggleButton();
+            this.toggleButton2 = this.Factory.CreateRibbonToggleButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.button2 = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
@@ -50,10 +54,10 @@
             this.group3 = this.Factory.CreateRibbonGroup();
             this.button5 = this.Factory.CreateRibbonButton();
             this.button10 = this.Factory.CreateRibbonButton();
-            this.toggleButtonFavorites = this.Factory.CreateRibbonToggleButton();
             this.InvidiaTab.SuspendLayout();
             this.group4.SuspendLayout();
             this.group5.SuspendLayout();
+            this.group6.SuspendLayout();
             this.group2.SuspendLayout();
             this.group1.SuspendLayout();
             this.group3.SuspendLayout();
@@ -62,6 +66,7 @@
             // 
             this.InvidiaTab.Groups.Add(this.group4);
             this.InvidiaTab.Groups.Add(this.group5);
+            this.InvidiaTab.Groups.Add(this.group6);
             this.InvidiaTab.Groups.Add(this.group2);
             this.InvidiaTab.Groups.Add(this.group1);
             this.InvidiaTab.Groups.Add(this.group3);
@@ -79,7 +84,7 @@
             // 
             this.button7.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.button7.Image = global::HunterCV.AddIn.Properties.Resources.search;
-            this.button7.Label = "Search";
+            this.button7.Label = "Search Openings";
             this.button7.Name = "button7";
             this.button7.OfficeImageId = "CreateFormWithMultipleItems";
             this.button7.ShowImage = true;
@@ -98,7 +103,6 @@
             // group5
             // 
             this.group5.Items.Add(this.button4);
-            this.group5.Items.Add(this.toggleButtonFavorites);
             this.group5.Label = "Candidates";
             this.group5.Name = "group5";
             // 
@@ -110,6 +114,38 @@
             this.button4.Name = "button4";
             this.button4.ShowImage = true;
             this.button4.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button4_Click_1);
+            // 
+            // group6
+            // 
+            this.group6.Items.Add(this.toggleButtonFavorites);
+            this.group6.Items.Add(this.toggleButton1);
+            this.group6.Items.Add(this.toggleButton2);
+            this.group6.Label = "Starred Candidates";
+            this.group6.Name = "group6";
+            // 
+            // toggleButtonFavorites
+            // 
+            this.toggleButtonFavorites.Image = global::HunterCV.AddIn.Properties.Resources.gold16_star;
+            this.toggleButtonFavorites.Label = "Gold Star";
+            this.toggleButtonFavorites.Name = "toggleButtonFavorites";
+            this.toggleButtonFavorites.ShowImage = true;
+            this.toggleButtonFavorites.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonFavorites_Click);
+            // 
+            // toggleButton1
+            // 
+            this.toggleButton1.Image = global::HunterCV.AddIn.Properties.Resources.blue16_star;
+            this.toggleButton1.Label = "Blue Star";
+            this.toggleButton1.Name = "toggleButton1";
+            this.toggleButton1.ShowImage = true;
+            this.toggleButton1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton1_Click);
+            // 
+            // toggleButton2
+            // 
+            this.toggleButton2.Image = global::HunterCV.AddIn.Properties.Resources.red16_star;
+            this.toggleButton2.Label = "Red Star";
+            this.toggleButton2.Name = "toggleButton2";
+            this.toggleButton2.ShowImage = true;
+            this.toggleButton2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton2_Click);
             // 
             // group2
             // 
@@ -204,15 +240,6 @@
             this.button10.ShowImage = true;
             this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button10_Click);
             // 
-            // toggleButtonFavorites
-            // 
-            this.toggleButtonFavorites.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.toggleButtonFavorites.Image = global::HunterCV.AddIn.Properties.Resources._1370556717_star1;
-            this.toggleButtonFavorites.Label = "Favorites";
-            this.toggleButtonFavorites.Name = "toggleButtonFavorites";
-            this.toggleButtonFavorites.ShowImage = true;
-            this.toggleButtonFavorites.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonFavorites_Click);
-            // 
             // HunterCVRibbon
             // 
             this.Name = "HunterCVRibbon";
@@ -225,6 +252,8 @@
             this.group4.PerformLayout();
             this.group5.ResumeLayout(false);
             this.group5.PerformLayout();
+            this.group6.ResumeLayout(false);
+            this.group6.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
             this.group1.ResumeLayout(false);
@@ -253,6 +282,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group5;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button4;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonFavorites;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group6;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButton1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButton2;
     }
 
     partial class ThisRibbonCollection

@@ -1,0 +1,21 @@
+﻿@model HunterCV.FrontSite.Models.RemoveUserModel
+<div id="removeuser" class="reveal-modal">
+    <header class="reveal-modal-header">
+			Remove User
+		</header>
+    <div class="cont">
+        @using (Html.BeginForm("RemoveUser", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "removeuser" }))
+        {
+            @Html.AntiForgeryToken()
+            <h3>Are You really sure to remove this user ?</h3>
+            <p class="clearfix">
+                @Html.TextBoxFor(m => m.UserName, new { style = "display: none;" })
+            </p>
+            <input type="submit" value=""/>
+            <div>
+            &nbsp;&nbsp;Or&nbsp;<a href="#" class="close-reveal-modal-button">Cancel</a> and close this dialog
+            </div>
+        }
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>

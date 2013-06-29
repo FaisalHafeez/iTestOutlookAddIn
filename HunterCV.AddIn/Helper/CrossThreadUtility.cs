@@ -12,6 +12,14 @@ namespace HunterCV.AddIn
         public byte[] Bytes { get; set; }
     }
 
+    public enum FavoritesIcons
+    {
+        Silver = 0,
+        Gold = 1,
+        Blue,
+        Red
+    }
+
     public static class CrossThreadUtility
     {
         public static void InvokeControlAction<t>(t cont, Action<t> action) where t : Control

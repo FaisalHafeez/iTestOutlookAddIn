@@ -1115,6 +1115,30 @@ namespace HunterCV.Model
         private Nullable<global::System.DateTime> _WorkStartDate;
         partial void OnWorkStartDateChanging(Nullable<global::System.DateTime> value);
         partial void OnWorkStartDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Starred
+        {
+            get
+            {
+                return _Starred;
+            }
+            set
+            {
+                OnStarredChanging(value);
+                ReportPropertyChanging("Starred");
+                _Starred = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Starred");
+                OnStarredChanged();
+            }
+        }
+        private global::System.String _Starred;
+        partial void OnStarredChanging(global::System.String value);
+        partial void OnStarredChanged();
 
         #endregion
 
@@ -1597,6 +1621,30 @@ namespace HunterCV.Model
         private Nullable<global::System.Boolean> _IncludeAttachments;
         partial void OnIncludeAttachmentsChanging(Nullable<global::System.Boolean> value);
         partial void OnIncludeAttachmentsChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> SetOpeningCompanyRecipient
+        {
+            get
+            {
+                return _SetOpeningCompanyRecipient;
+            }
+            set
+            {
+                OnSetOpeningCompanyRecipientChanging(value);
+                ReportPropertyChanging("SetOpeningCompanyRecipient");
+                _SetOpeningCompanyRecipient = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("SetOpeningCompanyRecipient");
+                OnSetOpeningCompanyRecipientChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _SetOpeningCompanyRecipient;
+        partial void OnSetOpeningCompanyRecipientChanging(Nullable<global::System.Boolean> value);
+        partial void OnSetOpeningCompanyRecipientChanged();
 
         #endregion
 
@@ -3186,6 +3234,30 @@ namespace HunterCV.Model
         private global::System.DateTime _LastActivityDate;
         partial void OnLastActivityDateChanging(global::System.DateTime value);
         partial void OnLastActivityDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ApplicationRole
+        {
+            get
+            {
+                return _ApplicationRole;
+            }
+            set
+            {
+                OnApplicationRoleChanging(value);
+                ReportPropertyChanging("ApplicationRole");
+                _ApplicationRole = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ApplicationRole");
+                OnApplicationRoleChanged();
+            }
+        }
+        private global::System.String _ApplicationRole;
+        partial void OnApplicationRoleChanging(global::System.String value);
+        partial void OnApplicationRoleChanged();
 
         #endregion
 

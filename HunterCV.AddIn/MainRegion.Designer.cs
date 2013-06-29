@@ -37,12 +37,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainRegion));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.tbName = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbRole = new System.Windows.Forms.ComboBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.tvAreas = new System.Windows.Forms.TreeView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -51,11 +45,12 @@
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.cbStatus = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tbNumber = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.btnSearch = new ComponentOwl.BetterSplitButton.BetterSplitButton();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbName = new WatermarkTextBox.WatermarkTextBox();
+            this.tbNumber = new WatermarkTextBox.WatermarkTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnLast = new System.Windows.Forms.Button();
@@ -63,12 +58,15 @@
             this.btnPrevious = new System.Windows.Forms.Button();
             this.btnFirst = new System.Windows.Forms.Button();
             this.panelWait = new System.Windows.Forms.Panel();
-            this.ajaxLoading = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.showFormTimer = new System.Windows.Forms.Timer(this.components);
             this.candidatesWorker = new System.ComponentModel.BackgroundWorker();
             this.roleWorker = new System.ComponentModel.BackgroundWorker();
             this.favoritesImageList = new System.Windows.Forms.ImageList(this.components);
+            this.cbCreatedBy = new HunterCV.AddIn.Controls.WatermarkComboBox();
+            this.cbRole = new HunterCV.AddIn.Controls.WatermarkComboBox();
+            this.cbStatus = new HunterCV.AddIn.Controls.WatermarkComboBox();
+            this.ajaxLoading = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -76,7 +74,7 @@
             this.splitContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panelWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
@@ -95,7 +93,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(889, 164);
+            this.dataGridView1.Size = new System.Drawing.Size(859, 200);
             this.dataGridView1.TabIndex = 7;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
@@ -105,73 +103,6 @@
             this.dataGridView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragEnter);
             this.dataGridView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(327, 9);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 19);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Name";
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(547, 40);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 32);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Search";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // tbName
-            // 
-            this.tbName.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbName.Location = new System.Drawing.Point(381, 4);
-            this.tbName.Margin = new System.Windows.Forms.Padding(4);
-            this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(132, 27);
-            this.tbName.TabIndex = 4;
-            this.tbName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbName_KeyPress);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(523, 9);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 19);
-            this.label2.TabIndex = 38;
-            this.label2.Text = "Role";
-            // 
-            // cbRole
-            // 
-            this.cbRole.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbRole.FormattingEnabled = true;
-            this.cbRole.Location = new System.Drawing.Point(569, 4);
-            this.cbRole.Margin = new System.Windows.Forms.Padding(4);
-            this.cbRole.Name = "cbRole";
-            this.cbRole.Size = new System.Drawing.Size(143, 27);
-            this.cbRole.TabIndex = 37;
-            this.cbRole.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbRole_KeyPress);
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(652, 40);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(61, 32);
-            this.button2.TabIndex = 40;
-            this.button2.Text = "Clear";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // tvAreas
             // 
             this.tvAreas.CheckBoxes = true;
@@ -180,7 +111,7 @@
             this.tvAreas.Location = new System.Drawing.Point(0, 0);
             this.tvAreas.Margin = new System.Windows.Forms.Padding(4);
             this.tvAreas.Name = "tvAreas";
-            this.tvAreas.Size = new System.Drawing.Size(122, 164);
+            this.tvAreas.Size = new System.Drawing.Size(118, 200);
             this.tvAreas.TabIndex = 41;
             this.tvAreas.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tvAreas_AfterCheck);
             this.tvAreas.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvAreas_AfterSelect);
@@ -188,7 +119,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(4, 84);
+            this.splitContainer1.Location = new System.Drawing.Point(4, 49);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -199,8 +130,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
-            this.splitContainer1.Size = new System.Drawing.Size(1016, 164);
-            this.splitContainer1.SplitterDistance = 122;
+            this.splitContainer1.Size = new System.Drawing.Size(982, 200);
+            this.splitContainer1.SplitterDistance = 118;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 42;
             // 
@@ -209,17 +140,17 @@
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(129, 37);
+            this.dateTimePicker1.Location = new System.Drawing.Point(259, 37);
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(136, 27);
+            this.dateTimePicker1.Size = new System.Drawing.Size(106, 27);
             this.dateTimePicker1.TabIndex = 44;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(8, 40);
+            this.checkBox1.Location = new System.Drawing.Point(152, 40);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(108, 23);
@@ -232,7 +163,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(275, 40);
+            this.label3.Location = new System.Drawing.Point(373, 40);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(24, 19);
@@ -244,14 +175,16 @@
             this.dateTimePicker2.Enabled = false;
             this.dateTimePicker2.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker2.Location = new System.Drawing.Point(309, 37);
+            this.dateTimePicker2.Location = new System.Drawing.Point(405, 37);
             this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(136, 27);
+            this.dateTimePicker2.Size = new System.Drawing.Size(104, 27);
             this.dateTimePicker2.TabIndex = 47;
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
@@ -262,90 +195,81 @@
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 31.74603F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 68.25397F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1024, 284);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(990, 284);
             this.tableLayoutPanel1.TabIndex = 48;
             // 
             // panel1
             // 
             this.panel1.AllowDrop = true;
-            this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Controls.Add(this.cbStatus);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.tbNumber);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.tbName);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.btnSearch);
+            this.panel1.Controls.Add(this.cbCreatedBy);
             this.panel1.Controls.Add(this.cbRole);
+            this.panel1.Controls.Add(this.cbStatus);
+            this.panel1.Controls.Add(this.tbName);
+            this.panel1.Controls.Add(this.tbNumber);
             this.panel1.Controls.Add(this.dateTimePicker2);
-            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.dateTimePicker1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(4, 4);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1016, 72);
+            this.panel1.Size = new System.Drawing.Size(982, 37);
             this.panel1.TabIndex = 49;
             // 
-            // pictureBox1
+            // btnSearch
             // 
-            this.pictureBox1.Image = global::HunterCV.AddIn.Properties.Resources.draghere;
-            this.pictureBox1.Location = new System.Drawing.Point(746, 8);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(156, 55);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 52;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.DragDrop += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragDrop);
-            this.pictureBox1.DragEnter += new System.Windows.Forms.DragEventHandler(this.dataGridView1_DragEnter);
+            this.btnSearch.ContextMenuStrip = this.contextMenuStrip1;
+            this.btnSearch.Location = new System.Drawing.Point(519, 6);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(87, 26);
+            this.btnSearch.TabIndex = 61;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // cbStatus
+            // contextMenuStrip1
             // 
-            this.cbStatus.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbStatus.FormattingEnabled = true;
-            this.cbStatus.Location = new System.Drawing.Point(61, 3);
-            this.cbStatus.Margin = new System.Windows.Forms.Padding(4);
-            this.cbStatus.Name = "cbStatus";
-            this.cbStatus.Size = new System.Drawing.Size(143, 27);
-            this.cbStatus.TabIndex = 51;
-            this.cbStatus.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbStatus_KeyPress);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(198, 48);
             // 
-            // label5
+            // toolStripMenuItem1
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(4, 9);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(49, 19);
-            this.label5.TabIndex = 50;
-            this.label5.Text = "Status";
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 22);
+            this.toolStripMenuItem1.Text = "Reset Search";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(197, 22);
+            this.toolStripMenuItem2.Text = "Show Advanced Search";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // tbName
+            // 
+            this.tbName.Location = new System.Drawing.Point(152, 6);
+            this.tbName.Name = "tbName";
+            this.tbName.Size = new System.Drawing.Size(93, 26);
+            this.tbName.TabIndex = 56;
+            this.tbName.Watermark = "Enter name";
+            this.tbName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbName_KeyPress);
             // 
             // tbNumber
             // 
-            this.tbNumber.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNumber.Location = new System.Drawing.Point(240, 4);
-            this.tbNumber.Margin = new System.Windows.Forms.Padding(4);
+            this.tbNumber.Location = new System.Drawing.Point(8, 37);
             this.tbNumber.Name = "tbNumber";
-            this.tbNumber.Size = new System.Drawing.Size(77, 27);
-            this.tbNumber.TabIndex = 49;
+            this.tbNumber.Size = new System.Drawing.Size(99, 26);
+            this.tbNumber.TabIndex = 55;
+            this.tbNumber.Watermark = "Enter number";
             this.tbNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbNumber_KeyPress);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(213, 9);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(17, 19);
-            this.label4.TabIndex = 48;
-            this.label4.Text = "#";
             // 
             // panel2
             // 
@@ -356,9 +280,9 @@
             this.panel2.Controls.Add(this.btnFirst);
             this.panel2.Controls.Add(this.panelWait);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 255);
+            this.panel2.Location = new System.Drawing.Point(3, 256);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1018, 26);
+            this.panel2.Size = new System.Drawing.Size(984, 25);
             this.panel2.TabIndex = 50;
             // 
             // lblStatus
@@ -423,17 +347,6 @@
             this.panelWait.TabIndex = 56;
             this.panelWait.Visible = false;
             // 
-            // ajaxLoading
-            // 
-            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
-            this.ajaxLoading.Location = new System.Drawing.Point(4, 7);
-            this.ajaxLoading.Margin = new System.Windows.Forms.Padding(4);
-            this.ajaxLoading.Name = "ajaxLoading";
-            this.ajaxLoading.Size = new System.Drawing.Size(220, 19);
-            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ajaxLoading.TabIndex = 25;
-            this.ajaxLoading.TabStop = false;
-            // 
             // timer1
             // 
             this.timer1.Enabled = true;
@@ -459,20 +372,64 @@
             // 
             this.favoritesImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("favoritesImageList.ImageStream")));
             this.favoritesImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.favoritesImageList.Images.SetKeyName(0, "1370566886_59105.ico");
-            this.favoritesImageList.Images.SetKeyName(1, "1370566891_65779.ico");
+            this.favoritesImageList.Images.SetKeyName(0, "silver16_star.png");
+            this.favoritesImageList.Images.SetKeyName(1, "gold16_star.png");
+            this.favoritesImageList.Images.SetKeyName(2, "blue16_star.png");
+            this.favoritesImageList.Images.SetKeyName(3, "red16_star.png");
+            // 
+            // cbCreatedBy
+            // 
+            this.cbCreatedBy.CueText = "Created by";
+            this.cbCreatedBy.FormattingEnabled = true;
+            this.cbCreatedBy.Location = new System.Drawing.Point(250, 6);
+            this.cbCreatedBy.Name = "cbCreatedBy";
+            this.cbCreatedBy.Size = new System.Drawing.Size(94, 26);
+            this.cbCreatedBy.TabIndex = 60;
+            this.cbCreatedBy.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbStatus_KeyPress);
+            // 
+            // cbRole
+            // 
+            this.cbRole.CueText = "Choose Role";
+            this.cbRole.FormattingEnabled = true;
+            this.cbRole.Location = new System.Drawing.Point(350, 6);
+            this.cbRole.Name = "cbRole";
+            this.cbRole.Size = new System.Drawing.Size(154, 26);
+            this.cbRole.TabIndex = 59;
+            this.cbRole.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbName_KeyPress);
+            // 
+            // cbStatus
+            // 
+            this.cbStatus.CueText = "Choose Status";
+            this.cbStatus.FormattingEnabled = true;
+            this.cbStatus.Location = new System.Drawing.Point(8, 6);
+            this.cbStatus.Name = "cbStatus";
+            this.cbStatus.Size = new System.Drawing.Size(134, 26);
+            this.cbStatus.TabIndex = 58;
+            this.cbStatus.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbStatus_KeyPress);
+            // 
+            // ajaxLoading
+            // 
+            this.ajaxLoading.Image = ((System.Drawing.Image)(resources.GetObject("ajaxLoading.Image")));
+            this.ajaxLoading.Location = new System.Drawing.Point(4, 7);
+            this.ajaxLoading.Margin = new System.Windows.Forms.Padding(4);
+            this.ajaxLoading.Name = "ajaxLoading";
+            this.ajaxLoading.Size = new System.Drawing.Size(220, 19);
+            this.ajaxLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.ajaxLoading.TabIndex = 25;
+            this.ajaxLoading.TabStop = false;
             // 
             // MainRegion
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainRegion";
-            this.Size = new System.Drawing.Size(1024, 284);
+            this.Size = new System.Drawing.Size(990, 284);
             this.FormRegionShowing += new System.EventHandler(this.MainRegion_FormRegionShowing);
             this.FormRegionClosed += new System.EventHandler(this.MainRegion_FormRegionClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -483,12 +440,13 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panelWait.ResumeLayout(false);
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -512,12 +470,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox tbName;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbRole;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TreeView tvAreas;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
@@ -526,10 +478,6 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox tbNumber;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cbStatus;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Timer showFormTimer;
         private System.Windows.Forms.Panel panelWait;
@@ -540,11 +488,19 @@
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnPrevious;
         private System.Windows.Forms.Button btnFirst;
-        private System.Windows.Forms.PictureBox pictureBox1;
 
         private System.ComponentModel.BackgroundWorker candidatesWorker;
         private System.ComponentModel.BackgroundWorker roleWorker;
         private System.Windows.Forms.ImageList favoritesImageList;
+        private WatermarkTextBox.WatermarkTextBox tbNumber;
+        private WatermarkTextBox.WatermarkTextBox tbName;
+        private Controls.WatermarkComboBox cbStatus;
+        private Controls.WatermarkComboBox cbRole;
+        private Controls.WatermarkComboBox cbCreatedBy;
+        private ComponentOwl.BetterSplitButton.BetterSplitButton btnSearch;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
 
         public partial class MainRegionFactory : Microsoft.Office.Tools.Outlook.IFormRegionFactory
         {

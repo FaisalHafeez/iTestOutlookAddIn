@@ -1,50 +1,85 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>@ViewBag.Message</h2>
-</hgroup>
-
-<section class="contact">
-    <header>
-        <h3>Phone</h3>
-    </header>
-    <p>
-        <span class="label">Main:</span>
-        <span>425.555.0100</span>
-    </p>
-    <p>
-        <span class="label">After Hours:</span>
-        <span>425.555.0199</span>
-    </p>
-</section>
-
-<section class="contact">
-    <header>
-        <h3>Email</h3>
-    </header>
-    <p>
-        <span class="label">Support:</span>
-        <span><a href="mailto:Support@example.com">Support@example.com</a></span>
-    </p>
-    <p>
-        <span class="label">Marketing:</span>
-        <span><a href="mailto:Marketing@example.com">Marketing@example.com</a></span>
-    </p>
-    <p>
-        <span class="label">General:</span>
-        <span><a href="mailto:General@example.com">General@example.com</a></span>
-    </p>
-</section>
-
-<section class="contact">
-    <header>
-        <h3>Address</h3>
-    </header>
-    <p>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399
-    </p>
-</section>
+<div id="content-wrapper">
+    <div class="indent">
+        <div class="container">
+            <div class="grid_12">
+                <!-- BEGIN GOOGLE MAP -->
+                <div class="map-wrapper">
+                    <div id="map_canvas">
+                    </div>
+                </div>
+                <!-- END GOOGLE MAP -->
+            </div>
+        </div>
+        <div class="container">
+            <div class="grid_8">
+                <h4 class="alt-title">
+                    send us mail:</h4>
+                <!-- BEGIN CONTACT FORM -->
+                <form method="post" action="sendEmail.php" id="contact-form" class="contact-form">
+                <div class="grid_5 alpha">
+                    <div class="field clearfix">
+                        <textarea name="comments" id="comments" cols="30" rows="10" placeholder="your message..."></textarea>
+                    </div>
+                </div>
+                <div class="grid_3 omega">
+                    <div class="field clearfix">
+                        <input type="text" name="name" id="name" placeholder="your name ..." />
+                    </div>
+                    <div class="field clearfix">
+                        <input type="text" name="email" id="email" placeholder="your email..." />
+                    </div>
+                    <div class="field clearfix">
+                        <input type="text" name="subject" id="subject" placeholder="subject..." />
+                    </div>
+                    <div class="btn-wrapper">
+                        <input type="submit" name="submit" id="submit" value="send" /><i class="btn-marker"></i>
+                    </div>
+                    <div id="response">
+                    </div>
+                </div>
+                </form>
+                <!-- END CONTACT FORM -->
+            </div>
+            <div class="grid_4">
+                <div class="prefix_1_2">
+                    <h4 class="alt-title">
+                        contacts:</h4>
+                    <!-- BEGIN ADDRESS -->
+                    <address>
+                        101 Wesr Street, New York, NY 12345<br />
+                        <strong>Phone:</strong> +1 111 123-45-67<br />
+                        <strong>Fax:</strong> +1 111 123-45-67<br />
+                        <strong>Email:</strong> <a href="mailto:info@optimasales.com">info@optimasales.com</a><br />
+                        <strong>Skype:</strong> <a href="#">optima_sales</a><br />
+                    </address>
+                    <!-- END ADDRESS -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section navigation {
+    <ul class="sf-menu">
+        <li class="">
+            @Html.ActionLink("home", "Index", "Home")
+        </li>
+        @if (Request.IsAuthenticated)
+        {
+            <li class="">
+                @Html.ActionLink("my account", "Manage", "Account")
+            </li>
+        }
+        <li class="">
+            @Html.ActionLink("features", "Features", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("plans", "Plans", "Home")
+        </li>
+        <li class="current-menu-item">
+            @Html.ActionLink("contact us", "Contact", "Home")
+        </li>
+    </ul>
+}

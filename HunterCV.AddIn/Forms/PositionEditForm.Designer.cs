@@ -293,6 +293,7 @@
             this.tbDescription.Margin = new System.Windows.Forms.Padding(4);
             this.tbDescription.Multiline = true;
             this.tbDescription.Name = "tbDescription";
+            this.tbDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbDescription.Size = new System.Drawing.Size(415, 147);
             this.tbDescription.TabIndex = 21;
             // 

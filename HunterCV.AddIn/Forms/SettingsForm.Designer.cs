@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.udPageSize = new System.Windows.Forms.NumericUpDown();
             this.PositionsStartIndex = new System.Windows.Forms.MaskedTextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.CandidatesStartIndex = new System.Windows.Forms.MaskedTextBox();
@@ -41,6 +42,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.MobileFormat = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.cbAddMSCompanyLogo = new System.Windows.Forms.CheckBox();
             this.MSWordPhone2WildCards = new System.Windows.Forms.TextBox();
             this.MSWordPhone1WildCards = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -59,14 +61,19 @@
             this.button2 = new System.Windows.Forms.Button();
             this.panelWait = new System.Windows.Forms.Panel();
             this.ajaxLoading = new System.Windows.Forms.PictureBox();
-            this.udPageSize = new System.Windows.Forms.NumericUpDown();
+            this.button3 = new System.Windows.Forms.Button();
+            this.tbMSLogoFilePath = new System.Windows.Forms.TextBox();
+            this.Logo = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udPageSize)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panelWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.udPageSize)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -101,6 +108,28 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "General";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // udPageSize
+            // 
+            this.udPageSize.Location = new System.Drawing.Point(236, 129);
+            this.udPageSize.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.udPageSize.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.udPageSize.Name = "udPageSize";
+            this.udPageSize.Size = new System.Drawing.Size(49, 26);
+            this.udPageSize.TabIndex = 11;
+            this.udPageSize.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
             // 
             // PositionsStartIndex
             // 
@@ -192,6 +221,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Controls.Add(this.MSWordPhone2WildCards);
             this.tabPage3.Controls.Add(this.MSWordPhone1WildCards);
             this.tabPage3.Controls.Add(this.label11);
@@ -206,6 +236,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Resume screening";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // cbAddMSCompanyLogo
+            // 
+            this.cbAddMSCompanyLogo.AutoSize = true;
+            this.cbAddMSCompanyLogo.Location = new System.Drawing.Point(18, 25);
+            this.cbAddMSCompanyLogo.Name = "cbAddMSCompanyLogo";
+            this.cbAddMSCompanyLogo.Size = new System.Drawing.Size(401, 22);
+            this.cbAddMSCompanyLogo.TabIndex = 13;
+            this.cbAddMSCompanyLogo.Text = "Add My Company logo image to MS Word Documents Header";
+            this.cbAddMSCompanyLogo.UseVisualStyleBackColor = true;
             // 
             // MSWordPhone2WildCards
             // 
@@ -390,27 +430,50 @@
             this.ajaxLoading.TabIndex = 25;
             this.ajaxLoading.TabStop = false;
             // 
-            // udPageSize
+            // button3
             // 
-            this.udPageSize.Location = new System.Drawing.Point(236, 129);
-            this.udPageSize.Maximum = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            this.udPageSize.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.udPageSize.Name = "udPageSize";
-            this.udPageSize.Size = new System.Drawing.Size(49, 26);
-            this.udPageSize.TabIndex = 11;
-            this.udPageSize.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
+            this.button3.Location = new System.Drawing.Point(308, 62);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(93, 30);
+            this.button3.TabIndex = 14;
+            this.button3.Text = "Browse...";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // tbMSLogoFilePath
+            // 
+            this.tbMSLogoFilePath.Location = new System.Drawing.Point(99, 62);
+            this.tbMSLogoFilePath.Name = "tbMSLogoFilePath";
+            this.tbMSLogoFilePath.ReadOnly = true;
+            this.tbMSLogoFilePath.Size = new System.Drawing.Size(203, 26);
+            this.tbMSLogoFilePath.TabIndex = 15;
+            // 
+            // Logo
+            // 
+            this.Logo.AutoSize = true;
+            this.Logo.Location = new System.Drawing.Point(15, 64);
+            this.Logo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Logo.Name = "Logo";
+            this.Logo.Size = new System.Drawing.Size(77, 18);
+            this.Logo.TabIndex = 16;
+            this.Logo.Text = "Image path";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cbAddMSCompanyLogo);
+            this.groupBox1.Controls.Add(this.Logo);
+            this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.tbMSLogoFilePath);
+            this.groupBox1.Location = new System.Drawing.Point(28, 216);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(463, 100);
+            this.groupBox1.TabIndex = 17;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Resume Header";
             // 
             // SettingsForm
             // 
@@ -433,6 +496,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udPageSize)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -440,7 +504,8 @@
             this.panelWait.ResumeLayout(false);
             this.panelWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ajaxLoading)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.udPageSize)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -478,5 +543,11 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown udPageSize;
+        private System.Windows.Forms.CheckBox cbAddMSCompanyLogo;
+        private System.Windows.Forms.TextBox tbMSLogoFilePath;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label Logo;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

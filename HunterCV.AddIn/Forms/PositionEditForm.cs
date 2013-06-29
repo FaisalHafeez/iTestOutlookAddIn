@@ -26,9 +26,10 @@ namespace HunterCV.AddIn
             m_region = region;
 
             tvAreas.Nodes.AddRange(region.Areas.CloneNodes());
+            tvAreas.ExpandAll();
             cbStatus.Items.AddRange(region.PositionsStatuses);
             cbRole.Items.AddRange(region.Roles);
-            cbCompany.Items.AddRange(region.Companies.Select( t => t.Text).ToArray());
+            cbCompany.Items.AddRange(region.Companies.Select(t => t.Attribute("title").Value).ToArray());
 
             this.tbTitle.DataBindings.Add("Text", m_position, "PositionTitle", false, DataSourceUpdateMode.OnPropertyChanged);
             this.tbDescription.DataBindings.Add("Text", m_position, "PositionDescription", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -325,11 +326,11 @@ namespace HunterCV.AddIn
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ManageCompaniesForm form = new ManageCompaniesForm(m_region);
+            ManageCompaniesForm form = new ManageCompaniesForm(m_region, cbCompany.Text);
             form.ShowDialog(this);
 
             cbCompany.Items.Clear();
-            cbCompany.Items.AddRange(m_region.Companies.Select(t => t.Text).ToArray());
+            cbCompany.Items.AddRange(m_region.Companies.Select(t => t.Attribute("title").Value).ToArray() );
 
         }
 

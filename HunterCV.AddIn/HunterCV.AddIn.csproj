@@ -43,7 +43,7 @@
     <PublishUrl>C:\Projects\HunterCV\HunterCV.FrontSite\Install\</PublishUrl>
     <InstallUrl>http://www.positionsbox.com/install/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.13</ApplicationVersion>
+    <ApplicationVersion>1.0.0.30</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -167,6 +167,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="BetterSplitButton-net40cp, Version=2.0.2.0, Culture=neutral, PublicKeyToken=e6c91a3add447be2">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.4.0\lib\net40-client\Facebook.dll</HintPath>
     </Reference>
@@ -185,6 +188,7 @@
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -214,6 +218,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="WatermarkTextBox">
+      <HintPath>..\..\..\Users\Administrator\AppData\Local\Microsoft\VisualStudio\10.0\Extensions\emlk13b2.omd\WatermarkTextBox.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Tools.v4.0.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -238,6 +245,13 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Contact.cs" />
+    <Compile Include="Controls\WatermarkComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WatermarkComboBox.Designer.cs">
+      <DependentUpon>WatermarkComboBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="DuplicateCandidatesException.cs" />
     <Compile Include="enum_LicenseType.cs" />
     <Compile Include="enum_GridRowSelectionTypes.cs" />
@@ -254,6 +268,12 @@
     </Compile>
     <Compile Include="Forms\CandidateEditForm.Designer.cs">
       <DependentUpon>CandidateEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ContactEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ContactEditForm.Designer.cs">
+      <DependentUpon>ContactEditForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\DuplicateCandidatesForm.cs">
       <SubType>Form</SubType>
@@ -315,6 +335,12 @@
     <Compile Include="Forms\PositionsForm.Designer.cs">
       <DependentUpon>PositionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PreviewPaneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PreviewPaneForm.Designer.cs">
+      <DependentUpon>PreviewPaneForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ReadingResumeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -343,11 +369,17 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <EmbeddedResource Include="Controls\WatermarkComboBox.resx">
+      <DependentUpon>WatermarkComboBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CandidateEditForm.resx">
       <DependentUpon>CandidateEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ContactEditForm.resx">
+      <DependentUpon>ContactEditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DuplicateCandidatesForm.resx">
       <DependentUpon>DuplicateCandidatesForm.cs</DependentUpon>
@@ -378,6 +410,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PositionsForm.resx">
       <DependentUpon>PositionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PreviewPaneForm.resx">
+      <DependentUpon>PreviewPaneForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ReadingResumeForm.resx">
       <DependentUpon>ReadingResumeForm.cs</DependentUpon>
@@ -418,6 +453,7 @@
     <Compile Include="ScrollablePictureBox.cs" />
     <Compile Include="ServiceHelper.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Settings1.cs" />
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -496,6 +532,9 @@
     <None Include="Resources\silver16_star.png" />
     <None Include="Resources\silver16.bmp" />
     <None Include="Resources\logo.png" />
+    <None Include="Resources\reading-pane-in-the-ribbon.png" />
+    <None Include="Resources\blue16_star.png" />
+    <None Include="Resources\red16_star.png" />
     <Content Include="System.Net.Http.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -506,6 +545,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

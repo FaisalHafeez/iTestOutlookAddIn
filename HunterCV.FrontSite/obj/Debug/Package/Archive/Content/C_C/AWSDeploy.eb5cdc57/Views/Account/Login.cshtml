@@ -1,45 +1,56 @@
 ﻿@model HunterCV.FrontSite.Models.LoginModel
-
 @{
     ViewBag.Title = "Log in";
 }
+<!-- BEGIN CONTENT HOLDER -->
+<div id="content-wrapper">
+    <section class="indent">
+        <div class="container sign-in-container">
+            <h2>
+                Use a local account to log in.</h2>
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "signin-form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.CustomValidationSummary("")
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
+                <p class="clearfix">
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName)
+                </p>
+                <p class="clearfix">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                </p>
+                <p class="clearfix checkbox-container">
+                    <span class="checkbox" style="background-position: 0px -36px;">
+                        @Html.CheckBoxFor(m => m.RememberMe, new { @class = "checkboxclass", data_init = "0", data_height = "18" })
+                    </span>
+                    @Html.LabelFor(m => m.RememberMe)
+                </p>
+                <input type="submit" name="submit" id="submit" value="Login" /><i class="btn-marker"></i>
+                    
+                <p class="clearfix">
+                    @Html.ActionLink("Register", "Register") if you don't have an account.
+                    @Html.ActionLink("Forgot", "Forgot") password.
+                </p>
+            }
+        </div>
+    </section>
+</div>
 
-<section id="loginForm">
-<h2>Use a local account to log in.</h2>
-@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>Log in Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </li>
-            <li>
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </li>
-        </ol>
-        <input type="submit" value="Log in" />
-    </fieldset>
-    <p>
-        @Html.ActionLink("Register", "Register") if you don't have an account.
-    </p>
-}
-</section>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@section navigation {
+    <ul class="sf-menu">
+        <li class="">
+            @Html.ActionLink("home", "Index", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("features", "Features", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("plans", "Plans", "Home")
+        </li>
+        <li class="">
+            @Html.ActionLink("contact us", "Contact", "Home")
+        </li>
+    </ul>
 }
